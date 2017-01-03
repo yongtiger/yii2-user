@@ -1,0 +1,86 @@
+<?php ///[Yii2 uesr]
+
+/**
+ * Yii2 User
+ *
+ * @link        http://www.brainbook.cc
+ * @see         https://github.com/yongtiger/yii2-user
+ * @author      Tiger Yong <tigeryang.brainbook@outlook.com>
+ * @copyright   Copyright (c) 2016 BrainBook.CC
+ * @license     http://opensource.org/licenses/MIT
+ */
+
+namespace yongtiger\user\models;
+
+use yii\base\Model;
+use yii\base\InvalidParamException;
+use yongtiger\user\models\User;
+use yongtiger\user\Module;
+
+/**
+ * Password reset form
+ */
+class ResetPasswordForm extends Model
+{
+    public $password;
+
+    /**
+     * @var \yongtiger\user\models\User
+     */
+    private $_user;
+
+
+    /**
+     * Creates a form model given a token.
+     *
+     * @param string $token
+     * @param array $config name-value pairs that will be used to initialize the object properties
+     * @throws \yii\base\InvalidParamException if token is empty or not valid
+     */
+    public function __construct($token, $config = [])
+    {
+        if (empty($token) || !is_string($token)) {
+            throw new InvalidParamException(Module::t('user', 'Password reset token cannot be blank.'));
+        }
+        $this->_user = User::findByPasswordResetToken($token);
+        if (!$this->_user) {
+            throw new InvalidParamException(Module::t('user', 'Wrong password reset token.'));
+        }
+        parent::__construct($config);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            ['password', 'required'],
+            ['password', 'string', 'min' => 6],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'password' => Module::t('user', 'Password'),
+        ];
+    }
+
+    /**
+     * Resets password.
+     *
+     * @return bool if password was reset.
+     */
+    public function resetPassword()
+    {
+        $user = $this->_user;
+        $user->setPassword($this->password);
+        $user->removePasswordResetToken();
+
+        return $user->save(false);
+    }
+}
