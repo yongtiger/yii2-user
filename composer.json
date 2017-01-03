@@ -1,0 +1,30 @@
+{
+    "name": "yongtiger/yii2-user",
+    "description": "",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","user","rbac","oauth","authentication","social","profile"],
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/yongtiger/yii2-user/issues",
+        "forum": "http://www.yiiframework.com/forum/",
+        "source": "https://github.com/yongtiger/yii2-user"
+    },
+    "authors": [
+        {
+            "name": "Yong Tiger",
+            "email": "tigeryang.brainbook@outlook.com",
+            "homepage": "http://www.branbook.cc/yongtiger"
+        }
+    ],
+    "homepage" : "http://www.branbook.cc",
+    "require": {
+        "php": ">=5.5",
+        "yiisoft/yii2": "*",
+        "yiisoft/yii2-bootstrap": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "yongtiger\\user\\": "src"
+        }
+    }
+}
