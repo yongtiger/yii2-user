@@ -1,6 +1,6 @@
 # Development roadmap
 
-## Version 0.3.1 (User Basic: captcha)
+## Version 0.3.2 (User Basic: captcha)
 
 Features of this version:
 
