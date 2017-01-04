@@ -67,11 +67,13 @@ to the require section of your composer.json.
             'class' => yii\filters\AccessControl::className(),
             'rules' => [
                 [
-                    'controllers' => ['admin/security'],    ///add your backend controllers!
+                    'controllers' => ['admin/security'],    ///only allow controllers ('admin/security', etc.)
                     'allow' => true,
                 ],
             ],
         ],
+        'viewPath' => '@yongtiger/user/../demo/admin/views/',   ///use your own backend views (login)
+        'layout' => false,  ///remove out layout in backend login
     ],
     // ...
 ],
@@ -86,8 +88,9 @@ to the require section of your composer.json.
 ]
 ```
 
-> Note: Using behaviors of backend module, prohibit controllers of the module (such as user) which can be used in both frontend and backend. 
-> You can add your own backend module/controllers, otherwise it will not be accessed in the background.
+> Note: Using behaviors of backend module, prohibit controllers of the module (such as user) which can be used in both frontend and backend. You can add your own backend module/controllers, otherwise it will not be accessed in the background.
+
+> Note: Use your own backend views in practical application!
 
 
 ### Internationalization setup (optional)
