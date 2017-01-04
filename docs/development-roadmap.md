@@ -1,6 +1,6 @@
 # Development roadmap
 
-## Version 0.3.1 (User Basic: mail)
+## Version 0.3.1 (User Basic: repassword)
 
 Features of this version:
 

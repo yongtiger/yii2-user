@@ -1,6 +1,6 @@
-# Yii2-user [v0.3.1] User Basic: mail
+# Yii2-user [v0.3.1] User Basic: repassword
 
-Move mailer layout & views into User module.
+Repassword.
 
 [![Latest Stable Version](https://poser.pugx.org/yongtiger/yii2-user/v/stable)](https://packagist.org/packages/yongtiger/yii2-user)
 [![Total Downloads](https://poser.pugx.org/yongtiger/yii2-user/downloads)](https://packagist.org/packages/yongtiger/yii2-user) 
@@ -10,7 +10,6 @@ Move mailer layout & views into User module.
 
 ## Features
 
-* moving mailer layout & views into User module.
 * repassword.
 
 
