@@ -11,14 +11,14 @@ Features of this version:
 
 Features of this version:
 
-* repassword
+* using `repassword` in signup, resetPassword
 
 
 ## Version 0.3.0 (User Basic: mail)
 
 Features of this version:
 
-* move mailer layout & views into User module
+* move `mailer` layout & views into `user` module
 
 
 ## Version 0.2.0 (User Basic: backend)
@@ -26,7 +26,7 @@ Features of this version:
 Features of this version:
 
 * both frontend & backend
-* using behaviors of backend module, prohibit controllers of the module (such as user) which can be used in both frontend and backend. You can add your own backend module/controllers, otherwise it will not be accessed in the background
+* using behaviors of backend module, prohibit controllers of the module (such as `user`) which can be used in both frontend and backend. You can add your own backend module/controllers, otherwise it will not be accessed in the background
 * remove out layout in backend login
 
 
@@ -34,5 +34,5 @@ Features of this version:
 
 Features of this version:
 
-* user Module directly from Yii2 Advanced Template
-* internationalization with i18n
+* `user` module directly from `Yii2 Advanced Template`
+* internationalization with `i18n`
