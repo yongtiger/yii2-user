@@ -1,6 +1,6 @@
 # Yii2-user [v0.3.2] User Basic: captcha
 
-The most basic User Module.
+The most basic `user` module.
 
 [![Latest Stable Version](https://poser.pugx.org/yongtiger/yii2-user/v/stable)](https://packagist.org/packages/yongtiger/yii2-user)
 [![Total Downloads](https://poser.pugx.org/yongtiger/yii2-user/downloads)](https://packagist.org/packages/yongtiger/yii2-user) 
@@ -12,7 +12,7 @@ The most basic User Module.
 * `User` module directly from Yii2 Advanced Template
 * internationalization with i18n
 * using `User` module both frontend & backend
-* mailer layout & views in `User` module
+* `mailer` layout & views in `user` module
 * using `repassword` in signup, resetPassword
 * using `captcha` in signup, login, requestPasswordResetToken, resetPassword and backend login
 
@@ -120,7 +120,7 @@ to the require section of your composer.json.
 ]
 ```
 
-> Note: Using behaviors of backend module, prohibit controllers of the module (such as user) which can be used in both frontend and backend. You can add your own backend module/controllers, otherwise it will not be accessed in the background.
+> Note: Using behaviors of backend module, prohibit controllers of the module (such as `user`) which can be used in both frontend and backend. You can add your own backend module/controllers, otherwise it will not be accessed in the background.
 
 > Note: Use your own backend views in practical application!
 
