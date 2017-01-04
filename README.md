@@ -1,4 +1,4 @@
-# Yii2-user [v0.2.0] User Basic：backend
+# Yii2-user [v0.2.0] User Basic: backend
 
 This version can be used for both frontend & backend.
 
@@ -67,7 +67,7 @@ to the require section of your composer.json.
             'class' => yii\filters\AccessControl::className(),
             'rules' => [
                 [
-                    'controllers' => ['admin/security'],
+                    'controllers' => ['admin/security'],    ///add your backend controllers!
                     'allow' => true,
                 ],
             ],
@@ -85,6 +85,9 @@ to the require section of your composer.json.
     // ...
 ]
 ```
+
+> Note: Using behaviors of backend module, prohibit controllers of the module (such as user) which can be used in both frontend and backend. 
+> You can add your own backend module/controllers, otherwise it will not be accessed in the background.
 
 
 ### Internationalization setup (optional)
