@@ -23,6 +23,7 @@ use yongtiger\user\Module;
 class ResetPasswordForm extends Model
 {
     public $password;
+    public $repassword; ///[Yii2 uesr:repassword]
 
     /**
      * @var \yongtiger\user\models\User
@@ -55,8 +56,12 @@ class ResetPasswordForm extends Model
     public function rules()
     {
         return [
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+
+            ///[Yii2 uesr:repassword]
+            [['password','repassword'],'required'],
+            [['password','repassword'], 'string', 'min' => 6],
+            ['repassword','compare','compareAttribute'=>'password','message' => Module::t('user', 'The two passwords do not match.')],
+
         ];
     }
 
@@ -67,6 +72,7 @@ class ResetPasswordForm extends Model
     {
         return [
             'password' => Module::t('user', 'Password'),
+            'repassword' => Module::t('user', 'Repeat Password'),    ///[Yii2 uesr:repassword]
         ];
     }
 

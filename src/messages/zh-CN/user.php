@@ -39,6 +39,8 @@ return [
 	'Username' => '用户名',
 	'Email' => '邮箱',
 	'Password' => '密码',
+	'Repeat Password' => '再次输入密码',	///[Yii2 uesr:repassword]
+	'The two passwords do not match.' => '两次输入的密码不一致。',	///[Yii2 uesr:repassword]
 	'This username has already been taken.' => '用户名已经被占用。',
 	'This email address has already been taken.' => '邮箱已经被占用。',
 
@@ -48,6 +50,8 @@ return [
 
 	///\vendor\yongtiger\yii2-user\src\models\ResetPasswordForm.php
 	'Password' => '密码',
+	'Repeat Password' => '再次输入密码',	///[Yii2 uesr:repassword]
+	'The two passwords do not match.' => '两次输入的密码不一致。',	///[Yii2 uesr:repassword]
 	'Password reset token cannot be blank.' => '重置密码的令牌不能为空。',
 	'Wrong password reset token.' => '重置密码的令牌不正确。',
 

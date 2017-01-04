@@ -33,6 +33,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'password')->passwordInput(['autofocus' => true]) ?>
 
+                <!--///[Yii2 uesr:repassword]-->
+                <?= $form->field($model,'repassword')->passwordInput() ?>
+
                 <div class="form-group">
                     <?= Html::submitButton(Module::t('user', 'Save'), ['class' => 'btn btn-primary']) ?>
                 </div>

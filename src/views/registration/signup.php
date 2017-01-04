@@ -36,6 +36,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
 
+                <!--///[Yii2 uesr:repassword]-->
+                <?= $form->field($model,'repassword')->passwordInput() ?>
+
                 <div class="form-group">
                     <?= Html::submitButton(Module::t('user', 'Signup'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>

@@ -1,4 +1,4 @@
-# Yii2-user [v0.3.0] User Basic: mail
+# Yii2-user [v0.3.1] User Basic: mail
 
 Move mailer layout & views into User module.
 
@@ -10,7 +10,8 @@ Move mailer layout & views into User module.
 
 ## Features
 
-
+* moving mailer layout & views into User module.
+* repassword.
 
 
 ## Dependences
