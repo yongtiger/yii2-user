@@ -36,6 +36,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 <!--///[Yii2 uesr:repassword]-->
                 <?= $form->field($model,'repassword')->passwordInput() ?>
 
+                <!--///[Yii2 uesr:verifycode]-->
+                <?= $form->field($model, 'verifyCode')->widget(\yii\captcha\Captcha::className(), [
+                    'captchaAction' => 'recovery/captcha',  ///default is 'site/captcha'
+                    'imageOptions'=>['alt'=>Module::t('user', 'Verification Code'), 'title'=>Module::t('user', 'Click to change another verification code.')],
+                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+                ]) ?>
+
                 <div class="form-group">
                     <?= Html::submitButton(Module::t('user', 'Save'), ['class' => 'btn btn-primary']) ?>
                 </div>

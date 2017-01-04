@@ -41,6 +41,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= Module::t('user', 'If you forgot your password you can {reset it}.', ['reset it' => Html::a(Module::t('user', 'reset it'), ['recovery/request-password-reset'])]) ?>
                 </div>
 
+                <!--///[Yii2 uesr:verifycode]-->
+                <?= $form->field($model, 'verifyCode')->widget(\yii\captcha\Captcha::className(), [
+                    'captchaAction' => 'registration/captcha',  ///default is 'site/captcha'
+                    'imageOptions'=>['alt'=>Module::t('user', 'Verification Code'), 'title'=>Module::t('user', 'Click to change another verification code.')],
+                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+                ]) ?>
+
                 <div class="form-group">
                     <?= Html::submitButton(Module::t('user', 'Login'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 </div>

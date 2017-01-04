@@ -24,6 +24,7 @@ class ResetPasswordForm extends Model
 {
     public $password;
     public $repassword; ///[Yii2 uesr:repassword]
+    public $verifyCode; ///[Yii2 uesr:verifycode]
 
     /**
      * @var \yongtiger\user\models\User
@@ -62,6 +63,9 @@ class ResetPasswordForm extends Model
             [['password','repassword'], 'string', 'min' => 6],
             ['repassword','compare','compareAttribute'=>'password','message' => Module::t('user', 'The two passwords do not match.')],
 
+            ///[Yii2 uesr:verifycode]
+            ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
+            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/registration/captcha'], 
         ];
     }
 
@@ -73,6 +77,7 @@ class ResetPasswordForm extends Model
         return [
             'password' => Module::t('user', 'Password'),
             'repassword' => Module::t('user', 'Repeat Password'),    ///[Yii2 uesr:repassword]
+            'verifyCode' => Module::t('user', 'Verification Code'),  ///[Yii2 uesr:verifycode]
         ];
     }
 

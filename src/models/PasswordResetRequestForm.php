@@ -23,7 +23,7 @@ use yongtiger\user\Module;
 class PasswordResetRequestForm extends Model
 {
     public $email;
-
+    public $verifyCode; ///[Yii2 uesr:verifycode]
 
     /**
      * @inheritdoc
@@ -39,6 +39,10 @@ class PasswordResetRequestForm extends Model
                 'filter' => ['status' => User::STATUS_ACTIVE],
                 'message' => Module::t('user', 'There is no user with such email.')
             ],
+
+            ///[Yii2 uesr:verifycode]
+            ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
+            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/registration/captcha'], 
         ];
     }
 
@@ -49,6 +53,7 @@ class PasswordResetRequestForm extends Model
     {
         return [
             'email' => Module::t('user', 'Email'),
+            'verifyCode' => Module::t('user', 'Verification Code'),  ///[Yii2 uesr:verifycode]
         ];
     }
 

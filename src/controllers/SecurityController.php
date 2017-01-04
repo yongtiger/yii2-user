@@ -61,9 +61,18 @@ class SecurityController extends Controller
     public function actions()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
+
+            ///[Yii2 uesr:verifycode]
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'height' => 36, ///need to be adjusted according to the specific verification code bit
+                'width' => 96,
+                'maxLength' =>6,    ///random display minLength-maxLength bits of verification code
+                'minLength' =>4,
+                'testLimit'=>5,
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,    ///automatically display a fixed test code, easy to copy the verification code
             ],
+
         ];
     }
 

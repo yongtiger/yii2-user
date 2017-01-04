@@ -24,6 +24,7 @@ class LoginForm extends Model
     public $username;
     public $password;
     public $rememberMe = true;
+    public $verifyCode; ///[Yii2 uesr:verifycode]
     
     /**
      * @var \yongtiger\user\models\User
@@ -43,6 +44,10 @@ class LoginForm extends Model
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
+
+            ///[Yii2 uesr:verifycode]
+            ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
+            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/registration/captcha'], 
         ];
     }
 
@@ -55,6 +60,7 @@ class LoginForm extends Model
             'username' => Module::t('user', 'Username'),
             'password' => Module::t('user', 'Password'),
             'rememberMe' => Module::t('user', 'Remember me'),
+            'verifyCode' => Module::t('user', 'Verification Code'),  ///[Yii2 uesr:verifycode]
         ];
     }
 

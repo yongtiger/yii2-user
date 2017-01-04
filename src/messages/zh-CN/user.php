@@ -43,6 +43,7 @@ return [
 	'The two passwords do not match.' => '两次输入的密码不一致。',	///[Yii2 uesr:repassword]
 	'This username has already been taken.' => '用户名已经被占用。',
 	'This email address has already been taken.' => '邮箱已经被占用。',
+	'The username only contains letters ...' => '用户名由字母、汉字、数字及下划线组成，且不能以数字和下划线开头。',	///[Yii2 uesr:username]
 
 	///\vendor\yongtiger\yii2-user\src\models\PasswordResetRequestForm.php
 	'There is no user with such email.' => '没有用户使用该邮箱。',
@@ -65,6 +66,8 @@ return [
 	///\vendor\yongtiger\yii2-user\src\views\security\signup.php
 	'Signup' => '注册',
 	'Please fill out the following fields to signup:' => '请填写下列内容：',
+	'Verification Code' => '验证码',	///[Yii2 uesr: verifycode]
+	'Click to change another verification code.' => '点击切换验证码',	///[Yii2 uesr: verifycode]
 
 	///\vendor\yongtiger\yii2-user\src\views\security\requestPasswordResetToken.php
 	'Request password reset' => '请求密码重置',

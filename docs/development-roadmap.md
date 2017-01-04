@@ -1,5 +1,12 @@
 # Development roadmap
 
+## Version 0.3.1 (User Basic: captcha)
+
+Features of this version:
+
+* using `captcha` in signup, login, requestPasswordResetToken, resetPassword and backend login
+
+
 ## Version 0.3.1 (User Basic: repassword)
 
 Features of this version:

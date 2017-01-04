@@ -23,4 +23,6 @@ return [
 	///\vendor\yongtiger\yii2-user\src\controllers\SecurityController.php
 	'Sorry, we are unable to reset password ...' => 'Sorry, we are unable to reset password for the provided email address.',
 
+	///\vendor\yongtiger\yii2-user\src\models\SignupForm.php
+	'The username only contains letters ...' => 'The username only contains letters, Chinese characters, Numbers, underscores, and cannot begin with Numbers and underscore.',	///[Yii2 uesr:username]
 ];
