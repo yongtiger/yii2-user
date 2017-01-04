@@ -1,8 +1,6 @@
-# Yii2-user [v0.1.0] User Basic：Module & i18n
+# Yii2-user [v0.2.0] User Basic：backend
 
-The most basic User Module.
-
-** Note: This version can only be used for the frontend! **
+This version can be used for both frontend & backend.
 
 [![Latest Stable Version](https://poser.pugx.org/yongtiger/yii2-user/v/stable)](https://packagist.org/packages/yongtiger/yii2-user)
 [![Total Downloads](https://poser.pugx.org/yongtiger/yii2-user/downloads)](https://packagist.org/packages/yongtiger/yii2-user) 
@@ -12,8 +10,7 @@ The most basic User Module.
 
 ## Features
 
-* User Module directly from Yii2 Advanced Template
-* Internationalization with i18n
+* both frontend & backend
 
 
 ## Dependences
@@ -42,7 +39,7 @@ to the require section of your composer.json.
 
 ## Configuration
 
-### \common\config\main.php
+### \frontend\config\main.php
 ```php
 'modules' => [
     'user' => [
@@ -50,16 +47,40 @@ to the require section of your composer.json.
     ],
     // ...
 ],
-```
-
-
-### \frontend\config\main.php
-```php
 'components' => [
     'user' => [
         'identityClass' => 'yongtiger\user\models\User',
         'enableAutoLogin' => true,
         'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+    ],
+    // ...
+]
+```
+
+
+### \backend\config\main.php
+```php
+'modules' => [
+    'admin' => [
+        'class' => 'yongtiger\user\Module',
+        'as access' => [
+            'class' => yii\filters\AccessControl::className(),
+            'rules' => [
+                [
+                    'controllers' => ['admin/security'],
+                    'allow' => true,
+                ],
+            ],
+        ],
+    ],
+    // ...
+],
+'components' => [
+    'user' => [
+        'identityClass' => 'yongtiger\user\models\User',
+        'enableAutoLogin' => true,
+        'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+        'loginUrl' => ['admin/security/login'],
     ],
     // ...
 ]
@@ -101,15 +122,23 @@ return [
 ```
 
 
-## Usage
+## Usage in frontend
 ```php
 /user
 /user/security
 /user/security/login
 /user/security/logout
-/user/security/signup
-/user/security/request-password-reset
-/user/security/reset-password
+/user/registration/signup
+/user/recovery/request-password-reset
+/user/recovery/reset-password
+```
+
+## Usage in backend
+```php
+/admin
+/admin/security
+/admin/security/login
+/admin/security/logout
 ```
 
 
@@ -122,8 +151,6 @@ return [
 
 
 ## Todo
-
-* Backend support： This version can only be used for the **frontend**!
 
 
 ## [Development roadmap](docs/development-roadmap.md)

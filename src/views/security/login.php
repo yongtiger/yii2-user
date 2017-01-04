@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
                 <div style="color:#999;margin:1em 0">
-                    <?= Module::t('user', 'If you forgot your password you can {reset it}.', ['reset it' => Html::a(Module::t('user', 'reset it'), ['security/request-password-reset'])]) ?>
+                    <?= Module::t('user', 'If you forgot your password you can {reset it}.', ['reset it' => Html::a(Module::t('user', 'reset it'), ['recovery/request-password-reset'])]) ?>
                 </div>
 
                 <div class="form-group">
