@@ -72,4 +72,10 @@ return [
 	'Please choose your new password:' => '请选择您的新密码：',
 	'Save' => '保存',
 
+
+	///\vendor\yongtiger\yii2-user\src\mail\passwordResetToken-html.php
+	///\vendor\yongtiger\yii2-user\src\mail\passwordResetToken-text.php
+	'Hello ' => '您好 ',
+	'Follow the link below to reset your password:' => '请点击下面的链接重置密码：',
+
 ];

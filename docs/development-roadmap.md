@@ -1,5 +1,12 @@
 # Development roadmap
 
+## Version 0.3.0 (User Basic: mail)
+
+Features of this version:
+
+* Move mailer layout & views into User module.
+
+
 ## Version 0.2.0 (User Basic: backend)
 
 Features of this version:
