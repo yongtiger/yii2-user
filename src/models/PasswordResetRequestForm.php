@@ -42,7 +42,7 @@ class PasswordResetRequestForm extends Model
 
             ///[Yii2 uesr:verifycode]
             ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
-            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/registration/captcha'], 
+            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/recovery/captcha'], 
         ];
     }
 

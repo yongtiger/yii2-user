@@ -40,8 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model,'repassword')->passwordInput() ?>
 
                 <!--///[Yii2 uesr:verifycode]-->
+                <!--///captcha in module: /user/security/captcha-->
                 <?= $form->field($model, 'verifyCode')->widget(\yii\captcha\Captcha::className(), [
-                    'captchaAction' => 'registration/captcha',  ///default is 'site/captcha'
+                    'captchaAction' => '/' . Yii::$app->controller->module->id . '/registration/captcha',  ///default is 'site/captcha'
                     'imageOptions'=>['alt'=>Module::t('user', 'Verification Code'), 'title'=>Module::t('user', 'Click to change another verification code.')],
                     'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                 ]) ?>

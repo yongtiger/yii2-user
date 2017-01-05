@@ -1,4 +1,4 @@
-# Yii2-user [v0.3.2] User Basic: captcha
+# Yii2-user [v0.3.3] User Basic: captcha (fix: captchain module)
 
 The most basic `user` module.
 
