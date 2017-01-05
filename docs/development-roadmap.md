@@ -1,6 +1,6 @@
 # Development roadmap
 
-## Version 0.4.0 (User Basic: Ajax validation)
+## Version 0.3.4 (User Basic: Ajax validation)
 
 Features of this version:
 

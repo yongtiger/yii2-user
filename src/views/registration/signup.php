@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = ActiveForm::begin(['id' => 'form-signup',
 
                 ///[Yii2 uesr:Ajax validation]
-                'enableAjaxValidation'=>true,           ///enable Ajax validation
+                // 'enableAjaxValidation'=>true,           ///enable Ajax validation
                 // 'enableClientValidation'=>false,        ///disable client validation
                 // 'validateOnBlur'=>false,                ///disable validate on blur
 

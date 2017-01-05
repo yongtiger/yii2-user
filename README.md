@@ -1,4 +1,4 @@
-# Yii2-user [v0.4.0] User Basic: Ajax validation
+# Yii2-user [v0.3.4] User Basic: Ajax validation
 
 The most basic `user` module.
 
@@ -20,7 +20,7 @@ The most basic `user` module.
 
 ## Dependences
 
-* [Yii2](https://github.com/yiisoft/yii2)
+* [Yii2 Advanced Template](https://github.com/yiisoft/yii2-app-advanced)
 
 
 ## Installation   
@@ -181,6 +181,10 @@ return [
 /admin/security/login
 /admin/security/logout
 ```
+
+## Notes
+
+- CaptchaValidator should be used together with yii\captcha\CaptchaAction. @see (http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html)
 
 
 ## Documents

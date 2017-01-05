@@ -60,6 +60,8 @@ class SignupForm extends Model
 
             ///[Yii2 uesr:verifycode]
             ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
+            ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
+            ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
             ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/registration/captcha'],  
         ];
     }
