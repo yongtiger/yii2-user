@@ -88,7 +88,16 @@ class SecurityController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
+        $load = $model->load(Yii::$app->request->post());
+
+        ///[Yii2 uesr:Ajax validation]
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return \yii\widgets\ActiveForm::validate($model);
+        }
+
+        if ($load && $model->login()) {
             return $this->goBack();
         } else {
             return $this->render('login', [

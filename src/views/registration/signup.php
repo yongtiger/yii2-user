@@ -28,7 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+            <?php $form = ActiveForm::begin(['id' => 'form-signup',
+
+                ///[Yii2 uesr:Ajax validation]
+                'enableAjaxValidation'=>true,           ///enable Ajax validation
+                // 'enableClientValidation'=>false,        ///disable client validation
+                // 'validateOnBlur'=>false,                ///disable validate on blur
+
+            ]); ?>
 
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 

@@ -39,7 +39,7 @@ class SignupForm extends Model
             ['username', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This username has already been taken.')],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
-            ///[yii2-brainbase_v0.0.4_f0.0.3_signup_username]注册页面：用户名验证
+            ///[Yii2 uesr:username]注册页面：用户名验证
             //汉字的unicode范围是：0x4E00~0x9FA5，其实这个范围还包括了中，日，韩的字符
             //  u 表示按unicode(utf-8)匹配（主要针对多字节比如汉字）
             //  \x忽略空白

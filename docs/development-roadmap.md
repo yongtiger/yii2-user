@@ -1,5 +1,12 @@
 # Development roadmap
 
+## Version 0.4.0 (User Basic: Ajax validation)
+
+Features of this version:
+
+* ajax validation in signup, login, requestPasswordResetToken
+
+
 ## Version 0.3.3 (User Basic: captcha)
 
 Features of this version:

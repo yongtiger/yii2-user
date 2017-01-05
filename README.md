@@ -1,4 +1,4 @@
-# Yii2-user [v0.3.3] User Basic: captcha (fix: captchain module)
+# Yii2-user [v0.4.0] User Basic: Ajax validation
 
 The most basic `user` module.
 
@@ -15,6 +15,7 @@ The most basic `user` module.
 * `mailer` layout & views in `user` module
 * using `repassword` in signup, resetPassword
 * using `captcha` in signup, login, requestPasswordResetToken, resetPassword and backend login
+* ajax validation in signup, login, requestPasswordResetToken
 
 
 ## Dependences

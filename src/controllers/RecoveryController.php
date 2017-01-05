@@ -59,7 +59,16 @@ class RecoveryController extends Controller
     public function actionRequestPasswordReset()
     {
         $model = new PasswordResetRequestForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+        $load = $model->load(Yii::$app->request->post());
+
+        ///[Yii2 uesr:Ajax validation]
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return \yii\widgets\ActiveForm::validate($model);
+        }
+
+        if ($load && $model->validate()) {
             if ($model->sendEmail()) {
                 Yii::$app->session->setFlash('success', Module::t('user', 'Check your email for further instructions.'));
 

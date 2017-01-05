@@ -29,7 +29,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'request-password-reset-form']); ?>
+            <?php $form = ActiveForm::begin(['id' => 'request-password-reset-form',
+
+                ///[Yii2 uesr:Ajax validation]
+                'enableAjaxValidation'=>true,           ///enable Ajax validation
+                // 'enableClientValidation'=>false,        ///disable client validation
+                // 'validateOnBlur'=>false,                ///disable validate on blur
+
+            ]); ?>
 
                 <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
