@@ -32,9 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = ActiveForm::begin(['id' => 'login-form',
 
                 ///[Yii2 uesr:Ajax validation]
-                // 'enableAjaxValidation'=>true,           ///enable Ajax validation
                 // 'enableClientValidation'=>false,        ///disable client validation
+                'enableAjaxValidation'=>true,           ///enable Ajax validation
                 // 'validateOnBlur'=>false,                ///disable validate on blur
+                'validateOnSubmit' =>false,             ///disable validate on submit while using captcha & ajax!!!
 
             ]); ?>
 
@@ -49,8 +50,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
 
                 <!--///[Yii2 uesr:verifycode]-->
-                <!--///captcha in module: /user/security/captcha-->
-                <?= $form->field($model, 'verifyCode')->widget(\yii\captcha\Captcha::className(), [
+                <!--///captcha in module: /user/security/captcha.-->
+                <?= $form->field($model, 'verifyCode', [
+
+                    'enableClientValidation' => false,  ///always disable client validation in captcha! Otherwise 'testLimit' of captcha will be invalid, and thus lead to attack. Also 'validateOnBlur' will be set false.
+                    'enableAjaxValidation'=>false,     ///always disable Ajax validation. Note that once CAPTCHA validation succeeds, a new CAPTCHA will be generated automatically. @see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
+                    
+                    ///also need to disable validate on ActiveForm submit while using captcha & ajax!!!
+                    
+                ])->widget(\yii\captcha\Captcha::className(), [
                     'captchaAction' => '/' . Yii::$app->controller->module->id . '/security/captcha',  ///default is 'site/captcha'
                     'imageOptions'=>['alt'=>Module::t('user', 'Verification Code'), 'title'=>Module::t('user', 'Click to change another verification code.')],
                     'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',

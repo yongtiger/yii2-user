@@ -66,7 +66,7 @@ class RegistrationController extends Controller
                 'width' => 96,      ///The width of the generated CAPTCHA image. Defaults to 120.
                 'maxLength' =>6,    ///The maximum length for randomly generated word. Defaults to 7.
                 'minLength' =>4,    ///The minimum length for randomly generated word. Defaults to 6.
-                'testLimit'=>5,     ///How many times should the same CAPTCHA be displayed. Defaults to 3. A value less than or equal to 0 means the test is unlimited (available since version 1.1.2).
+                'testLimit'=>5,     ///How many times should the same CAPTCHA be displayed. Defaults to 3. A value less than or equal to 0 means the test is unlimited (available since version 1.1.2). Note that when 'enableClientValidation' is true (default), it will be invalid! 
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,    ///The fixed verification code. When this property is set, getVerifyCode() will always return the value of this property. This is mainly used in automated tests where we want to be able to reproduce the same verification code each time we run the tests. If not set, it means the verification code will be randomly generated.
             ],
 
@@ -85,7 +85,7 @@ class RegistrationController extends Controller
         $load = $model->load(Yii::$app->request->post());
 
         ///[Yii2 uesr:Ajax validation]
-        ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
+        ///Note: CAPTCHA validation should not be used in AJAX validation mode.
         ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
