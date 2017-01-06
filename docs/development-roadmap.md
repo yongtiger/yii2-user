@@ -1,5 +1,12 @@
 # Development roadmap
 
+## Version 0.3.4 (User Basic: Ajax validation in Captcha)
+
+Features of this version:
+
+* ajax validation in Captcha
+
+
 ## Version 0.3.4 (User Basic: Ajax validation)
 
 Features of this version:

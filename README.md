@@ -1,4 +1,4 @@
-# Yii2-user [v0.3.4] User Basic: Ajax validation
+# Yii2-user [v0.3.5] User Basic: Ajax validation in Captcha
 
 The most basic `user` module.
 
