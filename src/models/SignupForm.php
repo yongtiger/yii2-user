@@ -57,12 +57,12 @@ class SignupForm extends Model
             ['username', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This username has already been taken.')],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
-            ///[Yii2 uesr:username]注册页面：用户名验证
-            //汉字的unicode范围是：0x4E00~0x9FA5，其实这个范围还包括了中，日，韩的字符
-            //  u 表示按unicode(utf-8)匹配（主要针对多字节比如汉字）
-            //  \x忽略空白
-            //[(\x{4E00}-\x{9FA5})a-zA-Z]+表示以汉字或者字母开头，出现1-n次
-            //[(\x{4E00}-\x{9FA5})\w]*表示以汉字字母数字下划线组成，出现0-n次
+            ///[Yii2 uesr:username]User name verification
+            //The unicode range of Chinese characters is: 0x4E00~0x9FA5. This range also includes Chinese, Japanese and Korean characters
+            //  u   Indicates to match by unicode (utf-8), mainly for multi-byte characters such as Chinese characters
+            //  \x  Ignore whitespace
+            //[(\x{4E00}-\x{9FA5})a-zA-Z]+  The character starts with a Chinese character or letter and appears 1 to n times
+            //[(\x{4E00}-\x{9FA5})\w]*      Chinese characters underlined alphabet, there 0-n times
             ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-zA-Z]+[(\x{4E00}-\x{9FA5})\w]*$/u', 'message' => Module::t('user', 'The username only contains letters ...')],
 
             ['email', 'trim'],

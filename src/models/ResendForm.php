@@ -80,14 +80,6 @@ class ResendForm extends Model
     public function resend($runValidation = true)
     {
         if ($runValidation && !$this->validate()) {
-
-            ///遍历输出errors二维数组 @see http://www.yiiframework.com/doc-2.0/yii-base-model.html#$errors-detail
-            foreach ($this->errors as $attribute => $errors) {
-                foreach ($errors as $error) {
-                    Yii::$app->session->setFlash('danger', $error);
-                }
-            }
-
             return false;
         }
 

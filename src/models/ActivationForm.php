@@ -88,7 +88,8 @@ class ActivationForm extends Model
     {
         if ($runValidation && !$this->validate()) {
 
-            ///遍历输出errors二维数组 @see http://www.yiiframework.com/doc-2.0/yii-base-model.html#$errors-detail
+            ///Because activation is not used ActiveForm, so only output error by setFlash。
+            ///Traversing the two-dimensional array of errors. @see http://www.yiiframework.com/doc-2.0/yii-base-model.html#$errors-detail
             foreach ($this->errors as $attribute => $errors) {
                 foreach ($errors as $error) {
                     Yii::$app->session->setFlash('danger', $error);
