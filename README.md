@@ -187,7 +187,7 @@ return [
 
 ## Notes
 
-- CaptchaValidator should be used together with yii\captcha\CaptchaAction. @see (http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html)
+- CAPTCHA validation should not be used in AJAX validation mode. @see (http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html)
 
 
 ## Documents
