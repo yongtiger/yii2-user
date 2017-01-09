@@ -15,6 +15,8 @@ namespace yongtiger\user;
 use Yii;
 
 /**
+ * Class Module
+ *
  * @package yongtiger\user
  */
 class Module extends \yii\base\Module
@@ -36,6 +38,16 @@ class Module extends \yii\base\Module
     public $controllerNamespace = 'yongtiger\user\controllers';
 
     /**
+     * @var bool Whether user has to activate his account.
+     */
+    public $enableActivation = true;
+
+    /**
+     * @var int The time before an activation key becomes invalid.
+     */
+    public $activateWithin = 86400; // 24 hours, if `0` means never expired.
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -45,7 +57,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Registers the translation files
+     * Registers the translation files.
      */
     protected function registerTranslations()
     {
@@ -64,9 +76,9 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Translates a message. This is just a wrapper of Yii::t()
+     * Translates a message. This is just a wrapper of Yii::t().
      *
-     * @see Yii::t()
+     * @see http://www.yiiframework.com/doc-2.0/yii-baseyii.html#t()-detail
      *
      * @param $category
      * @param $message

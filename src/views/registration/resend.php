@@ -13,25 +13,25 @@
 /**
  * @var $this yii\base\View
  * @var $form yii\widgets\ActiveForm
- * @var $model yongtiger\user\models\LoginForm
+ * @var $model yongtiger\user\models\ResendForm
  */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yongtiger\user\Module;
 
-$this->title = Module::t('user', 'Login');
+$this->title = Module::t('user', 'Resend e-mail activation');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="security-login">
+<div class="registration-resend">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p><?= Module::t('user', 'Please fill out the following fields to login:') ?></p>
+    <p><?= Module::t('user', 'Please fill out your registration email. A link to activation will be sent there.') ?></p>
 
     <div class="row">
         <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form',
+            <?php $form = ActiveForm::begin(['id' => 'resend-form',
 
                 ///[Yii2 uesr:Ajax validation]
                 // 'enableClientValidation'=>false,        ///disable client validation
@@ -41,18 +41,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ]); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-
-                <?= $form->field($model, 'password')->passwordInput() ?>
-
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
-
-                <div style="color:#999;margin:1em 0">
-                    <?= Module::t('user', 'If you forgot your password you can {reset it}.', ['reset it' => Html::a(Module::t('user', 'reset it'), ['recovery/request-password-reset'])]) ?>
-                </div>
+                <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
                 <!--///[Yii2 uesr:verifycode]-->
-                <!--///captcha in module: /user/security/captcha.-->
+                <!--///captcha in module: /user/security/captcha-->
                 <?= $form->field($model, 'verifyCode', [
 
                     'enableClientValidation' => false,  ///always disable client validation in captcha! Otherwise 'testLimit' of captcha will be invalid, and thus lead to attack. Also 'validateOnBlur' will be set false.
@@ -61,13 +53,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     ///also need to disable validate on ActiveForm submit while using captcha & ajax!!!
                     
                 ])->widget(\yii\captcha\Captcha::className(), [
-                    'captchaAction' => '/' . Yii::$app->controller->module->id . '/security/captcha',  ///default is 'site/captcha'
+                    'captchaAction' => '/' . Yii::$app->controller->module->id . '/recovery/captcha',  ///default is 'site/captcha'
                     'imageOptions'=>['alt'=>Module::t('user', 'Verification Code'), 'title'=>Module::t('user', 'Click to change another verification code.')],
                     'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                 ]) ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton(Module::t('user', 'Login'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    <?= Html::submitButton(Module::t('user', 'Resend'), ['class' => 'btn btn-primary']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>

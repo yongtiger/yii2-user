@@ -10,10 +10,11 @@
  * @license     http://opensource.org/licenses/MIT
  */
 
-
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\PasswordResetRequestForm */
+/**
+ * @var $this yii\web\View
+ * @var $form yii\bootstrap\ActiveForm
+ * @var $model yongtiger\user\models\PasswordResetRequestForm 
+ */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -22,14 +23,15 @@ use yongtiger\user\Module;
 $this->title = Module::t('user', 'Request password reset');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-request-password-reset">
+
+<div class="recovery-request-password-reset">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p><?= Module::t('user', 'Please fill out your email. A link to reset password will be sent there.') ?></p>
+    <p><?= Module::t('user', 'Please fill out your registration email. A link to reset password will be sent there.') ?></p>
 
     <div class="row">
         <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form',
+            <?php $form = ActiveForm::begin(['id' => 'request-password-reset-form',
 
                 ///[Yii2 uesr:Ajax validation]
                 // 'enableClientValidation'=>false,        ///disable client validation

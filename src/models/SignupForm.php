@@ -14,19 +14,37 @@ namespace yongtiger\user\models;
 
 use Yii;
 use yii\base\Model;
+use yii\base\ModelEvent;
 use yongtiger\user\models\User;
 use yongtiger\user\Module;
+use yongtiger\user\helpers\SecurityHelper;
 
 /**
- * Signup form
+ * Signup form model
+ *
+ * @package yongtiger\user\models
+ * @property string $username
+ * @property string $password
+ * @property string $repassword     ///[Yii2 uesr:repassword]
+ * @property string $verifyCode     ///[Yii2 uesr:verifycode]
  */
 class SignupForm extends Model
 {
+    ///[Yii2 uesr:activation via email:signup]signup events
+    const EVENT_BEFORE_SIGNUP = 'beforeSignup';
+    const EVENT_AFTER_SIGNUP = 'afterSignup';
+
     public $username;
     public $email;
     public $password;
     public $repassword; ///[Yii2 uesr:repassword]
     public $verifyCode; ///[Yii2 uesr:verifycode]
+
+    ///[Yii2 uesr:activation via email:signup]signup events
+    /**
+     * @var \yongtiger\user\models\User
+     */
+    private $_user;
 
     /**
      * @inheritdoc
@@ -62,7 +80,7 @@ class SignupForm extends Model
             ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
             ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
             ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/registration/captcha'],  
+            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/registration/captcha'],
         ];
     }
 
@@ -80,23 +98,141 @@ class SignupForm extends Model
         ];
     }
 
+    ///[Yii2 uesr:activation via email:signup]signup events
+    /**
+     * Finds user by [[username]]
+     *
+     * @return User|null
+     */
+    protected function getUser()
+    {
+        if ($this->_user === null) {
+            $this->_user = new User();
+            $this->_user->username = $this->username;
+            $this->_user->email = $this->email;
+            $this->_user->setPassword($this->password);
+            $this->_user->generateAuthKey();
+        }
+        return $this->_user;
+    }
+
+    ///[Yii2 uesr:activation via email:signup]
     /**
      * Signs user up.
      *
-     * @return User|null the saved model or null if saving fails
+     * @param boolean $runValidation whether to perform validation (calling [[validate()]])
+     * @return User|null|false the saved model or null if saving fails, false if validation fails
      */
-    public function signup()
+    public function signup($runValidation = true)
     {
-        if (!$this->validate()) {
-            return null;
+        if ($runValidation && !$this->validate()) {
+            return false;
         }
-        
-        $user = new User();
-        $user->username = $this->username;
-        $user->email = $this->email;
-        $user->setPassword($this->password);
-        $user->generateAuthKey();
-        
-        return $user->save() ? $user : null;
+
+        if ($this->beforeSignup()) {
+
+            // ...custom code here...
+            if ($this->getUser()->save(false)) {
+
+                $this->afterSignup();
+                return $this->getUser();
+            }else{
+                return null;
+            }
+
+        }
+        return false;
+    }
+
+    ///[Yii2 uesr:activation via email:signup]signup events
+    /**
+     * This method is called before signup.
+     *
+     * The default implementation will trigger the [[EVENT_BEFORE_SIGNUP]] event.
+     * If you override this method, make sure you call the parent implementation
+     * so that the event is triggered.
+     * You can get the user identity by $this->getUser() in your overrided method.
+     *
+     * ```php
+     * public function beforeSignup()
+     * {
+     *     if (parent::beforeSignup()) {
+     *
+     *         // ...custom code here...
+     *         $this->getUser();
+     *
+     *         return true;
+     *     } else {
+     *         return false;
+     *     }
+     * }
+     * ```
+     *
+     * @return bool whether the user should continue to signup
+     */
+    protected function beforeSignup()
+    {
+        $event = new ModelEvent();
+        $this->trigger(self::EVENT_BEFORE_SIGNUP, $event);
+
+        if ($event->isValid) {
+
+            // ...custom code here...
+            ///[Yii2 uesr:activation via email:signup]signup events
+            if (Yii::$app->getModule('user')->enableActivation) {
+                $this->getUser()->status = User::STATUS_INACTIVE;
+                $this->getUser()->activation_key = SecurityHelper::generateExpiringRandomKey(Yii::$app->getModule('user')->activateWithin);
+            }
+
+        }
+        return $event->isValid;
+    }
+
+    ///[Yii2 uesr:activation via email:signup]signup events
+    /**
+     * This method is called after the user is successfully signup.
+     *
+     * The default implementation will trigger the [[EVENT_AFTER_SIGNUP]] event.
+     * If you override this method, make sure you call the parent implementation
+     * so that the event is triggered.
+     * You can get the user identity by $this->getUser() in your overrided method.
+     *
+     * ```php
+     * public function afterSignup()
+     * {
+     *     // ...custom code here...
+     *
+     *     $this->trigger(self::EVENT_AFTER_SIGNUP, new ModelEvent());
+     * }
+     * ```
+     *
+     */
+    protected function afterSignup()
+    {
+        // ...custom code here...
+        ///[Yii2 uesr:activation via email:signup]
+        $successText = Module::t('user',
+            'Successfully registered [ {username} ].',
+            ['username' => $this->username]
+        );
+        Yii::$app->session->setFlash('success', $successText);
+
+        if (Yii::$app->getModule('user')->enableActivation) {
+            ///[Yii2 uesr:activation via email:signup]send activation email
+            Yii::$app
+                ->mailer
+                ->compose(
+                    ['html' => '@yongtiger/user/mail/activationKey-html', 'text' => '@yongtiger/user/mail/activationKey-text'],
+                    ['user' => $this->getUser()]
+                )
+                ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+                ->setTo($this->email)
+                ->setSubject(Module::t('user', 'Activation mail of the registration from ') . Yii::$app->name)
+                ->send();
+
+            Yii::$app->session->setFlash('warning', Module::t('user', 'Please check your email to activate your account.'));
+        }
+
+        $this->trigger(self::EVENT_AFTER_SIGNUP, new ModelEvent());
     }
 }

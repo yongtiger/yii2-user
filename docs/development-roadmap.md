@@ -1,31 +1,40 @@
 # Development roadmap
 
-## Version 0.3.4 (User Basic: Ajax validation in Captcha)
+## Version 0.4.0 (User Basic: Activate via Email)
 
 Features of this version:
 
-* ajax validation in Captcha
+* activation via Email
+
+
+
+## Version 0.3.5 (User Basic: Ajax validation in Captcha)
+
+Features of this version:
+
+* ajax validation in `Captcha`
+
 
 
 ## Version 0.3.4 (User Basic: Ajax validation)
 
 Features of this version:
 
-* ajax validation in signup, login, requestPasswordResetToken
+* ajax validation in `signup`, `login`, `requestPasswordResetToken`
 
 
 ## Version 0.3.3 (User Basic: captcha)
 
 Features of this version:
 
-* using `captcha` in signup, login, requestPasswordResetToken, resetPassword and backend login
+* using `captcha` in `signup`, `login`, `requestPasswordResetToken`, `resetPassword` and backend `login`
 
 
 ## Version 0.3.1 (User Basic: repassword)
 
 Features of this version:
 
-* using `repassword` in signup, resetPassword
+* using `repassword` in `signup`, `resetPassword`
 
 
 ## Version 0.3.0 (User Basic: mail)

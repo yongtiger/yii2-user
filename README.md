@@ -1,4 +1,4 @@
-# Yii2-user [v0.3.5] User Basic: Ajax validation in Captcha
+# Yii2-user [v0.4.0] User Basic: Activate via Email
 
 The most basic `user` module.
 
@@ -14,8 +14,9 @@ The most basic `user` module.
 * using `User` module both frontend & backend
 * `mailer` layout & views in `user` module
 * using `repassword` in signup, resetPassword
-* using `captcha` in signup, login, requestPasswordResetToken, resetPassword and backend login
-* ajax validation in signup, login, requestPasswordResetToken
+* using `captcha` in `signup`, `login`, `requestPasswordResetToken`, `resetPassword` and backend `login`
+* ajax validation in `signup`, `login`, `requestPasswordResetToken`
+* activation via Email
 
 
 ## Dependences
@@ -105,6 +106,8 @@ to the require section of your composer.json.
 'modules' => [
     'user' => [
         'class' => 'yongtiger\user\Module',
+        'enableActivation' => true,
+        'activateWithin' => 886400,
     ],
 ],
 

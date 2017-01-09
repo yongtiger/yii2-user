@@ -10,10 +10,11 @@
  * @license     http://opensource.org/licenses/MIT
  */
 
-
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\ResetPasswordForm */
+/**
+ * @var $this yii\web\View
+ * @var $form yii\bootstrap\ActiveForm
+ * @var $model yongtiger\user\models\ResetPasswordForm 
+ */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -22,7 +23,7 @@ use yongtiger\user\Module;
 $this->title = Module::t('user', 'Reset password');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-reset-password">
+<div class="recovery-reset-password">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p><?= Module::t('user', 'Please choose your new password:') ?></p>

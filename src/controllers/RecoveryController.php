@@ -68,6 +68,7 @@ class RecoveryController extends Controller
         $load = $model->load(Yii::$app->request->post());
 
         ///[Yii2 uesr:Ajax validation]
+        ///Note: Should be handled as soon as possible ajax!
         ///Note: CAPTCHA validation should not be used in AJAX validation mode.
         ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
         if (Yii::$app->request->isAjax) {

@@ -10,10 +10,11 @@
  * @license     http://opensource.org/licenses/MIT
  */
 
-
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \common\models\LoginForm */
+/**
+ * @var $this yii\base\View
+ * @var $form yii\widgets\ActiveForm
+ * @var $model yongtiger\user\models\LoginForm
+ */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -22,6 +23,7 @@ use yongtiger\user\Module;
 $this->title = Module::t('user', 'Login');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
 

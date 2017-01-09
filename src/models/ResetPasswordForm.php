@@ -12,13 +12,19 @@
 
 namespace yongtiger\user\models;
 
+use Yii;
 use yii\base\Model;
 use yii\base\InvalidParamException;
 use yongtiger\user\models\User;
 use yongtiger\user\Module;
 
 /**
- * Password reset form
+ * Password reset form model
+ *
+ * @package yongtiger\user\models
+ * @property string $password
+ * @property string $resetPassword  ///[Yii2 uesr:repassword]
+ * @property string $verifyCode     ///[Yii2 uesr:verifycode]
  */
 class ResetPasswordForm extends Model
 {
@@ -86,7 +92,7 @@ class ResetPasswordForm extends Model
     /**
      * Resets password.
      *
-     * @return bool if password was reset.
+     * @return bool if password was reset
      */
     public function resetPassword()
     {

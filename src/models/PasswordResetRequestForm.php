@@ -18,7 +18,12 @@ use yongtiger\user\Models\User;
 use yongtiger\user\Module;
 
 /**
- * Password reset request form
+ * Password reset request form model
+ *
+ * @package yongtiger\user\models
+ * @property string $email
+ * @property string $password
+ * @property string $verifyCode     ///[Yii2 uesr:verifycode]
  */
 class PasswordResetRequestForm extends Model
 {
@@ -66,7 +71,6 @@ class PasswordResetRequestForm extends Model
      */
     public function sendEmail()
     {
-        /* @var $user User */
         $user = User::findOne([
             'status' => User::STATUS_ACTIVE,
             'email' => $this->email,

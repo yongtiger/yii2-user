@@ -14,8 +14,13 @@ namespace yongtiger\user\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\widgets\ActiveForm;
+use yii\web\Response;
 use yongtiger\user\models\SignupForm;
 use yongtiger\user\Module;
+use yongtiger\user\models\User;
+use yongtiger\user\models\ActivationForm;
+use yongtiger\user\models\ResendForm;
 
 /**
  * Site controller
@@ -35,10 +40,10 @@ class RegistrationController extends Controller
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['signup'],
+                'only' => ['signup', 'activate', 'resend'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup', 'activate', 'resend'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -66,7 +71,7 @@ class RegistrationController extends Controller
                 'width' => 96,      ///The width of the generated CAPTCHA image. Defaults to 120.
                 'maxLength' =>6,    ///The maximum length for randomly generated word. Defaults to 7.
                 'minLength' =>4,    ///The minimum length for randomly generated word. Defaults to 6.
-                'testLimit'=>5,     ///How many times should the same CAPTCHA be displayed. Defaults to 3. A value less than or equal to 0 means the test is unlimited (available since version 1.1.2). Note that when 'enableClientValidation' is true (default), it will be invalid! 
+                'testLimit'=>5,     ///How many times should the same CAPTCHA be displayed. Defaults to 3. A value less than or equal to 0 means the test is unlimited (available since version 1.1.2). Note that when 'enableClientValidation' is true (default), it will be invalid!
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,    ///The fixed verification code. When this property is set, getVerifyCode() will always return the value of this property. This is mainly used in automated tests where we want to be able to reproduce the same verification code each time we run the tests. If not set, it means the verification code will be randomly generated.
             ],
 
@@ -74,7 +79,7 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Signs user up.
+     * Signs user up
      *
      * @return mixed
      */
@@ -85,23 +90,72 @@ class RegistrationController extends Controller
         $load = $model->load(Yii::$app->request->post());
 
         ///[Yii2 uesr:Ajax validation]
+        ///Note: Should be handled as soon as possible ajax!
         ///Note: CAPTCHA validation should not be used in AJAX validation mode.
         ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
         if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return \yii\widgets\ActiveForm::validate($model);
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
         }
 
-        if ($load && ($user = $model->signup()) !== null) {
-            if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
+        if ($load && $user = $model->signup()) {
+            if (!Yii::$app->getModule('user')->enableActivation) {
+                Yii::$app->user->login($user);
             }
+            return $this->goHome();
         }
 
         return $this->render('signup', [
             'model' => $model,
         ]);
     }
+
+    ///[Yii2 uesr:activation via email:activate]
+    /**
+     * Activate a new user
+     *
+     * @param string $key Activation key.
+     */
+    public function actionActivate($key)
+    {
+        $model = new ActivationForm(['activation_key' => $key]);
+
+        if ($user = $model->activate()) {
+            Yii::$app->user->login($user);
+        }
+
+        return $this->goHome();
+    }
+
+    ///[Yii2 uesr:activation via email:resend]
+    /**
+     * Resend email activation key
+     */
+    public function actionResend()
+    {
+        $model = new ResendForm();
+
+        $load = $model->load(Yii::$app->request->post());
+
+        ///[Yii2 uesr:Ajax validation]
+        ///Note: Should be handled as soon as possible ajax!
+        ///Note: CAPTCHA validation should not be used in AJAX validation mode.
+        ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+
+        if ($load && $model->resend()) {
+            return $this->goHome();
+        }
+
+        return $this->render(
+            'resend',
+            [
+                'model' => $model
+            ]
+        );
+    }
+
 }

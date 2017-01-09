@@ -17,6 +17,8 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yongtiger\user\helpers\SecurityHelper;
+use yongtiger\user\Module;
 
 /**
  * User model
@@ -25,6 +27,7 @@ use yii\web\IdentityInterface;
  * @property string $username
  * @property string $password_hash
  * @property string $password_reset_token
+ * @property string activation_key  ///[Yii2 uesr:activation via email:INACTIVE]
  * @property string $email
  * @property string $auth_key
  * @property integer $status
@@ -36,7 +39,7 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
-
+    const STATUS_INACTIVE = -10;  ///[Yii2 uesr:activation via email:INACTIVE]
 
     /**
      * @inheritdoc
@@ -63,7 +66,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED, self::STATUS_INACTIVE]],    ///[Yii2 uesr:activation via email:INACTIVE]
         ];
     }
 
@@ -84,7 +87,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Finds user by username
+     * Finds user by username.
      *
      * @param string $username
      * @return static|null
@@ -95,7 +98,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Finds user by password reset token
+     * Finds user by password reset token.
      *
      * @param string $token password reset token
      * @return static|null
@@ -113,7 +116,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Finds out if password reset token is valid
+     * Finds out if password reset token is valid.
      *
      * @param string $token password reset token
      * @return bool
@@ -154,7 +157,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Validates password
+     * Validates password.
      *
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
@@ -165,7 +168,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Generates password hash from password and sets it to the model
+     * Generates password hash from password and sets it to the model.
      *
      * @param string $password
      */
@@ -175,7 +178,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Generates "remember me" authentication key
+     * Generates "remember me" authentication key.
      */
     public function generateAuthKey()
     {
@@ -183,7 +186,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Generates new password reset token
+     * Generates new password reset token.
      */
     public function generatePasswordResetToken()
     {
@@ -191,10 +194,35 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Removes password reset token
+     * Removes password reset token.
      */
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
     }
+
+    ///[Yii2 uesr:activation via email:activation]
+    /**
+     * Finds model by activation key where user status is `STATUS_INACTIVE`.
+     *
+     * @param string $key
+     * @return static|null
+     */
+    public static function findByActivationKey($key)
+    {
+        return static::findOne(['activation_key' => $key, 'status' => self::STATUS_INACTIVE]);
+    }
+
+    ///[Yii2 uesr:activation via email:resend]
+    /**
+     * Find user by user email.
+     *
+     * @param string $email Email
+     * @return static|null
+     */
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email]);
+    }
+
 }

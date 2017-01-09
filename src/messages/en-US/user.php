@@ -20,9 +20,14 @@
  */
 return [
 
-	///\vendor\yongtiger\yii2-user\src\controllers\SecurityController.php
+	///\vendor\yongtiger\yii2-user\src\controllers\RecoveryController.php
 	'Sorry, we are unable to reset password ...' => 'Sorry, we are unable to reset password for the provided email address.',
+
 
 	///\vendor\yongtiger\yii2-user\src\models\SignupForm.php
 	'The username only contains letters ...' => 'The username only contains letters, Chinese characters, Numbers, underscores, and cannot begin with Numbers and underscore.',	///[Yii2 uesr:username]
+
+	///\vendor\yongtiger\yii2-user\src\models\ActivationForm.php
+	'Your Account has been successfully activated ...' => 'Your Account has been successfully activated. You can now log in using the username and password you chose during the registration.',	///[Yii2 uesr:activation via email:activation]
+
 ];

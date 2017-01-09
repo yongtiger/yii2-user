@@ -10,9 +10,11 @@
  * @license     http://opensource.org/licenses/MIT
  */
 
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\SignupForm */
+/**
+ * @var $this yii\base\View
+ * @var $form yii\widgets\ActiveForm
+ * @var $model yongtiger\user\models\SignupForm
+ */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -21,14 +23,14 @@ use yongtiger\user\Module;
 $this->title = Module::t('user', 'Signup');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-signup">
+<div class="registration-signup">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p><?= Module::t('user', 'Please fill out the following fields to signup:') ?></p>
 
     <div class="row">
         <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form',
+            <?php $form = ActiveForm::begin(['id' => 'signup-form',
 
                 ///[Yii2 uesr:Ajax validation]
                 // 'enableClientValidation'=>false,        ///disable client validation
@@ -49,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <!--///[Yii2 uesr:verifycode]-->
                 <!--///captcha in module: /user/security/captcha-->
-                <?= $form->field($model, 'verifyCode', [
+                 <?= $form->field($model, 'verifyCode', [
 
                     'enableClientValidation' => false,  ///always disable client validation in captcha! Otherwise 'testLimit' of captcha will be invalid, and thus lead to attack. Also 'validateOnBlur' will be set false.
                     'enableAjaxValidation'=>false,     ///always disable Ajax validation. Note that once CAPTCHA validation succeeds, a new CAPTCHA will be generated automatically. @see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html

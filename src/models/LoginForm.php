@@ -14,18 +14,30 @@ namespace yongtiger\user\models;
 
 use Yii;
 use yii\base\Model;
+use yii\base\ModelEvent;
+use yii\helpers\Html;
 use yongtiger\user\Module;
 
 /**
- * Login form
+ * Login form model
+ *
+ * @package yongtiger\user\models
+ * @property string $username
+ * @property string $password
+ * @property string $rememberMe
+ * @property string $verifyCode     ///[Yii2 uesr:verifycode]
  */
 class LoginForm extends Model
 {
+    ///[Yii2 uesr:activation via email:login]login events
+    const EVENT_BEFORE_LOGIN = 'beforeLogin';
+    const EVENT_AFTER_LOGIN = 'afterLogin';
+
     public $username;
     public $password;
     public $rememberMe = true;
     public $verifyCode; ///[Yii2 uesr:verifycode]
-    
+
     /**
      * @var \yongtiger\user\models\User
      */
@@ -49,7 +61,7 @@ class LoginForm extends Model
             ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
             ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
             ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/security/captcha'], 
+            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/security/captcha'],
         ];
     }
 
@@ -67,7 +79,7 @@ class LoginForm extends Model
     }
 
     /**
-     * Validates the password.
+     * Validates the password
      * This method serves as the inline validation for password.
      *
      * @param string $attribute the attribute currently being validated
@@ -84,20 +96,6 @@ class LoginForm extends Model
     }
 
     /**
-     * Logs in a user using the provided username and password.
-     *
-     * @return bool whether the user is logged in successfully
-     */
-    public function login()
-    {
-        if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Finds user by [[username]]
      *
      * @return User|null
@@ -105,9 +103,111 @@ class LoginForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = User::findByUsername($this->username);
+
+            ///[Yii2 uesr:activation via email:INACTIVE]
+            ///@see http://www.yiiframework.com/doc-2.0/guide-security-authentication.html#using-user
+            $this->_user = User::findOne(['username' => $this->username, 'status' => [User::STATUS_ACTIVE, User::STATUS_INACTIVE]]);
+
         }
 
         return $this->_user;
     }
+
+    /**
+     * Logs in a user using the provided username and password
+     *
+     * @return bool whether the user is logged in successfully
+     */
+    public function login($runValidation = true)
+    {
+        ///[Yii2 uesr:activation via email:login]login events
+        if ($runValidation && !$this->validate()) {
+            return false;
+        }
+        
+        if ($this->beforeLogin()) {
+
+            // ...custom code here...
+            if (Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0)) {
+
+                $this->afterLogin();
+                return true;
+            }
+            
+        }
+        return false;
+    }
+
+    ///[Yii2 uesr:activation via email:login]login events
+    /**
+     * This method is called before logging in a user.
+     *
+     * The default implementation will trigger the [[EVENT_BEFORE_LOGIN]] event.
+     * If you override this method, make sure you call the parent implementation
+     * so that the event is triggered.
+     * You can get the user identity by $this->getUser() in your overrided method.
+     *
+     * ```php
+     * public function beforeLogin()
+     * {
+     *     if (parent::beforeLogin()) {
+     *
+     *         // ...custom code here...
+     *         $this->getUser();
+     *
+     *         return true;
+     *     } else {
+     *         return false;
+     *     }
+     * }
+     * ```
+     *
+     * @return bool whether the user should continue to be logged in
+     */
+    protected function beforeLogin()
+    {
+        $event = new ModelEvent();
+        $this->trigger(self::EVENT_BEFORE_LOGIN, $event);
+
+        if ($event->isValid) {
+
+            // ...custom code here...
+            ///[Yii2 uesr:activation via email:login]
+            if ($this->getUser()->status == User::STATUS_INACTIVE) {
+                Yii::$app->session->setFlash('success', 
+                    Module::t('user', 
+                        'Your account is not activated! Click {resend} an activation Email.', 
+                        ['resend'=>Module::t('user', Html::a(Module::t('user', 'Resend'), ['registration/resend']))]
+                    )
+                );
+                $event->isValid = false;
+            }
+
+        }
+        return $event->isValid;
+    }
+
+    /**
+     * This method is called after the user is successfully logged in.
+     *
+     * The default implementation will trigger the [[EVENT_AFTER_LOGIN]] event.
+     * If you override this method, make sure you call the parent implementation
+     * so that the event is triggered.
+     * You can get the user identity by $this->getUser() in your overrided method.
+     *
+     * ```php
+     * public function afterLogin()
+     * {
+     *     // ...custom code here...
+     *
+     *     $this->trigger(self::EVENT_AFTER_SIGNUP, new ModelEvent());
+     * }
+     * ```
+     *
+     */
+    protected function afterLogin()
+    {
+        $this->trigger(self::EVENT_AFTER_LOGIN, new ModelEvent());
+    }
+
 }
