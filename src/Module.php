@@ -38,12 +38,14 @@ class Module extends \yii\base\Module
     public $controllerNamespace = 'yongtiger\user\controllers';
 
     /**
-     * @var bool Whether user has to activate his account.
+     * @var bool Whether user has to activate his account after registration.
+     * but you still can resend an activation email and activate your existing account after registration.
      */
     public $enableActivation = true;
 
     /**
-     * @var int The time before an activation key becomes invalid.
+     * @var int The time before an activation key becomes invalid. 
+     * It will be invalid when $enableActivation is `false` ONLY during registering.
      */
     public $activateWithin = 86400; // 24 hours, if `0` means never expired.
 
