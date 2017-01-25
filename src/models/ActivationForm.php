@@ -18,7 +18,7 @@ use yongtiger\user\Module;
 use yongtiger\user\helpers\SecurityHelper;
 
 /**
- * Activation form model
+ * Activation Form Model
  *
  * @package yongtiger\user\models
  * @property string $activation_key Activation key
@@ -65,6 +65,7 @@ class ActivationForm extends Model
     ///[Yii2 uesr:activation via email:activation]
     /**
      * Validates the activation key.
+     *
      * This method serves as the inline validation for activation key.
      *
      * @param string $attribute the attribute currently being validated
@@ -79,7 +80,7 @@ class ActivationForm extends Model
 
     ///[Yii2 uesr:activation via email:activation]
     /**
-     * Activates user account
+     * Activates user account.
      *
      * @return boolean true if account was successfully activated
      * @return User|false the activated user model or false if activation fails
@@ -92,14 +93,14 @@ class ActivationForm extends Model
             ///Traversing the two-dimensional array of errors. @see http://www.yiiframework.com/doc-2.0/yii-base-model.html#$errors-detail
             foreach ($this->errors as $attribute => $errors) {
                 foreach ($errors as $error) {
-                    Yii::$app->session->setFlash('danger', $error);
+                    Yii::$app->session->addFlash('danger', $error);
                 }
             }
 
             return false;
         }
 
-        $user = User::findByActivationKey($this->activation_key);
+        $user = User::findOne(['activation_key' => $this->activation_key, 'status' => User::STATUS_INACTIVE]);
         if ($user !== null) {
             $user->status = User::STATUS_ACTIVE;
             $user->generateAuthKey();
@@ -107,16 +108,15 @@ class ActivationForm extends Model
 
             if ($user->save(false)) {
 
-                Yii::$app->session->setFlash('success', Module::t('user', 'Your Account has been successfully activated ...'));
+                Yii::$app->session->addFlash('success', Module::t('user', 'Your Account has been successfully activated ...'));
 
                 return $user;
             }
 
         }
 
-        Yii::$app->session->setFlash('danger', Module::t('user', 'User has not been activated. Please try again!'));
+        Yii::$app->session->addFlash('danger', Module::t('user', 'User has not been activated. Please try again!'));
 
         return false;
     }
-
 }

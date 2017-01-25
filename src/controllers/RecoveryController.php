@@ -21,7 +21,9 @@ use yongtiger\user\models\ResetPasswordForm;
 use yongtiger\user\Module;
 
 /**
- * Site controller
+ * RecoveryController Controller
+ *
+ * @package yongtiger\user\controllers
  */
 class RecoveryController extends Controller
 {
@@ -35,25 +37,14 @@ class RecoveryController extends Controller
      */
     public function actions()
     {
-        return [
+        $actions =[];
 
-            ///[Yii2 uesr:verifycode]
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                //'controller'=>'login',   ///The controller that owns this action
-                // 'backColor'=>0xFFFFFF,  ///The background color. For example, 0x55FF00. Defaults to 0xFFFFFF, meaning white color.
-                // 'foreColor'=>0x2040A0,  ///The font color. For example, 0x55FF00. Defaults to 0x2040A0 (blue color).
-                // 'padding' => 5,     ///Padding around the text. Defaults to 2.
-                // 'offset'=>-2,       ///The offset between characters. Defaults to -2. You can adjust this property in order to decrease or increase the readability of the captcha.
-                'height' => 36,     ///The height of the generated CAPTCHA image. Defaults to 50. need to be adjusted according to the specific verification code bit
-                'width' => 96,      ///The width of the generated CAPTCHA image. Defaults to 120.
-                'maxLength' =>6,    ///The maximum length for randomly generated word. Defaults to 7.
-                'minLength' =>4,    ///The minimum length for randomly generated word. Defaults to 6.
-                'testLimit'=>5,     ///How many times should the same CAPTCHA be displayed. Defaults to 3. A value less than or equal to 0 means the test is unlimited (available since version 1.1.2). Note that when 'enableClientValidation' is true (default), it will be invalid! 
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,    ///The fixed verification code. When this property is set, getVerifyCode() will always return the value of this property. This is mainly used in automated tests where we want to be able to reproduce the same verification code each time we run the tests. If not set, it means the verification code will be randomly generated.
-            ],
+        ///[Yii2 uesr:verifycode]
+        if (Yii::$app->getModule('user')->enableRequestPasswordResetWithCaptcha) {
+            $actions = array_merge($actions, ['captcha' => Yii::$app->getModule('user')->captcha]);
+        }
 
-        ];
+        return $actions;
     }
 
     /**
@@ -68,21 +59,23 @@ class RecoveryController extends Controller
         $load = $model->load(Yii::$app->request->post());
 
         ///[Yii2 uesr:Ajax validation]
-        ///Note: Should be handled as soon as possible ajax!
-        ///Note: CAPTCHA validation should not be used in AJAX validation mode.
-        ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return \yii\widgets\ActiveForm::validate($model);
+        if (Yii::$app->getModule('user')->enableRequestPasswordResetAjaxValidation) {
+            ///Note: Should be handled as soon as possible ajax!
+            ///Note: CAPTCHA validation should not be used in AJAX validation mode.
+            ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                return \yii\widgets\ActiveForm::validate($model);
+            }
         }
 
         if ($load && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', Module::t('user', 'Check your email for further instructions.'));
+                Yii::$app->session->addFlash('success', Module::t('user', 'Check your email for further instructions.'));
 
                 return $this->goHome();
             } else {
-                Yii::$app->session->setFlash('error', Module::t('user', 'Sorry, we are unable to reset password ...'));
+                Yii::$app->session->addFlash('error', Module::t('user', 'Sorry, we are unable to reset password ...'));
             }
         }
 
@@ -107,7 +100,7 @@ class RecoveryController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', Module::t('user', 'New password saved.'));
+            Yii::$app->session->addFlash('success', Module::t('user', 'New password saved.'));
 
             return $this->goHome();
         }

@@ -18,12 +18,11 @@ use yongtiger\user\Models\User;
 use yongtiger\user\Module;
 
 /**
- * Password reset request form model
+ * Password Reset Request Form Msodel
  *
  * @package yongtiger\user\models
  * @property string $email
- * @property string $password
- * @property string $verifyCode     ///[Yii2 uesr:verifycode]
+ * @property string $verifyCode
  */
 class PasswordResetRequestForm extends Model
 {
@@ -35,7 +34,7 @@ class PasswordResetRequestForm extends Model
      */
     public function rules()
     {
-        return [
+        $rules =  [
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
@@ -44,13 +43,19 @@ class PasswordResetRequestForm extends Model
                 'filter' => ['status' => User::STATUS_ACTIVE],
                 'message' => Module::t('user', 'There is no user with such email.')
             ],
-
-            ///[Yii2 uesr:verifycode]
-            ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
-            ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
-            ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/recovery/captcha'], 
         ];
+
+        ///[Yii2 uesr:verifycode]
+        if (Yii::$app->getModule('user')->enableRequestPasswordResetWithCaptcha) {
+            $rules = array_merge($rules, [
+                ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
+                ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
+                ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
+                ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/recovery/captcha'],
+            ]);
+        }
+
+        return $rules;
     }
 
     /**
@@ -58,10 +63,13 @@ class PasswordResetRequestForm extends Model
      */
     public function attributeLabels()
     {
-        return [
-            'email' => Module::t('user', 'Email'),
-            'verifyCode' => Module::t('user', 'Verification Code'),  ///[Yii2 uesr:verifycode]
-        ];
+        $attributeLabels['email'] = Module::t('user', 'Email');
+
+        if (Yii::$app->getModule('user')->enableRequestPasswordResetWithCaptcha) {
+            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');  ///[Yii2 uesr:verifycode]
+        }
+
+        return $attributeLabels;
     }
 
     /**
@@ -91,10 +99,10 @@ class PasswordResetRequestForm extends Model
         return Yii::$app
             ->mailer
             ->compose(
-                ['html' => '@yongtiger/user/mail/passwordResetToken-html', 'text' => '@yongtiger/user/mail/passwordResetToken-text'],
-                ['user' => $user]
+                ['html' => Yii::$app->getModule('user')->requestPasswordResetComposeHtml, 'text' => Yii::$app->getModule('user')->requestPasswordResetComposeText],
+                ['user' => $this->getUser()]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setFrom(Yii::$app->getModule('user')->requestPasswordResetSetFrom)
             ->setTo($this->email)
             ->setSubject(Module::t('user', 'Password reset for ') . Yii::$app->name)
             ->send();

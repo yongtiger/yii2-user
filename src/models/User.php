@@ -21,13 +21,13 @@ use yongtiger\user\helpers\SecurityHelper;
 use yongtiger\user\Module;
 
 /**
- * User model
+ * User Model
  *
+ * @package yongtiger\user\models
  * @property integer $id
  * @property string $username
  * @property string $password_hash
  * @property string $password_reset_token
- * @property string activation_key  ///[Yii2 uesr:activation via email:INACTIVE]
  * @property string $email
  * @property string $auth_key
  * @property integer $status
@@ -67,6 +67,40 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED, self::STATUS_INACTIVE]],    ///[Yii2 uesr:activation via email:INACTIVE]
+        ];
+    }
+    /**
+     * @inheritdoc
+     */
+    // public function rules()
+    // {
+    //     return [
+    //         [['auth_key', 'password_hash', 'created_at', 'updated_at'], 'required'],
+    //         [['status', 'created_at', 'updated_at'], 'integer'],
+    //         [['username', 'password_hash', 'password_reset_token', 'activation_key', 'email'], 'string', 'max' => 255],
+    //         [['auth_key'], 'string', 'max' => 32],
+    //         [['username'], 'unique'],
+    //         [['email'], 'unique'],
+    //         [['password_reset_token'], 'unique'],
+    //     ];
+    // }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Username',
+            'auth_key' => 'Auth Key',
+            'password_hash' => 'Password Hash',
+            'password_reset_token' => 'Password Reset Token',
+            'activation_key' => 'Activation Key',
+            'email' => 'Email',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
 
@@ -201,28 +235,28 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
-    ///[Yii2 uesr:activation via email:activation]
     /**
-     * Finds model by activation key where user status is `STATUS_INACTIVE`.
-     *
-     * @param string $key
-     * @return static|null
+     * @return \yii\db\ActiveQuery
      */
-    public static function findByActivationKey($key)
+    public function getOauths()
     {
-        return static::findOne(['activation_key' => $key, 'status' => self::STATUS_INACTIVE]);
+        return $this->hasMany(Oauth::className(), ['user_id' => 'id']);
     }
 
-    ///[Yii2 uesr:activation via email:resend]
+    ///[Yii2 uesr:oauth]
     /**
-     * Find user by user email.
+     * Finds user by Oauth provider and openid.
      *
-     * @param string $email Email
+     * @param string $provider
+     * @param string $openid
      * @return static|null
      */
-    public static function findByEmail($email)
+    public static function findByOauth($provider, $openid)
     {
-        return static::findOne(['email' => $email]);
+        return static::find()
+            ->joinwith('oauths')
+            ->andWhere(['{{oauth}}.provider' => $provider])
+            ->andWhere(['{{oauth}}.openid' => $openid])
+            ->one();
     }
-
 }

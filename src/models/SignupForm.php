@@ -20,19 +20,23 @@ use yongtiger\user\Module;
 use yongtiger\user\helpers\SecurityHelper;
 
 /**
- * Signup form model
+ * Signup Form Model
  *
  * @package yongtiger\user\models
  * @property string $username
+ * @property string $email
  * @property string $password
- * @property string $repassword     ///[Yii2 uesr:repassword]
- * @property string $verifyCode     ///[Yii2 uesr:verifycode]
+ * @property string $repassword
+ * @property string $verifyCode
  */
 class SignupForm extends Model
 {
     ///[Yii2 uesr:activation via email:signup]signup events
     const EVENT_BEFORE_SIGNUP = 'beforeSignup';
     const EVENT_AFTER_SIGNUP = 'afterSignup';
+
+    const SCENARIO_DEFAULT = 'default';
+    const SCENARIO_OAUTH = 'oauth';
 
     public $username;
     public $email;
@@ -46,42 +50,70 @@ class SignupForm extends Model
      */
     private $_user;
 
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_DEFAULT] = ['username', 'password', 'repassword', 'email', 'verifyCode'];
+        $scenarios[self::SCENARIO_OAUTH] = ['username', 'email'];
+        return $scenarios;
+    }
     /**
      * @inheritdoc
      */
     public function rules()
     {
-        return [
-            ['username', 'trim'],
-            ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This username has already been taken.')],
-            ['username', 'string', 'min' => 2, 'max' => 255],
-
-            ///[Yii2 uesr:username]User name verification
-            //The unicode range of Chinese characters is: 0x4E00~0x9FA5. This range also includes Chinese, Japanese and Korean characters
-            //  u   Indicates to match by unicode (utf-8), mainly for multi-byte characters such as Chinese characters
-            //  \x  Ignore whitespace
-            //[(\x{4E00}-\x{9FA5})a-zA-Z]+  The character starts with a Chinese character or letter and appears 1 to n times
-            //[(\x{4E00}-\x{9FA5})\w]*      Chinese characters underlined alphabet, there 0-n times
-            ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-zA-Z]+[(\x{4E00}-\x{9FA5})\w]*$/u', 'message' => Module::t('user', 'The username only contains letters ...')],
-
-            ['email', 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
-            ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This email address has already been taken.')],
-
-            ///[Yii2 uesr:repassword]
-            [['password','repassword'],'required'],
-            [['password','repassword'], 'string', 'min' => 6],
-            ['repassword','compare','compareAttribute'=>'password','message' => Module::t('user', 'The two passwords do not match.')],
-
-            ///[Yii2 uesr:verifycode]
-            ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
-            ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
-            ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/registration/captcha'],
+        $rules =  [
+            [['password'], 'required'],
+            [['password'], 'string', 'min' => 6],
         ];
+
+        if (Yii::$app->getModule('user')->enableSignupWithUsername) {
+            $rules = array_merge($rules, [
+                ['username', 'trim'],
+                ['username', 'required'],
+                ['username', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This username has already been taken.')],
+                ['username', 'string', 'min' => 2, 'max' => 255],
+
+                ///[Yii2 uesr:username]User name verification
+                //The unicode range of Chinese characters is: 0x4E00~0x9FA5. This range also includes Chinese, Japanese and Korean characters
+                //  u   Indicates to match by unicode (utf-8), mainly for multi-byte characters such as Chinese characters
+                //  \x  Ignore whitespace
+                //[(\x{4E00}-\x{9FA5})a-zA-Z]+  The character starts with a Chinese character or letter and appears 1 to n times
+                //[(\x{4E00}-\x{9FA5})\w]*      Chinese characters underlined alphabet, there 0-n times
+                ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-zA-Z]+[(\x{4E00}-\x{9FA5})\w]*$/u', 'message' => Module::t('user', 'The username only contains letters ...')],
+            ]);
+        }
+
+        if (Yii::$app->getModule('user')->enableSignupWithEmail) {
+            $rules = array_merge($rules, [
+                ['email', 'trim'],
+                ['email', 'required'],
+                ['email', 'email'],
+                ['email', 'string', 'max' => 255],
+                ['email', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This email address has already been taken.')],
+            ]);
+        }
+
+        ///[Yii2 uesr:repassword]
+        if (Yii::$app->getModule('user')->enableSignupWithRepassword) {
+            $rules = array_merge($rules, [
+                [['repassword'], 'required'],
+                [['repassword'], 'string', 'min' => 6],
+                ['repassword', 'compare', 'compareAttribute' => 'password', 'message' => Module::t('user', 'The two passwords do not match.')],
+            ]);
+        }  
+
+        ///[Yii2 uesr:verifycode]
+        if (Yii::$app->getModule('user')->enableSignupWithCaptcha) {
+            $rules = array_merge($rules, [
+                ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
+                ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
+                ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
+                ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/registration/captcha'],
+            ]);
+        }
+
+        return $rules;
     }
 
     /**
@@ -89,18 +121,30 @@ class SignupForm extends Model
      */
     public function attributeLabels()
     {
-        return [
-            'username' => Module::t('user', 'Username'),
-            'email' => Module::t('user', 'Email'),
-            'password' => Module::t('user', 'Password'),
-            'repassword' => Module::t('user', 'Repeat Password'),   ///[Yii2 uesr:repassword]
-            'verifyCode' => Module::t('user', 'Verification Code'),  ///[Yii2 uesr:verifycode]
-        ];
+        $attributeLabels['password'] = Module::t('user', 'Password');
+
+        if (Yii::$app->getModule('user')->enableSignupWithUsername) {
+            $attributeLabels['username'] = Module::t('user', 'Username');
+        }
+
+        if (Yii::$app->getModule('user')->enableSignupWithEmail) {
+            $attributeLabels['email'] = Module::t('user', 'Email');
+        }
+
+        if (Yii::$app->getModule('user')->enableSignupWithRepassword) {
+            $attributeLabels['repassword'] = Module::t('user', 'Repeat Password');   ///[Yii2 uesr:repassword]
+        }
+
+        if (Yii::$app->getModule('user')->enableSignupWithCaptcha) {
+            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');  ///[Yii2 uesr:verifycode]
+        }
+
+        return $attributeLabels;
     }
 
     ///[Yii2 uesr:activation via email:signup]signup events
     /**
-     * Finds user by [[username]]
+     * Finds user by [[username]].
      *
      * @return User|null
      */
@@ -108,8 +152,15 @@ class SignupForm extends Model
     {
         if ($this->_user === null) {
             $this->_user = new User();
-            $this->_user->username = $this->username;
-            $this->_user->email = $this->email;
+
+            if (Yii::$app->getModule('user')->enableSignupWithUsername) {
+                $this->_user->username = $this->username;
+            }
+            
+            if (Yii::$app->getModule('user')->enableSignupWithEmail) {
+                $this->_user->email = $this->email;
+            }
+
             $this->_user->setPassword($this->password);
             $this->_user->generateAuthKey();
         }
@@ -179,9 +230,9 @@ class SignupForm extends Model
 
             // ...custom code here...
             ///[Yii2 uesr:activation via email:signup]signup events
-            if (Yii::$app->getModule('user')->enableActivation) {
+            if (Yii::$app->getModule('user')->enableSignupWithEmail && Yii::$app->getModule('user')->enableSignupWithEmailActivation) {
                 $this->getUser()->status = User::STATUS_INACTIVE;
-                $this->getUser()->activation_key = SecurityHelper::generateExpiringRandomKey(Yii::$app->getModule('user')->activateWithin);
+                $this->getUser()->activation_key = SecurityHelper::generateExpiringRandomKey(Yii::$app->getModule('user')->signupWithEmailActivationExpire);
             }
 
         }
@@ -211,26 +262,22 @@ class SignupForm extends Model
     {
         // ...custom code here...
         ///[Yii2 uesr:activation via email:signup]
-        $successText = Module::t('user',
-            'Successfully registered [ {username} ].',
-            ['username' => $this->username]
-        );
-        Yii::$app->session->setFlash('success', $successText);
+        Yii::$app->session->addFlash('success', Module::t('user', 'Successfully registered.'));
 
-        if (Yii::$app->getModule('user')->enableActivation) {
+        if (Yii::$app->getModule('user')->enableSignupWithEmail && Yii::$app->getModule('user')->enableSignupWithEmailActivation) {
             ///[Yii2 uesr:activation via email:signup]send activation email
             Yii::$app
                 ->mailer
                 ->compose(
-                    ['html' => '@yongtiger/user/mail/activationKey-html', 'text' => '@yongtiger/user/mail/activationKey-text'],
+                    ['html' => Yii::$app->getModule('user')->signupWithEmailActivationComposeHtml, 'text' => Yii::$app->getModule('user')->signupWithEmailActivationComposeText],
                     ['user' => $this->getUser()]
                 )
-                ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+                ->setFrom(Yii::$app->getModule('user')->signupWithEmailActivationSetFrom)
                 ->setTo($this->email)
                 ->setSubject(Module::t('user', 'Activation mail of the registration from ') . Yii::$app->name)
                 ->send();
 
-            Yii::$app->session->setFlash('warning', Module::t('user', 'Please check your email to activate your account.'));
+            Yii::$app->session->addFlash('warning', Module::t('user', 'Please check your email {youremail} to activate your account.', ['youremail' => $this->email]));
         }
 
         $this->trigger(self::EVENT_AFTER_SIGNUP, new ModelEvent());

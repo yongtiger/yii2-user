@@ -19,6 +19,12 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+	///\vendor\yongtiger\yii2-user\src\controllers\RegistrationController.php
+	'This site has been closed registration.' => '本站已经关闭注册。',
+
+	///\vendor\yongtiger\yii2-user\src\controllers\SecurityController.php
+	'This site has been closed login.' => '本站已经关闭登陆。',
+	'Login failed! A user bound to this oAuth client was not found.' => '登陆失败！没找到与第三方认证绑定的用户。',
 
 	///\vendor\yongtiger\yii2-user\src\controllers\RecoveryController.php
 	'Check your email for further instructions.' => '请查看您的邮件以获知后续的操作。',
@@ -40,9 +46,10 @@ return [
 	'Repeat Password' => '再次输入密码',
 	'The two passwords do not match.' => '两次输入的密码不一致。',
 	//////[Yii2 uesr:activation via email:signup]
-	'Successfully registered [ {username} ].'  => '用户名[ {username} ]注册成功。',
+	'An activation email will be sent.' => '系统将发送激活邮件到您的邮箱。',
+	'Successfully registered.'  => '注册成功。',
 	'Resend' => '重新发送',
-	'Please check your email to activate your account.'  => '请查收您的邮件以激活账户。',
+	'Please check your email {youremail} to activate your account.'  => '请查收您的邮件 {youremail} 以激活账户。',
 	'Activation mail of the registration from ' => '注册激活邮件 - ',
 
 	///\vendor\yongtiger\yii2-user\src\models\LoginForm.php
@@ -50,7 +57,9 @@ return [
 	'Password' => '密码',
 	'Remember me' => '记住我',
 	'Incorrect username or password.' => '用户名或密码不正确。',
+	'Your account is invalid!' => '您的账户无效！',
 	'Your account is not activated! Click {resend} an activation Email.' => '您的账户没有激活！点击 {resend} 激活邮件。',
+	'Login failed!' => '登陆失败！',
 
 	///\vendor\yongtiger\yii2-user\src\models\PasswordResetRequestForm.php
 	'There is no user with such email.' => '没有用户使用该邮箱。',
@@ -70,14 +79,12 @@ return [
 	'The activation link is expired!' => '激活链接已经过期！',
 	'Your Account has been successfully activated ...' => '您的账户已经被成功激活。您可以用注册时填写的用户名和密码进行登陆。',
 	'User has not been activated. Please try again!' => '用户没有被激活，请重新试一试！',
-	'An activation link has been sent to the email address you entered.' => '激活链接已经发送到您注册的邮箱。',
-	'Resend activation email failed. Please try again!' => '重新发送激活邮件失败，请重新试一试！',
 
 	///\vendor\yongtiger\yii2-user\src\models\ResendForm.php
 	//////[Yii2 uesr:activation via email:resend]
 	'Activation mail of the registration from ' => '注册激活邮件 - ',
-	'Please check your email to activate your account.'  => '请查收您的邮件以激活账户。',
-	
+	'An activation link has been sent to the email address you entered.' => '激活链接已经发送到您注册的邮箱。',
+	'Resend activation email failed. Please try again!' => '重新发送激活邮件失败，请重新试一试！',
 
 	///\vendor\yongtiger\yii2-user\src\views\security\signup.php
 	'Signup' => '注册',

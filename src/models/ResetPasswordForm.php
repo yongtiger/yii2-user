@@ -19,12 +19,12 @@ use yongtiger\user\models\User;
 use yongtiger\user\Module;
 
 /**
- * Password reset form model
+ * Password Reset Form Model
  *
  * @package yongtiger\user\models
  * @property string $password
- * @property string $resetPassword  ///[Yii2 uesr:repassword]
- * @property string $verifyCode     ///[Yii2 uesr:verifycode]
+ * @property string $resetPassword
+ * @property string $verifyCode
  */
 class ResetPasswordForm extends Model
 {
@@ -62,19 +62,24 @@ class ResetPasswordForm extends Model
      */
     public function rules()
     {
-        return [
-
+        $rules =  [
             ///[Yii2 uesr:repassword]
             [['password','repassword'],'required'],
             [['password','repassword'], 'string', 'min' => 6],
             ['repassword','compare','compareAttribute'=>'password','message' => Module::t('user', 'The two passwords do not match.')],
-
-            ///[Yii2 uesr:verifycode]
-            ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
-            ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
-            ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/recovery/captcha'], 
         ];
+
+        ///[Yii2 uesr:verifycode]
+        if (Yii::$app->getModule('user')->enableRequestPasswordResetWithCaptcha) {
+            $rules = array_merge($rules, [
+                ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
+                ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
+                ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
+                ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/recovery/captcha'],
+            ]);
+        }
+
+        return $rules;
     }
 
     /**
@@ -82,11 +87,14 @@ class ResetPasswordForm extends Model
      */
     public function attributeLabels()
     {
-        return [
-            'password' => Module::t('user', 'Password'),
-            'repassword' => Module::t('user', 'Repeat Password'),    ///[Yii2 uesr:repassword]
-            'verifyCode' => Module::t('user', 'Verification Code'),  ///[Yii2 uesr:verifycode]
-        ];
+        $attributeLabels['password'] = Module::t('user', 'Password');
+        $attributeLabels['repassword'] = Module::t('user', 'Repeat Password');  ///[Yii2 uesr:repassword]
+
+        if (Yii::$app->getModule('user')->enableRequestPasswordResetWithCaptcha) {
+            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');  ///[Yii2 uesr:verifycode]
+        }
+
+        return $attributeLabels;
     }
 
     /**

@@ -106,8 +106,8 @@ to the require section of your composer.json.
 'modules' => [
     'user' => [
         'class' => 'yongtiger\user\Module',
-        'enableActivation' => true,
-        'activateWithin' => 886400,
+        'enableRegistrationActivation' => true,
+        'registrationActivationWithin' => 886400,
     ],
 ],
 

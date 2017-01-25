@@ -33,36 +33,52 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = ActiveForm::begin(['id' => 'signup-form',
 
                 ///[Yii2 uesr:Ajax validation]
-                // 'enableClientValidation'=>false,        ///disable client validation
-                'enableAjaxValidation'=>true,           ///enable Ajax validation
-                // 'validateOnBlur'=>false,                ///disable validate on blur
-                'validateOnSubmit' =>false,             ///disable validate on submit while using captcha & ajax!!!
+                'enableClientValidation' => Yii::$app->getModule('user')->enableSignupClientValidation,
+                'enableAjaxValidation' => Yii::$app->getModule('user')->enableSignupAjaxValidation,
+                'validateOnBlur' => Yii::$app->getModule('user')->enableSignupValidateOnBlur,
+                ///disable validate on submit while using captcha & ajax!!!
+                'validateOnSubmit' => !(
+                    Yii::$app->getModule('user')->enableSignupAjaxValidation && 
+                    Yii::$app->getModule('user')->enableSignupWithCaptcha
+                ) && Yii::$app->getModule('user')->enableSignupValidateOnSubmit,
 
             ]); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                <?php if (Yii::$app->getModule('user')->enableSignupWithUsername): ?>
+                    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                <?php endif; ?>
 
-                <?= $form->field($model, 'email') ?>
+                <?php if (Yii::$app->getModule('user')->enableSignupWithEmail): ?>
+                    <?php if (Yii::$app->getModule('user')->enableSignupWithEmail && Yii::$app->getModule('user')->enableSignupWithEmailActivation): ?>
+                        <?= $form->field($model, 'email')->textInput(['autofocus' => true])->hint(Module::t('user', 'An activation email will be sent.')) ?>
+                    <?php else: ?>
+                        <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
+                    <?php endif; ?>
+                <?php endif; ?>
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
 
                 <!--///[Yii2 uesr:repassword]-->
-                <?= $form->field($model,'repassword')->passwordInput() ?>
+                <?php if (Yii::$app->getModule('user')->enableSignupWithRepassword): ?>
+                    <?= $form->field($model,'repassword')->passwordInput() ?>
+                <?php endif; ?>
 
                 <!--///[Yii2 uesr:verifycode]-->
-                <!--///captcha in module: /user/security/captcha-->
-                 <?= $form->field($model, 'verifyCode', [
+                <?php if (Yii::$app->getModule('user')->enableSignupWithCaptcha): ?>
+                     <?= $form->field($model, 'verifyCode', [
 
-                    'enableClientValidation' => false,  ///always disable client validation in captcha! Otherwise 'testLimit' of captcha will be invalid, and thus lead to attack. Also 'validateOnBlur' will be set false.
-                    'enableAjaxValidation'=>false,     ///always disable Ajax validation. Note that once CAPTCHA validation succeeds, a new CAPTCHA will be generated automatically. @see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-                    
-                    ///also need to disable validate on ActiveForm submit while using captcha & ajax!!!
-                    
-                ])->widget(\yii\captcha\Captcha::className(), [
-                    'captchaAction' => '/' . Yii::$app->controller->module->id . '/registration/captcha',  ///default is 'site/captcha'
-                    'imageOptions'=>['alt'=>Module::t('user', 'Verification Code'), 'title'=>Module::t('user', 'Click to change another verification code.')],
-                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
+                        'enableClientValidation' => false,  ///always disable client validation in captcha! Otherwise 'testLimit' of captcha will be invalid, and thus lead to attack. Also 'validateOnBlur' will be set false.
+                        'enableAjaxValidation'=>false,     ///always disable Ajax validation. Note that once CAPTCHA validation succeeds, a new CAPTCHA will be generated automatically. @see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
+
+                        ///also need to disable validate on ActiveForm submit while using captcha & ajax!!!
+
+                    ])->widget(Yii::$app->getModule('user')->captchaActiveFieldWidget['class'], array_merge(Yii::$app->getModule('user')->captchaActiveFieldWidget, [
+
+                        ///captcha in module, e.g. `/user/registration/captcha`
+                        'captchaAction' => '/' . Yii::$app->controller->module->id . '/registration/captcha',  ///default is 'site/captcha'
+
+                    ])) ?>
+                <?php endif; ?>
 
                 <div class="form-group">
                     <?= Html::submitButton(Module::t('user', 'Signup'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>

@@ -19,13 +19,15 @@ use yii\helpers\Html;
 use yongtiger\user\Module;
 
 /**
- * Login form model
+ * Login Form Model
  *
  * @package yongtiger\user\models
  * @property string $username
+ * @property string $email
  * @property string $password
  * @property string $rememberMe
- * @property string $verifyCode     ///[Yii2 uesr:verifycode]
+ * @property string $verifyCode
+ * @property User $user
  */
 class LoginForm extends Model
 {
@@ -34,8 +36,9 @@ class LoginForm extends Model
     const EVENT_AFTER_LOGIN = 'afterLogin';
 
     public $username;
+    public $email;
     public $password;
-    public $rememberMe = true;
+    public $rememberMe;
     public $verifyCode; ///[Yii2 uesr:verifycode]
 
     /**
@@ -43,26 +46,61 @@ class LoginForm extends Model
      */
     private $_user;
 
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->rememberMe = Yii::$app->user->enableAutoLogin;
+    }
 
     /**
      * @inheritdoc
      */
     public function rules()
     {
-        return [
-            // username and password are both required
-            [['username', 'password'], 'required'],
-            // rememberMe must be a boolean value
-            ['rememberMe', 'boolean'],
-            // password is validated by validatePassword()
-            ['password', 'validatePassword'],
+        $rules =  [];
+
+        if (Yii::$app->getModule('user')->enableLoginWithUsername) {
+            $rules = array_merge($rules, [
+                ['username', 'required'],
+            ]);
+        }
+
+        if (Yii::$app->getModule('user')->enableLoginWithEmail) {
+            $rules = array_merge($rules, [
+                ['email', 'required'],
+                ['email', 'email'],
+            ]);
+        }
+
+        if (Yii::$app->getModule('user')->enableLoginWithUsername || Yii::$app->getModule('user')->enableLoginWithEmail) {
+            $rules = array_merge($rules, [
+                // password is required
+                ['password', 'required'],
+                // password is validated by validatePassword()
+                ['password', 'validatePassword'],
+            ]);
 
             ///[Yii2 uesr:verifycode]
-            ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
-            ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
-            ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/security/captcha'],
-        ];
+            if (Yii::$app->getModule('user')->enableLoginWithCaptcha) {
+                $rules = array_merge($rules, [
+                    ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
+                    ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
+                    ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
+                    ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/security/captcha'],
+                ]);
+            }
+        }
+
+        if (Yii::$app->user->enableAutoLogin) {
+            $rules = array_merge($rules, [
+                // rememberMe must be a boolean value
+                ['rememberMe', 'boolean'],
+            ]);
+        }
+
+        return $rules;
     }
 
     /**
@@ -70,16 +108,32 @@ class LoginForm extends Model
      */
     public function attributeLabels()
     {
-        return [
-            'username' => Module::t('user', 'Username'),
-            'password' => Module::t('user', 'Password'),
-            'rememberMe' => Module::t('user', 'Remember me'),
-            'verifyCode' => Module::t('user', 'Verification Code'),  ///[Yii2 uesr:verifycode]
-        ];
+        if (Yii::$app->getModule('user')->enableLoginWithUsername) {
+            $attributeLabels['username'] = Module::t('user', 'Username');
+        }
+
+        if (Yii::$app->getModule('user')->enableLoginWithEmail) {
+            $attributeLabels['email'] = Module::t('user', 'Email');
+        }
+
+        if (Yii::$app->getModule('user')->enableLoginWithUsername || Yii::$app->getModule('user')->enableLoginWithEmail) {
+            $attributeLabels['password'] = Module::t('user', 'Password');
+        }
+
+        if (Yii::$app->user->enableAutoLogin) {
+            $attributeLabels['rememberMe'] = Module::t('user', 'Remember me');
+        }
+
+        if (Yii::$app->getModule('user')->enableLoginWithCaptcha) {
+            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');  ///[Yii2 uesr:verifycode]
+        }
+
+        return $attributeLabels;
     }
 
     /**
-     * Validates the password
+     * Validates the password.
+     *
      * This method serves as the inline validation for password.
      *
      * @param string $attribute the attribute currently being validated
@@ -96,25 +150,37 @@ class LoginForm extends Model
     }
 
     /**
-     * Finds user by [[username]]
+     * Finds user by [[username]] or [[email]].
      *
-     * @return User|null
+     * @return User|null User object or null
      */
-    protected function getUser()
+    public function getUser()
     {
         if ($this->_user === null) {
-
-            ///[Yii2 uesr:activation via email:INACTIVE]
-            ///@see http://www.yiiframework.com/doc-2.0/guide-security-authentication.html#using-user
-            $this->_user = User::findOne(['username' => $this->username, 'status' => [User::STATUS_ACTIVE, User::STATUS_INACTIVE]]);
-
+            $condition['status'] = [User::STATUS_ACTIVE, User::STATUS_INACTIVE];
+            if (Yii::$app->getModule('user')->enableLoginWithUsername) {
+                $condition['username'] = $this->username;
+            }
+            if (Yii::$app->getModule('user')->enableLoginWithEmail) {
+                 $condition['email'] = $this->email;
+            }
+            $this->_user = User::findOne($condition);
         }
-
         return $this->_user;
     }
 
     /**
-     * Logs in a user using the provided username and password
+     * Set user.
+     *
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->_user = $user;
+    }
+
+    /**
+     * Logs in a user using the provided username and password.
      *
      * @return bool whether the user is logged in successfully
      */
@@ -135,6 +201,8 @@ class LoginForm extends Model
             }
             
         }
+        
+        Yii::$app->session->addFlash('danger', Module::t('user', 'Login failed!'));
         return false;
     }
 
@@ -172,9 +240,14 @@ class LoginForm extends Model
         if ($event->isValid) {
 
             // ...custom code here...
+            if (empty($this->getUser())) {
+                Yii::$app->session->addFlash('danger', Module::t('user', 'Your account is invalid!'));
+                $event->isValid = false;
+            }
+
             ///[Yii2 uesr:activation via email:login]
             if ($this->getUser()->status == User::STATUS_INACTIVE) {
-                Yii::$app->session->setFlash('success', 
+                Yii::$app->session->addFlash('warning', 
                     Module::t('user', 
                         'Your account is not activated! Click {resend} an activation Email.', 
                         ['resend'=>Module::t('user', Html::a(Module::t('user', 'Resend'), ['registration/resend']))]
@@ -200,7 +273,7 @@ class LoginForm extends Model
      * {
      *     // ...custom code here...
      *
-     *     $this->trigger(self::EVENT_AFTER_SIGNUP, new ModelEvent());
+     *     $this->trigger(self::EVENT_AFTER_LOGIN, new ModelEvent());
      * }
      * ```
      *
@@ -209,5 +282,4 @@ class LoginForm extends Model
     {
         $this->trigger(self::EVENT_AFTER_LOGIN, new ModelEvent());
     }
-
 }

@@ -34,29 +34,35 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = ActiveForm::begin(['id' => 'request-password-reset-form',
 
                 ///[Yii2 uesr:Ajax validation]
-                // 'enableClientValidation'=>false,        ///disable client validation
-                'enableAjaxValidation'=>true,           ///enable Ajax validation
-                // 'validateOnBlur'=>false,                ///disable validate on blur
-                'validateOnSubmit' =>false,             ///disable validate on submit while using captcha & ajax!!!
+                'enableClientValidation' => Yii::$app->getModule('user')->enableRequestPasswordResetClientValidation,
+                'enableAjaxValidation' => Yii::$app->getModule('user')->enableRequestPasswordResetAjaxValidation,
+                'validateOnBlur' => Yii::$app->getModule('user')->enableRequestPasswordResetValidateOnBlur,
+                ///disable validate on submit while using captcha & ajax!!!
+                'validateOnSubmit' => !(
+                    Yii::$app->getModule('user')->enableRequestPasswordResetAjaxValidation && 
+                    Yii::$app->getModule('user')->enableRequestPasswordResetWithCaptcha
+                ) && Yii::$app->getModule('user')->enableRequestPasswordResetValidateOnSubmit,
 
             ]); ?>
 
                 <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
                 <!--///[Yii2 uesr:verifycode]-->
-                <!--///captcha in module: /user/security/captcha-->
-                <?= $form->field($model, 'verifyCode', [
+                <?php if (Yii::$app->getModule('user')->enableRequestPasswordResetWithCaptcha): ?>
+                    <?= $form->field($model, 'verifyCode', [
 
-                    'enableClientValidation' => false,  ///always disable client validation in captcha! Otherwise 'testLimit' of captcha will be invalid, and thus lead to attack. Also 'validateOnBlur' will be set false.
-                    'enableAjaxValidation'=>false,     ///always disable Ajax validation. Note that once CAPTCHA validation succeeds, a new CAPTCHA will be generated automatically. @see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-                    
-                    ///also need to disable validate on ActiveForm submit while using captcha & ajax!!!
-                    
-                ])->widget(\yii\captcha\Captcha::className(), [
-                    'captchaAction' => '/' . Yii::$app->controller->module->id . '/recovery/captcha',  ///default is 'site/captcha'
-                    'imageOptions'=>['alt'=>Module::t('user', 'Verification Code'), 'title'=>Module::t('user', 'Click to change another verification code.')],
-                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
+                        'enableClientValidation' => false,  ///always disable client validation in captcha! Otherwise 'testLimit' of captcha will be invalid, and thus lead to attack. Also 'validateOnBlur' will be set false.
+                        'enableAjaxValidation'=>false,     ///always disable Ajax validation. Note that once CAPTCHA validation succeeds, a new CAPTCHA will be generated automatically. @see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
+                        
+                        ///also need to disable validate on ActiveForm submit while using captcha & ajax!!!
+                        
+                    ])->widget(Yii::$app->getModule('user')->captchaActiveFieldWidget['class'], array_merge(Yii::$app->getModule('user')->captchaActiveFieldWidget, [
+
+                        ///captcha in module, e.g. `/user/recovery/captcha`
+                        'captchaAction' => '/' . Yii::$app->controller->module->id . '/recovery/captcha',  ///default is 'site/captcha'
+
+                    ])) ?>
+                <?php endif; ?>
 
                 <div class="form-group">
                     <?= Html::submitButton(Module::t('user', 'Send'), ['class' => 'btn btn-primary']) ?>

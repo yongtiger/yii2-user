@@ -18,10 +18,11 @@ use yongtiger\user\Module;
 use yongtiger\user\helpers\SecurityHelper;
 
 /**
- * Resend form model
+ * Resend Form Model
  *
  * @package yongtiger\user\models
  * @property string $email
+ * @property string $verifyCode
  */
 class ResendForm extends Model
 {
@@ -38,7 +39,7 @@ class ResendForm extends Model
      */
     public function rules()
     {
-        return [
+        $rules =  [
             // E-mail
             ['email', 'required'],
             ['email', 'trim'],
@@ -52,13 +53,19 @@ class ResendForm extends Model
                     $query->andWhere(['status' => User::STATUS_INACTIVE]);
                 }
             ],
-
-            ///[Yii2 uesr:verifycode]
-            ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
-            ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
-            ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-            ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/recovery/captcha'], 
         ];
+
+        ///[Yii2 uesr:verifycode]
+        if (Yii::$app->getModule('user')->enableSignupWithCaptcha) {
+            $rules = array_merge($rules, [
+                ///default is 'site/captcha'. @see http://stackoverflow.com/questions/28497432/yii2-invalid-captcha-action-id-in-module
+                ///Note: CaptchaValidator should be used together with yii\captcha\CaptchaAction.
+                ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
+                ['verifyCode', 'captcha', 'captchaAction' => Yii::$app->controller->module->id . '/registration/captcha'],
+            ]);
+        }
+
+        return $rules;
     }
 
     /**
@@ -66,10 +73,13 @@ class ResendForm extends Model
      */
     public function attributeLabels()
     {
-        return [
-            'email' => Module::t('user', 'Email'),
-            'verifyCode' => Module::t('user', 'Verification Code'),  ///[Yii2 uesr:verifycode]
-        ];
+        $attributeLabels['email'] = Module::t('user', 'Email');
+
+        if (Yii::$app->getModule('user')->enableSignupWithCaptcha) {
+            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');  ///[Yii2 uesr:verifycode]
+        }
+
+        return $attributeLabels;
     }
 
     /**
@@ -83,11 +93,11 @@ class ResendForm extends Model
             return false;
         }
 
-        $this->_user = User::findByEmail($this->email);
+        $this->_user = User::findOne(['email' => $email, 'status' => self::STATUS_INACTIVE]);
         if ($this->_user !== null) {
 
             $this->_user->generateAuthKey();
-            $this->_user->activation_key = SecurityHelper::generateExpiringRandomKey(Yii::$app->getModule('user')->activateWithin);
+            $this->_user->activation_key = SecurityHelper::generateExpiringRandomKey(Yii::$app->getModule('user')->registrationActivationWithin);
 
             if ($this->_user->save(false)) {
 
@@ -95,21 +105,21 @@ class ResendForm extends Model
                 Yii::$app
                     ->mailer
                     ->compose(
-                        ['html' => '@yongtiger/user/mail/activationKey-html', 'text' => '@yongtiger/user/mail/activationKey-text'],
-                        ['user' => $this->_user]
+                        ['html' => Yii::$app->getModule('user')->signupWithEmailActivationComposeHtml, 'text' => Yii::$app->getModule('user')->signupWithEmailActivationComposeText],
+                        ['user' => $this->getUser()]
                     )
-                    ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+                    ->setFrom(Yii::$app->getModule('user')->signupWithEmailActivationSetFrom)
                     ->setTo($this->email)
                     ->setSubject(Module::t('user', 'Activation mail of the registration from ') . Yii::$app->name)
                     ->send();
 
-                Yii::$app->session->setFlash('success', Module::t('user', 'An activation link has been sent to the email address you entered.'));
+                Yii::$app->session->addFlash('success', Module::t('user', 'An activation link has been sent to the email address you entered.'));
 
                 return true;
             }
         }
 
-        Yii::$app->session->setFlash('danger', Module::t('user', 'Resend activation email failed. Please try again!'));
+        Yii::$app->session->addFlash('danger', Module::t('user', 'Resend activation email failed. Please try again!'));
 
         return false;
     }
