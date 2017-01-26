@@ -95,7 +95,6 @@ class LoginForm extends Model
 
         if (Yii::$app->user->enableAutoLogin) {
             $rules = array_merge($rules, [
-                // rememberMe must be a boolean value
                 ['rememberMe', 'boolean'],
             ]);
         }
@@ -150,7 +149,7 @@ class LoginForm extends Model
     }
 
     /**
-     * Finds user by [[username]] or [[email]].
+     * Finds user by username or email.
      *
      * @return User|null User object or null
      */
@@ -202,7 +201,7 @@ class LoginForm extends Model
             
         }
         
-        Yii::$app->session->addFlash('danger', Module::t('user', 'Login failed!'));
+        Yii::$app->session->addFlash('error', Module::t('user', 'Login failed!'));
         return false;
     }
 
@@ -241,7 +240,7 @@ class LoginForm extends Model
 
             // ...custom code here...
             if (empty($this->getUser())) {
-                Yii::$app->session->addFlash('danger', Module::t('user', 'Your account is invalid!'));
+                Yii::$app->session->addFlash('error', Module::t('user', 'Your account is invalid!'));
                 $event->isValid = false;
             }
 
@@ -249,7 +248,7 @@ class LoginForm extends Model
             if ($this->getUser()->status == User::STATUS_INACTIVE) {
                 Yii::$app->session->addFlash('warning', 
                     Module::t('user', 
-                        'Your account is not activated! Click {resend} an activation Email.', 
+                        'Your account is not activated! Click [{resend}] an activation Email.', 
                         ['resend'=>Module::t('user', Html::a(Module::t('user', 'Resend'), ['registration/resend']))]
                     )
                 );

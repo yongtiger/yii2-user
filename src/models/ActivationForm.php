@@ -89,11 +89,11 @@ class ActivationForm extends Model
     {
         if ($runValidation && !$this->validate()) {
 
-            ///Because activation is not used ActiveForm, so only output error by setFlash。
+            ///Because activation is not used ActiveForm, so output errors by `setFlash()`.
             ///Traversing the two-dimensional array of errors. @see http://www.yiiframework.com/doc-2.0/yii-base-model.html#$errors-detail
             foreach ($this->errors as $attribute => $errors) {
                 foreach ($errors as $error) {
-                    Yii::$app->session->addFlash('danger', $error);
+                    Yii::$app->session->addFlash('error', $error);
                 }
             }
 
@@ -115,7 +115,7 @@ class ActivationForm extends Model
 
         }
 
-        Yii::$app->session->addFlash('danger', Module::t('user', 'User has not been activated. Please try again!'));
+        Yii::$app->session->addFlash('error', Module::t('user', 'User has not been activated. Please try again!'));
 
         return false;
     }

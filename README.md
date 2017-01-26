@@ -1,4 +1,4 @@
-# Yii2-user [v0.4.0] User Basic: Activate via Email
+# Yii2-user [v0.5.0] User Basic: Oauth
 
 The most basic `user` module.
 
@@ -17,7 +17,9 @@ The most basic `user` module.
 * using `captcha` in `signup`, `login`, `requestPasswordResetToken`, `resetPassword` and backend `login`
 * ajax validation in `signup`, `login`, `requestPasswordResetToken`
 * activation via Email
-
+* Oauth login (if no user, try ot signup)
+* automatically updating oauth info
+* config of `User` module
 
 ## Dependences
 

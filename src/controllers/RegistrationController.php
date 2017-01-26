@@ -102,6 +102,7 @@ class RegistrationController extends Controller
             }
 
             if ($load && $user = $model->signup()) {
+                Yii::$app->session->addFlash('success', Module::t('user', 'Successfully registered.'));
 
                 ///[Yii2 uesr:oauth signup]
                 if (Yii::$app->getModule('user')->enableOauthSignup && Yii::$app->getModule('user')->enableOauthSignupValidation) {
@@ -110,8 +111,8 @@ class RegistrationController extends Controller
 
                         ///Add a new record to the oauth database table.
                         $auth = new \yongtiger\user\models\Oauth(['user_id' => $user->id]);
-                        $auth->attributes = $client;   ///Massive Assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
-                        $auth->save(false);
+                        $auth->attributes = $client;   ///massive assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
+                        $auth->save(false);     ///?????Whether to consider returning false?
                     }
                 }
 
@@ -133,7 +134,7 @@ class RegistrationController extends Controller
 
     ///[Yii2 uesr:activation via email:activate]
     /**
-     * Activate a new user.
+     * Activates a new user.
      *
      * @param string $key Activation key.
      */
@@ -150,7 +151,7 @@ class RegistrationController extends Controller
 
     ///[Yii2 uesr:activation via email:resend]
     /**
-     * Resend email activation key.
+     * Resends email activation key.
      */
     public function actionResend()
     {

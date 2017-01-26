@@ -79,7 +79,7 @@ class SecurityController extends Controller
             ///[Yii2 uesr:oauth]
             if (Yii::$app->getModule('user')->enableOauth) {
                 $auth = [
-                    'successCallback' => Yii::$app->user->isGuest ? [$this, 'authenticate'] : [$this, 'connect'],
+                    'successCallback' => [$this, 'authenticate'],
                 ];
 
                 $actions = array_merge($actions, ['auth' => ArrayHelper::merge(Yii::$app->getModule('user')->auth, $auth)]);
@@ -144,7 +144,7 @@ class SecurityController extends Controller
 
     ///[Yii2 uesr:oauth]
     /**
-     * Authenticate user via social network.
+     * Authenticates user via social network.
      *
      * If user has already bound with the network's account, will be logged in. Otherwise, it will try to signup.
      *
@@ -174,7 +174,12 @@ class SecurityController extends Controller
 
         $user = User::findByOauth($client->provider, $client->openid);
 
-        if (empty($user)) {
+        if ($user) {
+
+            ///Updates user's oauth info.
+            $user->oauths[0]->updateAttributes($client->getUserInfos());
+
+        } else {
 
             ///[Yii2 uesr:oauth signup]
             if (Yii::$app->getModule('user')->enableSignup && Yii::$app->getModule('user')->enableOauthSignup) {
@@ -182,22 +187,30 @@ class SecurityController extends Controller
                 $model = new SignupForm(['scenario' => SignupForm::SCENARIO_OAUTH]);
 
                 if (Yii::$app->getModule('user')->enableOauthSignupValidation && Yii::$app->getModule('user')->enableSignupWithUsername) {
-                    $model->username = strtolower(strtr($client->fullname, array(' '=>''))); ///simply remove whitespace and convert to lowercase
+                    $model->username = $client->fullname;
                 }
                 if (Yii::$app->getModule('user')->enableOauthSignupValidation && Yii::$app->getModule('user')->enableSignupWithEmail) {
                     $model->email = $client->email;
                 }
 
                 if ($user = $model->signup(Yii::$app->getModule('user')->enableOauthSignupValidation)) {
+                    $note = Module::t('user', 'Successfully registered.');
+                    if (Yii::$app->getModule('user')->enableOauthSignupValidation && Yii::$app->getModule('user')->enableSignupWithUsername) {
+                        $note .= ' ' . Module::t('user', 'Username') . ' [' . $model->username .']';
+                    }
+                    if (Yii::$app->getModule('user')->enableOauthSignupValidation && Yii::$app->getModule('user')->enableSignupWithEmail) {
+                        $note .= ' ' . Module::t('user', 'Email') . ' [' . $model->email .']';
+                    }
+                    Yii::$app->session->addFlash('success', $note);
 
                     ///Add a new record to the oauth database table.
                     $auth = new \yongtiger\user\models\Oauth(['user_id' => $user->id]);
-                    $auth->attributes = $client->getUserInfos();   ///Massive Assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
-                    $auth->save(false);
+                    $auth->attributes = $client->getUserInfos();   ///massive assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
+                    $auth->save(false);     ///?????Whether to consider returning false?
 
                 } else {
 
-                    ///Pass the authentication error message to the signup page.
+                    ///Passes the authentication error message to the signup page.
                     ///@see http://p2code.com/post/yii2-facebook-login-step-by-step-4
                     ///@see http://www.hafidmukhlasin.com/2014/10/29/yii2-super-easy-to-create-login-social-account-with-authclient-facebook-google-twitter-etc/
                     Yii::$app->session['signup-form'] = $model;
@@ -205,50 +218,21 @@ class SecurityController extends Controller
                     Yii::$app->session['auth-client'] = $client->getUserInfos();
                     $this->action->successUrl = Url::to(['registration/signup']);
                     return;
+
                 }
 
             } else {
-                Yii::$app->session->addFlash('danger', Module::t('user', 'Login failed! A user bound to this oAuth client was not found.'));
+                Yii::$app->session->addFlash('error', Module::t('user', 'Login failed! A user bound to this oAuth client was not found.'));
                 $this->action->successUrl = $this->action->cancelUrl;
                 return;
             }
 
-        } else {
-
-            ///update oauth
-            $auth = $user->oauths[0];
-            foreach ($client->getUserInfos() as $key => $value) {
-                if ($auth->$key != $value) {
-                    $auth->$key = $value;
-                }
-            }
-            $auth->save(false);
-
         }
 
-        ///login
-        $model = new LoginForm();
-        $model->setUser($user);
-        if (!$model->login(false)) {
+        ///Logs in a user.
+        if (!(new LoginForm(['user' => $user]))->login(false)) {
             $this->action->successUrl = $this->action->cancelUrl;
         }
 
-    }
-
-    ///[Yii2 uesr:oauth]///？？？？？
-    /**
-     * Tries to connect social account to user.
-     *
-     * @param ClientInterface $client
-     */
-    public function connect(\yongtiger\authclient\clients\IAuth $client)
-    {
-        /** @var Account $account */
-        $account = \Yii::createObject(Account::className());
-        $event   = $this->getAuthEvent($account, $client);
-        $this->trigger(self::EVENT_BEFORE_CONNECT, $event);
-        $account->connectWithUser($client);
-        $this->trigger(self::EVENT_AFTER_CONNECT, $event);
-        $this->action->successUrl = Url::to(['/user/settings/networks']);
     }
 }

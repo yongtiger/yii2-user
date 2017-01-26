@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'password')->passwordInput() ?>
 
                     <div style="color:#999;margin:1em 0">
-                        <?= Module::t('user', 'If you forgot your password you can {reset it}.', ['reset it' => Html::a(Module::t('user', 'reset it'), ['recovery/request-password-reset'])]) ?>
+                        <?= Module::t('user', 'If you forgot your password you can [{reset it}].', ['reset it' => Html::a(Module::t('user', 'reset it'), ['recovery/request-password-reset'])]) ?>
                     </div>
 
                     <!--///[Yii2 uesr:verifycode]-->

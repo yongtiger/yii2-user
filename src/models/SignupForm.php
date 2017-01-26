@@ -69,9 +69,11 @@ class SignupForm extends Model
 
         if (Yii::$app->getModule('user')->enableSignupWithUsername) {
             $rules = array_merge($rules, [
-                ['username', 'trim'],
                 ['username', 'required'],
-                ['username', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This username has already been taken.')],
+                ['username', 'trim'],
+                ['username', 'filter', 'filter' => function ($value) {
+                    return preg_replace('/[^(\x{4E00}-\x{9FA5})\w]/iu', '', $value);
+                }],
                 ['username', 'string', 'min' => 2, 'max' => 255],
 
                 ///[Yii2 uesr:username]User name verification
@@ -81,6 +83,8 @@ class SignupForm extends Model
                 //[(\x{4E00}-\x{9FA5})a-zA-Z]+  The character starts with a Chinese character or letter and appears 1 to n times
                 //[(\x{4E00}-\x{9FA5})\w]*      Chinese characters underlined alphabet, there 0-n times
                 ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-zA-Z]+[(\x{4E00}-\x{9FA5})\w]*$/u', 'message' => Module::t('user', 'The username only contains letters ...')],
+
+                ['username', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This username has already been taken.')],
             ]);
         }
 
@@ -88,8 +92,8 @@ class SignupForm extends Model
             $rules = array_merge($rules, [
                 ['email', 'trim'],
                 ['email', 'required'],
-                ['email', 'email'],
                 ['email', 'string', 'max' => 255],
+                ['email', 'email'],
                 ['email', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This email address has already been taken.')],
             ]);
         }
@@ -101,7 +105,7 @@ class SignupForm extends Model
                 [['repassword'], 'string', 'min' => 6],
                 ['repassword', 'compare', 'compareAttribute' => 'password', 'message' => Module::t('user', 'The two passwords do not match.')],
             ]);
-        }  
+        }
 
         ///[Yii2 uesr:verifycode]
         if (Yii::$app->getModule('user')->enableSignupWithCaptcha) {
@@ -156,7 +160,7 @@ class SignupForm extends Model
             if (Yii::$app->getModule('user')->enableSignupWithUsername) {
                 $this->_user->username = $this->username;
             }
-            
+
             if (Yii::$app->getModule('user')->enableSignupWithEmail) {
                 $this->_user->email = $this->email;
             }
@@ -261,9 +265,6 @@ class SignupForm extends Model
     protected function afterSignup()
     {
         // ...custom code here...
-        ///[Yii2 uesr:activation via email:signup]
-        Yii::$app->session->addFlash('success', Module::t('user', 'Successfully registered.'));
-
         if (Yii::$app->getModule('user')->enableSignupWithEmail && Yii::$app->getModule('user')->enableSignupWithEmailActivation) {
             ///[Yii2 uesr:activation via email:signup]send activation email
             Yii::$app
@@ -277,7 +278,7 @@ class SignupForm extends Model
                 ->setSubject(Module::t('user', 'Activation mail of the registration from ') . Yii::$app->name)
                 ->send();
 
-            Yii::$app->session->addFlash('warning', Module::t('user', 'Please check your email {youremail} to activate your account.', ['youremail' => $this->email]));
+            Yii::$app->session->addFlash('warning', Module::t('user', 'Please check your email [{youremail}] to activate your account.', ['youremail' => $this->email]));
         }
 
         $this->trigger(self::EVENT_AFTER_SIGNUP, new ModelEvent());

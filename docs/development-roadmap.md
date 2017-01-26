@@ -1,5 +1,17 @@
 # Development roadmap
 
+
+## Version 0.5.0 (User Basic: Oauth)
+
+Features of this version:
+
+* oauth login (if no user, try ot signup)
+
+* automatically updating oauth info
+
+* config of `User` module
+
+
 ## Version 0.4.0 (User Basic: Activate via Email)
 
 Features of this version:
@@ -7,13 +19,11 @@ Features of this version:
 * activation via Email
 
 
-
 ## Version 0.3.5 (User Basic: Ajax validation in Captcha)
 
 Features of this version:
 
 * ajax validation in `Captcha`
-
 
 
 ## Version 0.3.4 (User Basic: Ajax validation)

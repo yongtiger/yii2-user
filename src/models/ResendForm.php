@@ -119,7 +119,7 @@ class ResendForm extends Model
             }
         }
 
-        Yii::$app->session->addFlash('danger', Module::t('user', 'Resend activation email failed. Please try again!'));
+        Yii::$app->session->addFlash('error', Module::t('user', 'Resend activation email failed. Please try again!'));
 
         return false;
     }

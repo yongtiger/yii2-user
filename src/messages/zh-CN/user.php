@@ -49,7 +49,7 @@ return [
 	'An activation email will be sent.' => '系统将发送激活邮件到您的邮箱。',
 	'Successfully registered.'  => '注册成功。',
 	'Resend' => '重新发送',
-	'Please check your email {youremail} to activate your account.'  => '请查收您的邮件 {youremail} 以激活账户。',
+	'Please check your email [{youremail}] to activate your account.'  => '请查收您的邮件 [{youremail}] 以激活账户。',
 	'Activation mail of the registration from ' => '注册激活邮件 - ',
 
 	///\vendor\yongtiger\yii2-user\src\models\LoginForm.php
@@ -58,7 +58,7 @@ return [
 	'Remember me' => '记住我',
 	'Incorrect username or password.' => '用户名或密码不正确。',
 	'Your account is invalid!' => '您的账户无效！',
-	'Your account is not activated! Click {resend} an activation Email.' => '您的账户没有激活！点击 {resend} 激活邮件。',
+	'Your account is not activated! Click [{resend}] an activation Email.' => '您的账户没有激活！点击 [{resend}] 激活邮件。',
 	'Login failed!' => '登陆失败！',
 
 	///\vendor\yongtiger\yii2-user\src\models\PasswordResetRequestForm.php
@@ -96,7 +96,7 @@ return [
 	///\vendor\yongtiger\yii2-user\src\views\security\login.php
 	'Login' => '登陆',
 	'Please fill out the following fields to login:' => '请填写下列内容：',
-	'If you forgot your password you can {reset it}.' => "如果您忘记密码，您可以 {reset it}。",
+	'If you forgot your password you can [{reset it}].' => "如果您忘记密码，您可以 [{reset it}]。",
 	'reset it' => '重置',
 
 	///\vendor\yongtiger\yii2-user\src\views\security\requestPasswordResetToken.php
