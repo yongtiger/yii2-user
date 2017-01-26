@@ -109,14 +109,12 @@ class ActivationForm extends Model
             if ($user->save(false)) {
 
                 Yii::$app->session->addFlash('success', Module::t('user', 'Your Account has been successfully activated ...'));
-
                 return $user;
             }
 
         }
 
         Yii::$app->session->addFlash('error', Module::t('user', 'User has not been activated. Please try again!'));
-
         return false;
     }
 }

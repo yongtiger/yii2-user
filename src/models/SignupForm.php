@@ -74,7 +74,7 @@ class SignupForm extends Model
                 ['username', 'filter', 'filter' => function ($value) {
                     return preg_replace('/[^(\x{4E00}-\x{9FA5})\w]/iu', '', $value);
                 }],
-                ['username', 'string', 'min' => 2, 'max' => 255],
+                ['username', 'string', 'min' => 2, 'max' => 32],
 
                 ///[Yii2 uesr:username]User name verification
                 //The unicode range of Chinese characters is: 0x4E00~0x9FA5. This range also includes Chinese, Japanese and Korean characters

@@ -69,40 +69,6 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED, self::STATUS_INACTIVE]],    ///[Yii2 uesr:activation via email:INACTIVE]
         ];
     }
-    /**
-     * @inheritdoc
-     */
-    // public function rules()
-    // {
-    //     return [
-    //         [['auth_key', 'password_hash', 'created_at', 'updated_at'], 'required'],
-    //         [['status', 'created_at', 'updated_at'], 'integer'],
-    //         [['username', 'password_hash', 'password_reset_token', 'activation_key', 'email'], 'string', 'max' => 255],
-    //         [['auth_key'], 'string', 'max' => 32],
-    //         [['username'], 'unique'],
-    //         [['email'], 'unique'],
-    //         [['password_reset_token'], 'unique'],
-    //     ];
-    // }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'username' => 'Username',
-            'auth_key' => 'Auth Key',
-            'password_hash' => 'Password Hash',
-            'password_reset_token' => 'Password Reset Token',
-            'activation_key' => 'Activation Key',
-            'email' => 'Email',
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-        ];
-    }
 
     /**
      * @inheritdoc

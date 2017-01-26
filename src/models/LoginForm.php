@@ -156,13 +156,17 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === null) {
+
             $condition['status'] = [User::STATUS_ACTIVE, User::STATUS_INACTIVE];
+            
             if (Yii::$app->getModule('user')->enableLoginWithUsername) {
                 $condition['username'] = $this->username;
             }
+
             if (Yii::$app->getModule('user')->enableLoginWithEmail) {
                  $condition['email'] = $this->email;
             }
+
             $this->_user = User::findOne($condition);
         }
         return $this->_user;

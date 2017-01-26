@@ -210,7 +210,7 @@ class SecurityController extends Controller
 
                 } else {
 
-                    ///Passes the authentication error message to the signup page.
+                    ///Passes the authentication error messages to the signup page.
                     ///@see http://p2code.com/post/yii2-facebook-login-step-by-step-4
                     ///@see http://www.hafidmukhlasin.com/2014/10/29/yii2-super-easy-to-create-login-social-account-with-authclient-facebook-google-twitter-etc/
                     Yii::$app->session['signup-form'] = $model;

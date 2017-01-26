@@ -75,29 +75,6 @@ class Oauth extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
-     */
-    // public function attributeLabels()
-    // {
-    //     return [
-    //         'id' => 'ID',
-    //         'user_id' => 'User ID',
-    //         'provider' => 'Provider',
-    //         'openid' => 'Openid',
-    //         'email' => 'Email',
-    //         'fullname' => 'Fullname',
-    //         'firstname' => 'Firstname',
-    //         'lastname' => 'Lastname',
-    //         'gender' => 'Gender',
-    //         'language' => 'Language',
-    //         'avatar' => 'Avatar',
-    //         'link' => 'Link',
-    //         'created_at' => 'Created At',
-    //         'updated_at' => 'Updated At',
-    //     ];
-    // }
-
-    /**
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
