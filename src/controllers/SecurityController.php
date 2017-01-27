@@ -114,6 +114,20 @@ class SecurityController extends Controller
 
             $load = $model->load(Yii::$app->request->post());
 
+            ///[Yii2 uesr:login with username or email]
+            $usernameOrEmail = false;
+            if ($load && Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail) {
+                //If we have a @ in the username, then it should be an email
+                if(strpos($model->usernameOrEmail, '@') !== false){
+                    $model = new LoginForm(['email' => $model->usernameOrEmail, 'password' => $model->password]);
+                    Yii::$app->getModule('user')->enableLoginWithUsername = false;
+                } else {
+                    $model = new LoginForm(['username' => $model->usernameOrEmail, 'password' => $model->password]);
+                    Yii::$app->getModule('user')->enableLoginWithEmail = false;
+                }
+                $usernameOrEmail = true;
+            }
+
             ///[Yii2 uesr:Ajax validation]
             if (Yii::$app->getModule('user')->enableLoginAjaxValidation) {
                 ///Note: Should be handled as soon as possible ajax!
@@ -130,6 +144,7 @@ class SecurityController extends Controller
             } else {
                 return $this->render('login', [
                     'model' => $model,
+                    'usernameOrEmail' => $usernameOrEmail,  ///[Yii2 uesr:login with username or email]
                 ]);
             }
         } else {

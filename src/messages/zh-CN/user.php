@@ -53,6 +53,7 @@ return [
 	'Activation mail of the registration from ' => '注册激活邮件 - ',
 
 	///\vendor\yongtiger\yii2-user\src\models\LoginForm.php
+	'Username or Email' => '用户名或邮箱',
 	'Username' => '用户名',
 	'Password' => '密码',
 	'Remember me' => '记住我',

@@ -45,12 +45,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ]); ?>
 
-                <?php if (Yii::$app->getModule('user')->enableLoginWithUsername): ?>
-                    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-                <?php endif; ?>
+                <!--///[Yii2 uesr:login with username or email]-->
+                <?php if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail || $usernameOrEmail): ?>
+                    <?= $form->field($model, 'usernameOrEmail')->textInput(['autofocus' => true]) ?>
+                <?php else: ?>
 
-                <?php if (Yii::$app->getModule('user')->enableLoginWithEmail): ?>
-                    <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
+                    <?php if (Yii::$app->getModule('user')->enableLoginWithUsername): ?>
+                        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                    <?php endif; ?>
+
+                    <?php if (Yii::$app->getModule('user')->enableLoginWithEmail): ?>
+                        <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
+                    <?php endif; ?>
+
                 <?php endif; ?>
 
                 <?php if (Yii::$app->getModule('user')->enableLoginWithUsername || Yii::$app->getModule('user')->enableLoginWithEmail): ?>

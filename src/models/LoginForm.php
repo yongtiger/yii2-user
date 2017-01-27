@@ -41,6 +41,8 @@ class LoginForm extends Model
     public $rememberMe;
     public $verifyCode; ///[Yii2 uesr:verifycode]
 
+    public $usernameOrEmail;
+
     /**
      * @var \yongtiger\user\models\User
      */
@@ -61,18 +63,26 @@ class LoginForm extends Model
     {
         $rules =  [];
 
-        if (Yii::$app->getModule('user')->enableLoginWithUsername) {
-            $rules = array_merge($rules, [
-                ['username', 'required'],
-            ]);
+        ///[Yii2 uesr:login with username or email]
+        if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail) {
+                $rules = array_merge($rules, [
+                    ['usernameOrEmail', 'required'],
+                ]);
+        } else {
+            if (Yii::$app->getModule('user')->enableLoginWithUsername) {
+                $rules = array_merge($rules, [
+                    ['username', 'required'],
+                ]);
+            }
+
+            if (Yii::$app->getModule('user')->enableLoginWithEmail) {
+                $rules = array_merge($rules, [
+                    ['email', 'required'],
+                    ['email', 'email'],
+                ]);
+            }
         }
 
-        if (Yii::$app->getModule('user')->enableLoginWithEmail) {
-            $rules = array_merge($rules, [
-                ['email', 'required'],
-                ['email', 'email'],
-            ]);
-        }
 
         if (Yii::$app->getModule('user')->enableLoginWithUsername || Yii::$app->getModule('user')->enableLoginWithEmail) {
             $rules = array_merge($rules, [
@@ -107,12 +117,17 @@ class LoginForm extends Model
      */
     public function attributeLabels()
     {
-        if (Yii::$app->getModule('user')->enableLoginWithUsername) {
-            $attributeLabels['username'] = Module::t('user', 'Username');
-        }
+        ///[Yii2 uesr:login with username or email]
+        if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail) {
+            $attributeLabels['usernameOrEmail'] = Module::t('user', 'Username or Email');
+        } else {
+            if (Yii::$app->getModule('user')->enableLoginWithUsername) {
+                $attributeLabels['username'] = Module::t('user', 'Username');
+            }
 
-        if (Yii::$app->getModule('user')->enableLoginWithEmail) {
-            $attributeLabels['email'] = Module::t('user', 'Email');
+            if (Yii::$app->getModule('user')->enableLoginWithEmail) {
+                $attributeLabels['email'] = Module::t('user', 'Email');
+            }
         }
 
         if (Yii::$app->getModule('user')->enableLoginWithUsername || Yii::$app->getModule('user')->enableLoginWithEmail) {
@@ -158,13 +173,13 @@ class LoginForm extends Model
         if ($this->_user === null) {
 
             $condition['status'] = [User::STATUS_ACTIVE, User::STATUS_INACTIVE];
-            
+
             if (Yii::$app->getModule('user')->enableLoginWithUsername) {
                 $condition['username'] = $this->username;
             }
 
             if (Yii::$app->getModule('user')->enableLoginWithEmail) {
-                 $condition['email'] = $this->email;
+                $condition['email'] = $this->email;
             }
 
             $this->_user = User::findOne($condition);
@@ -193,7 +208,7 @@ class LoginForm extends Model
         if ($runValidation && !$this->validate()) {
             return false;
         }
-        
+
         if ($this->beforeLogin()) {
 
             // ...custom code here...
@@ -202,9 +217,9 @@ class LoginForm extends Model
                 $this->afterLogin();
                 return true;
             }
-            
+
         }
-        
+
         Yii::$app->session->addFlash('error', Module::t('user', 'Login failed!'));
         return false;
     }
@@ -250,9 +265,9 @@ class LoginForm extends Model
 
             ///[Yii2 uesr:activation via email:login]
             if ($this->getUser()->status == User::STATUS_INACTIVE) {
-                Yii::$app->session->addFlash('warning', 
-                    Module::t('user', 
-                        'Your account is not activated! Click [{resend}] an activation Email.', 
+                Yii::$app->session->addFlash('warning',
+                    Module::t('user',
+                        'Your account is not activated! Click [{resend}] an activation Email.',
                         ['resend'=>Module::t('user', Html::a(Module::t('user', 'Resend'), ['registration/resend']))]
                     )
                 );
