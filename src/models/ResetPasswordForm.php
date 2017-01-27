@@ -28,15 +28,25 @@ use yongtiger\user\Module;
  */
 class ResetPasswordForm extends Model
 {
+    /**
+     * @var string password
+     */
     public $password;
+
+    /**
+     * @var string repassword
+     */
     public $repassword; ///[Yii2 uesr:repassword]
+
+    /**
+     * @var string verifyCode
+     */
     public $verifyCode; ///[Yii2 uesr:verifycode]
 
     /**
      * @var \yongtiger\user\models\User
      */
     private $_user;
-
 
     /**
      * Creates a form model given a token.

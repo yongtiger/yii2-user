@@ -26,7 +26,14 @@ use yongtiger\user\Module;
  */
 class PasswordResetRequestForm extends Model
 {
+    /**
+     * @var string email
+     */
     public $email;
+
+    /**
+     * @var string verifyCode
+     */
     public $verifyCode; ///[Yii2 uesr:verifycode]
 
     /**

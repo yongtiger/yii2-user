@@ -35,13 +35,36 @@ class LoginForm extends Model
     const EVENT_BEFORE_LOGIN = 'beforeLogin';
     const EVENT_AFTER_LOGIN = 'afterLogin';
 
+
+    /**
+     * @var string username
+     */
     public $username;
+
+    /**
+     * @var string email
+     */
     public $email;
+
+    /**
+     * @var string password
+     */
     public $password;
-    public $rememberMe;
+
+    /**
+     * @var string repassword
+     */
+    public $repassword; ///[Yii2 uesr:repassword]
+
+    /**
+     * @var string verifyCode
+     */
     public $verifyCode; ///[Yii2 uesr:verifycode]
 
-    public $usernameOrEmail;
+    /**
+     * @var string username or email
+     */
+    public $usernameOrEmail;    ///[Yii2 uesr:login with username or email]
 
     /**
      * @var \yongtiger\user\models\User

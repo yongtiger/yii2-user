@@ -26,7 +26,7 @@ use yongtiger\user\helpers\SecurityHelper;
 class ActivationForm extends Model
 {
     /**
-     * @var string $activation_key Activation key
+     * @var string activation key
      */
     public $activation_key;
 

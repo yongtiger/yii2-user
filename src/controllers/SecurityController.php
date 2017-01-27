@@ -114,7 +114,7 @@ class SecurityController extends Controller
 
             ///[Yii2 uesr:login with username or email]
             $post = Yii::$app->request->post();
-            if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail && isset($post['LoginForm'])) {
+            if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail && !empty($post['LoginForm']['usernameOrEmail'])) {
                 //If we have a @ in the username, then it should be an email
                 if(strpos($post['LoginForm']['usernameOrEmail'], '@') === false){
                     $post['LoginForm']['username'] = $post['LoginForm']['usernameOrEmail'];

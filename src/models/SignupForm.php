@@ -38,10 +38,29 @@ class SignupForm extends Model
     const SCENARIO_DEFAULT = 'default';
     const SCENARIO_OAUTH = 'oauth';
 
+    /**
+     * @var string username
+     */
     public $username;
+
+    /**
+     * @var string email
+     */
     public $email;
+
+    /**
+     * @var string password
+     */
     public $password;
+
+    /**
+     * @var string repassword
+     */
     public $repassword; ///[Yii2 uesr:repassword]
+
+    /**
+     * @var string verifyCode
+     */
     public $verifyCode; ///[Yii2 uesr:verifycode]
 
     ///[Yii2 uesr:activation via email:signup]signup events

@@ -26,11 +26,18 @@ use yongtiger\user\helpers\SecurityHelper;
  */
 class ResendForm extends Model
 {
+    /**
+     * @var string email
+     */
     public $email;
+
+    /**
+     * @var string verifyCode
+     */
     public $verifyCode; ///[Yii2 uesr:verifycode]
 
     /**
-     * @var User User instance
+     * @var \yongtiger\user\models\User
      */
     private $_user;
 
