@@ -118,7 +118,7 @@ class LoginForm extends Model
     public function attributeLabels()
     {
         ///[Yii2 uesr:login with username or email]
-        if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail) {
+        if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail || !empty(Yii::$app->request->getBodyParam('LoginForm')['usernameOrEmail'])) {
             $attributeLabels['usernameOrEmail'] = Module::t('user', 'Username or Email');
         } else {
             if (Yii::$app->getModule('user')->enableLoginWithUsername) {

@@ -1,4 +1,4 @@
-# Yii2-user [v0.5.0] User Basic: Oauth
+# Yii2-user [v0.6.0] User Basic: login with username or email
 
 The most basic `user` module.
 
@@ -20,6 +20,7 @@ The most basic `user` module.
 * Oauth login (if no user, try ot signup)
 * automatically updating oauth info
 * config of `User` module
+* login with username or email
 
 ## Dependences
 
@@ -135,9 +136,9 @@ to the require section of your composer.json.
         ///Login
         'enableLogin' => true,
         'disableLoginMessage' => Yii::t('user', 'This site has been closed login.'),
-
+        //////[Yii2 uesr:login with username or email]when both `enableLoginWithUsername` and `enableLoginWithEmail` are `true`
         'enableLoginWithUsername' => true,
-        'enableLoginWithEmail' => false,
+        'enableLoginWithEmail' => true,
 
         'enableLoginAjaxValidation' => true,
         'enableLoginClientValidation' => true,

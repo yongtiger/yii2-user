@@ -1,6 +1,13 @@
 # Development roadmap
 
 
+## Version 0.6.0 (User Basic: login with username or email)
+
+Features of this version:
+
+* login with username or email
+
+
 ## Version 0.5.0 (User Basic: Oauth)
 
 Features of this version:

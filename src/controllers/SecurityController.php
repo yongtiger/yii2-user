@@ -112,21 +112,20 @@ class SecurityController extends Controller
 
             $model = new LoginForm();
 
-            $load = $model->load(Yii::$app->request->post());
-
             ///[Yii2 uesr:login with username or email]
-            $usernameOrEmail = false;
-            if ($load && Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail) {
+            $post = Yii::$app->request->post();
+            if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail && isset($post['LoginForm'])) {
                 //If we have a @ in the username, then it should be an email
-                if(strpos($model->usernameOrEmail, '@') !== false){
-                    $model = new LoginForm(['email' => $model->usernameOrEmail, 'password' => $model->password]);
-                    Yii::$app->getModule('user')->enableLoginWithUsername = false;
-                } else {
-                    $model = new LoginForm(['username' => $model->usernameOrEmail, 'password' => $model->password]);
+                if(strpos($post['LoginForm']['usernameOrEmail'], '@') === false){
+                    $post['LoginForm']['username'] = $post['LoginForm']['usernameOrEmail'];
                     Yii::$app->getModule('user')->enableLoginWithEmail = false;
+                } else {
+                    $post['LoginForm']['email'] = $post['LoginForm']['usernameOrEmail'];
+                    Yii::$app->getModule('user')->enableLoginWithUsername = false;
                 }
-                $usernameOrEmail = true;
             }
+
+            $load = $model->load($post);
 
             ///[Yii2 uesr:Ajax validation]
             if (Yii::$app->getModule('user')->enableLoginAjaxValidation) {
@@ -144,7 +143,6 @@ class SecurityController extends Controller
             } else {
                 return $this->render('login', [
                     'model' => $model,
-                    'usernameOrEmail' => $usernameOrEmail,  ///[Yii2 uesr:login with username or email]
                 ]);
             }
         } else {

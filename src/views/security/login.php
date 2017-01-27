@@ -39,14 +39,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'validateOnBlur' => Yii::$app->getModule('user')->enableLoginValidateOnBlur,
                 ///disable validate on submit while using captcha & ajax!!!
                 'validateOnSubmit' => !(
-                    Yii::$app->getModule('user')->enableLoginAjaxValidation && 
+                    Yii::$app->getModule('user')->enableLoginAjaxValidation &&
                     Yii::$app->getModule('user')->enableLoginWithCaptcha
                 ) && Yii::$app->getModule('user')->enableLoginValidateOnSubmit,
 
             ]); ?>
 
                 <!--///[Yii2 uesr:login with username or email]-->
-                <?php if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail || $usernameOrEmail): ?>
+                <?php if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail || !empty(Yii::$app->request->getBodyParam('LoginForm')['usernameOrEmail'])): ?>
                     <?= $form->field($model, 'usernameOrEmail')->textInput(['autofocus' => true]) ?>
                 <?php else: ?>
 
@@ -73,9 +73,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             'enableClientValidation' => false,  ///always disable client validation in captcha! Otherwise 'testLimit' of captcha will be invalid, and thus lead to attack. Also 'validateOnBlur' will be set false.
                             'enableAjaxValidation'=>false,     ///always disable Ajax validation. Note that once CAPTCHA validation succeeds, a new CAPTCHA will be generated automatically. @see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-                            
+
                             ///also need to disable validate on ActiveForm submit while using captcha & ajax!!!
-                            
+
                         ])->widget(Yii::$app->getModule('user')->captchaActiveFieldWidget['class'], array_merge(Yii::$app->getModule('user')->captchaActiveFieldWidget, [
 
                             ///captcha in module, e.g. `/user/security/captcha`
