@@ -52,9 +52,9 @@ class LoginForm extends Model
     public $password;
 
     /**
-     * @var string repassword
+     * @var string remember me
      */
-    public $repassword; ///[Yii2 uesr:repassword]
+    public $rememberMe;
 
     /**
      * @var string verifyCode
