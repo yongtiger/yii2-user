@@ -40,7 +40,6 @@ class ResendForm extends Model
     public function rules()
     {
         $rules =  [
-            // E-mail
             ['email', 'required'],
             ['email', 'trim'],
             ['email', 'email'],

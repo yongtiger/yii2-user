@@ -13,12 +13,15 @@
 namespace yongtiger\user\controllers;
 
 use Yii;
+use yii\web\Controller;
+use yii\filters\AccessControl;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
+use yongtiger\user\Module;
 use yongtiger\user\models\PasswordResetRequestForm;
 use yongtiger\user\models\ResetPasswordForm;
-use yongtiger\user\Module;
 
 /**
  * RecoveryController Controller
@@ -31,6 +34,28 @@ class RecoveryController extends Controller
      * @inheritdoc
      */
     public $defaultAction = 'requestPasswordReset';
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        $behaviors = [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['request-password-reset', 'reset-password'],  ///except capcha
+                'rules' => [
+                    [
+                        'actions' => ['request-password-reset', 'reset-password'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                ],
+            ],
+        ];
+
+        return $behaviors;
+    }
 
     /**
      * @inheritdoc
@@ -64,8 +89,8 @@ class RecoveryController extends Controller
             ///Note: CAPTCHA validation should not be used in AJAX validation mode.
             ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
             if (Yii::$app->request->isAjax) {
-                Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                return \yii\widgets\ActiveForm::validate($model);
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
             }
         }
 

@@ -13,6 +13,7 @@
 namespace yongtiger\user\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 
 /**
@@ -31,10 +32,9 @@ use yii\behaviors\TimestampBehavior;
  * @property string $avatar
  * @property string $link
  * @property integer $created_at
- *
  * @property User $user
  */
-class Oauth extends \yii\db\ActiveRecord
+class Oauth extends ActiveRecord
 {
     /**
      * @inheritdoc

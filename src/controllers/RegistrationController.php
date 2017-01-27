@@ -14,13 +14,16 @@ namespace yongtiger\user\controllers;
 
 use Yii;
 use yii\web\Controller;
-use yii\widgets\ActiveForm;
+use yii\filters\AccessControl;
 use yii\web\Response;
-use yongtiger\user\models\SignupForm;
+use yii\widgets\ActiveForm;
+use yii\db\IntegrityException;
 use yongtiger\user\Module;
 use yongtiger\user\models\User;
+use yongtiger\user\models\SignupForm;
 use yongtiger\user\models\ActivationForm;
 use yongtiger\user\models\ResendForm;
+use yongtiger\user\models\Oauth;
 
 /**
  * Registration Controller
@@ -41,11 +44,11 @@ class RegistrationController extends Controller
     {
         $behaviors = [
             'access' => [
-                'class' => \yii\filters\AccessControl::className(),
-                'only' => ['signup','activate', 'resend'],
+                'class' => AccessControl::className(),
+                'only' => ['signup','activate', 'resend'],  ///except capcha
                 'rules' => [
                     [
-                        'actions' => ['signup', 'activate', 'resend'],
+                        'actions' => ['signup','activate', 'resend'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -110,9 +113,11 @@ class RegistrationController extends Controller
                         unset(Yii::$app->session['auth-client']); 
 
                         ///Add a new record to the oauth database table.
-                        $auth = new \yongtiger\user\models\Oauth(['user_id' => $user->id]);
+                        $auth = new Oauth(['user_id' => $user->id]);
                         $auth->attributes = $client;   ///massive assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
-                        $auth->save(false);     ///?????Whether to consider returning false?
+                        if (!$auth->save(false)) {
+                            throw new IntegrityException();
+                        }
                     }
                 }
 

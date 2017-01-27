@@ -18,11 +18,14 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
+use yii\db\IntegrityException;
+use yongtiger\user\Module;
+use yongtiger\user\models\User;
 use yongtiger\user\models\LoginForm;
 use yongtiger\user\models\SignupForm;
-use yongtiger\user\Module;
-use yii\web\Response;
-use yongtiger\user\models\User;
+use yongtiger\user\models\Oauth;
 
 /**
  * Security Controller
@@ -44,12 +47,17 @@ class SecurityController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['logout', 'login', 'authenticate'],  ///except capcha
                 'rules' => [
                     [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['login', 'authenticate'],
+                        'allow' => true,
+                        'roles' => ['?'],
                     ],
                 ],
             ],
@@ -113,7 +121,7 @@ class SecurityController extends Controller
                 ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
                 if (Yii::$app->request->isAjax) {
                     Yii::$app->response->format = Response::FORMAT_JSON;
-                    return \yii\widgets\ActiveForm::validate($model);
+                    return ActiveForm::validate($model);
                 }
             }
 
@@ -204,9 +212,11 @@ class SecurityController extends Controller
                     Yii::$app->session->addFlash('success', $note);
 
                     ///Add a new record to the oauth database table.
-                    $auth = new \yongtiger\user\models\Oauth(['user_id' => $user->id]);
+                    $auth = new Oauth(['user_id' => $user->id]);
                     $auth->attributes = $client->getUserInfos();   ///massive assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
-                    $auth->save(false);     ///?????Whether to consider returning false?
+                    if (!$auth->save(false)) {
+                        throw new IntegrityException();
+                    }
 
                 } else {
 

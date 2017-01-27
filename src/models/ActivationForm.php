@@ -36,7 +36,6 @@ class ActivationForm extends Model
     public function rules()
     {
         return [
-            // Secure key
             ['activation_key', 'required'],
             ['activation_key', 'trim'],
             ['activation_key', 'string', 'max' => 128],
