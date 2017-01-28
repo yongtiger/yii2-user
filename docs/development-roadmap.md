@@ -1,6 +1,13 @@
 # Development roadmap
 
 
+## Version 0.7.0 (User Basic: verify)
+
+Features of this version:
+
+* password and email verify
+
+
 ## Version 0.6.0 (User Basic: login with username or email)
 
 Features of this version:

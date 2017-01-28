@@ -90,18 +90,23 @@ class SignupForm extends Model
             $rules = array_merge($rules, [
                 ['username', 'required'],
                 ['username', 'trim'],
+
+                ///[Yii2 uesr:oauth signup]
                 ['username', 'filter', 'filter' => function ($value) {
                     return preg_replace('/[^(\x{4E00}-\x{9FA5})\w]/iu', '', $value);
                 }],
+
                 ['username', 'string', 'min' => 2, 'max' => 32],
 
                 ///[Yii2 uesr:username]User name verification
                 //The unicode range of Chinese characters is: 0x4E00~0x9FA5. This range also includes Chinese, Japanese and Korean characters
+                //  i   Indicates to match both uppercase and lowercase
                 //  u   Indicates to match by unicode (utf-8), mainly for multi-byte characters such as Chinese characters
+                //  w   Indicates to match alphabetic, numeric, or underscore characters
                 //  \x  Ignore whitespace
                 //[(\x{4E00}-\x{9FA5})a-zA-Z]+  The character starts with a Chinese character or letter and appears 1 to n times
                 //[(\x{4E00}-\x{9FA5})\w]*      Chinese characters underlined alphabet, there 0-n times
-                ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-zA-Z]+[(\x{4E00}-\x{9FA5})\w]*$/u', 'message' => Module::t('user', 'The username only contains letters ...')],
+                ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-z]+[(\x{4E00}-\x{9FA5})\w]*$/iu', 'message' => Module::t('user', 'The username only contains letters ...')],
 
                 ['username', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This username has already been taken.')],
             ]);
@@ -299,6 +304,10 @@ class SignupForm extends Model
 
             Yii::$app->session->addFlash('warning', Module::t('user', 'Please check your email [{youremail}] to activate your account.', ['youremail' => $this->email]));
         }
+
+        ///[Yii2 uesr:verify]
+        ///After signup, `password_verified_at` is set to now, that is verified password.
+        $this->getUser()->link('verify', new Verify(['password_verified_at' => time()]));
 
         $this->trigger(self::EVENT_AFTER_SIGNUP, new ModelEvent());
     }

@@ -201,6 +201,7 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
+    ///[Yii2 uesr:oauth]
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -224,5 +225,14 @@ class User extends ActiveRecord implements IdentityInterface
             ->andWhere(['{{oauth}}.provider' => $provider])
             ->andWhere(['{{oauth}}.openid' => $openid])
             ->one();
+    }
+
+    ///[Yii2 uesr:verify]
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVerify()
+    {
+        return $this->hasOne(Verify::className(), ['user_id' => 'id']);
     }
 }

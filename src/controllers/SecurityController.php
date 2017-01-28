@@ -114,13 +114,13 @@ class SecurityController extends Controller
 
             ///[Yii2 uesr:login with username or email]
             $post = Yii::$app->request->post();
-            if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail && !empty($post['LoginForm']['usernameOrEmail'])) {
+            if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail && !empty($post[$model->formName()]['usernameOrEmail'])) {
                 //If we have a @ in the username, then it should be an email
-                if(strpos($post['LoginForm']['usernameOrEmail'], '@') === false){
-                    $post['LoginForm']['username'] = $post['LoginForm']['usernameOrEmail'];
+                if(strpos($post[$model->formName()]['usernameOrEmail'], '@') === false){
+                    $post[$model->formName()]['username'] = $post[$model->formName()]['usernameOrEmail'];
                     Yii::$app->getModule('user')->enableLoginWithEmail = false;
                 } else {
-                    $post['LoginForm']['email'] = $post['LoginForm']['usernameOrEmail'];
+                    $post[$model->formName()]['email'] = $post[$model->formName()]['usernameOrEmail'];
                     Yii::$app->getModule('user')->enableLoginWithUsername = false;
                 }
             }
@@ -215,6 +215,13 @@ class SecurityController extends Controller
                 }
 
                 if ($user = $model->signup(Yii::$app->getModule('user')->enableOauthSignupValidation)) {
+                    ///[Yii2 uesr:verify]
+                    ///When oauth, `password` is set to `null`, that is not verified password.
+                    $user->verify->password_verified_at = null;
+                    if (!$user->verify->save(false)) {
+                        throw new IntegrityException();
+                    }
+
                     $note = Module::t('user', 'Successfully registered.');
                     if (Yii::$app->getModule('user')->enableOauthSignupValidation && Yii::$app->getModule('user')->enableSignupWithUsername) {
                         $note .= ' ' . Module::t('user', 'Username') . ' [' . $model->username .']';

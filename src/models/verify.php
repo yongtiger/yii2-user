@@ -1,4 +1,4 @@
-<?php ///[Yii2 uesr:oauth]
+<?php ///[Yii2 uesr:verify]
 
 /**
  * Yii2 User
@@ -17,32 +17,23 @@ use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "{{%oauth}}".
+ * This is the model class for table "{{%verify}}".
  *
- * @property integer $id
  * @property integer $user_id
- * @property string $provider
- * @property string $openid
- * @property string $email
- * @property string $fullname
- * @property string $firstname
- * @property string $lastname
- * @property int $gender
- * @property string $language
- * @property string $avatar
- * @property string $link
+ * @property integer $password_verified_at
+ * @property integer $email_verified_at
  * @property integer $created_at
  * @property integer $updated_at
  * @property User $user
  */
-class Oauth extends ActiveRecord
+class Verify extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%oauth}}';
+        return '{{%verify}}';
     }
 
     /**
@@ -67,11 +58,10 @@ class Oauth extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'provider', 'openid'], 'required'],
-            [['user_id', 'gender', 'created_at', 'updated_at'], 'integer'],
-            [['provider', 'openid', 'email', 'fullname', 'firstname', 'lastname', 'language', 'avatar', 'link'], 'string', 'max' => 255],
-            [['provider', 'openid'], 'unique', 'targetAttribute' => ['provider', 'openid'], 'message' => 'The combination of Provider and Openid has already been taken.'],
+            [['user_id'], 'required'],
+            [['user_id', 'password_verified_at', 'email_verified_at', 'created_at', 'updated_at'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            ['password_verified_at', 'default', 'value' => time()],
         ];
     }
 
