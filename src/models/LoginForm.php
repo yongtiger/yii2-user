@@ -35,7 +35,6 @@ class LoginForm extends Model
     const EVENT_BEFORE_LOGIN = 'beforeLogin';
     const EVENT_AFTER_LOGIN = 'afterLogin';
 
-
     /**
      * @var string username
      */
@@ -243,7 +242,6 @@ class LoginForm extends Model
 
         }
 
-        Yii::$app->session->addFlash('error', Module::t('user', 'Login failed!'));
         return false;
     }
 
@@ -313,14 +311,17 @@ class LoginForm extends Model
      * public function afterLogin()
      * {
      *     // ...custom code here...
+     *     $this->getUser();
      *
-     *     $this->trigger(self::EVENT_AFTER_LOGIN, new ModelEvent());
+     *     parent::afterLogin();
      * }
      * ```
      *
      */
     protected function afterLogin()
     {
+        // ...custom code here...
+        
         $this->trigger(self::EVENT_AFTER_LOGIN, new ModelEvent());
     }
 }

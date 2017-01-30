@@ -96,7 +96,7 @@ class SignupForm extends Model
                     return preg_replace('/[^(\x{4E00}-\x{9FA5})\w]/iu', '', $value);
                 }],
 
-                ['username', 'string', 'min' => 2, 'max' => 32],
+                ['username', 'string', 'min' => 2, 'max' => 255],
 
                 ///[Yii2 uesr:username]User name verification
                 //The unicode range of Chinese characters is: 0x4E00~0x9FA5. This range also includes Chinese, Japanese and Korean characters
@@ -212,7 +212,7 @@ class SignupForm extends Model
 
             // ...custom code here...
             if ($this->getUser()->save(false)) {
-
+                Yii::$app->session->addFlash('success', Module::t('user', 'Successfully registered.'));
                 $this->afterSignup();
                 return $this->getUser();
             }else{
@@ -280,8 +280,9 @@ class SignupForm extends Model
      * public function afterSignup()
      * {
      *     // ...custom code here...
+     *     $this->getUser();
      *
-     *     $this->trigger(self::EVENT_AFTER_SIGNUP, new ModelEvent());
+     *     parent::afterSignup();
      * }
      * ```
      *

@@ -19,6 +19,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+
+	/**
+	 * Controllers
+	 */
 	///\vendor\yongtiger\yii2-user\src\controllers\RegistrationController.php
 	'This site has been closed registration.' => '本站已经关闭注册。',
 
@@ -31,7 +35,15 @@ return [
 	'Sorry, we are unable to reset password ...' => '对不起，我们不能根据您提供的邮箱地址重置您的密码。',
 	'New password saved.' => '新密码已保存。',
 
+	///\vendor\yongtiger\yii2-user\src\controllers\AccountController.php
+	//////[Yii2 uesr:account]
+	'Invalid action!' => '无效操作！',
+	'Verification mail from ' => '邮箱验证邮件 - ',
+	'Please check your email [{youremail}] to verify your email.' => '请查收您的邮件 [{youremail}] 以验证您的邮箱。',
 
+	/**
+	 * Models
+	 */
 	///\vendor\yongtiger\yii2-user\src\models\User.php
 	'"findIdentityByAccessToken" is not implemented.' => '"findIdentityByAccessToken"没有实现。',
 
@@ -60,7 +72,6 @@ return [
 	'Incorrect username or password.' => '用户名或密码不正确。',
 	'Your account is invalid!' => '您的账户无效！',
 	'Your account is not activated! Click [{resend}] an activation Email.' => '您的账户没有激活！点击 [{resend}] 激活邮件。',
-	'Login failed!' => '登陆失败！',
 
 	///\vendor\yongtiger\yii2-user\src\models\PasswordResetRequestForm.php
 	'There is no user with such email.' => '没有用户使用该邮箱。',
@@ -78,25 +89,44 @@ return [
 	//////[Yii2 uesr:activation via email:activation]
 	'Activation Key' => '激活码',
 	'The activation link is expired!' => '激活链接已经过期！',
-	'Your Account has been successfully activated ...' => '您的账户已经被成功激活。您可以用注册时填写的用户名和密码进行登陆。',
-	'User has not been activated. Please try again!' => '用户没有被激活，请重新试一试！',
+	'Your account has been successfully activated ...' => '您的账户已经被成功激活。您可以用注册时填写的用户名和密码进行登陆。',
+	'User has not been activated! Please try again.' => '用户没有被激活！请重新试一试。',
+	//////[Yii2 uesr:account]
+	'Your email has not been verified! Please try again.' => '您的邮箱没有被验证！请重新试一试。',
+	'Your email has been successfully activated.' => '您的邮箱已经被验证。',
 
 	///\vendor\yongtiger\yii2-user\src\models\ResendForm.php
 	//////[Yii2 uesr:activation via email:resend]
 	'Activation mail of the registration from ' => '注册激活邮件 - ',
 	'An activation link has been sent to the email address you entered.' => '激活链接已经发送到您注册的邮箱。',
-	'Resend activation email failed. Please try again!' => '重新发送激活邮件失败，请重新试一试！',
+	'Resend activation email failed! Please try again.' => '重新发送激活邮件失败！请重新试一试。',
 
+	///\vendor\yongtiger\yii2-user\src\models\ChangeForm.php
+	//////[Yii2 uesr:account]
+	'Incorrect password.' => '密码不正确。',
+
+	///\vendor\yongtiger\yii2-user\src\models\ChangeUsernameForm.php
+	///\vendor\yongtiger\yii2-user\src\models\ChangeEmailForm.php
+	///\vendor\yongtiger\yii2-user\src\models\ChangePasswordForm.php
+	//////[Yii2 uesr:account]
+	'Successfully changed.' => '修改成功。',
+
+	///\vendor\yongtiger\yii2-user\src\models\ChangePasswordForm.php
+	//////[Yii2 uesr:account]
+	'New Password' => '新密码',
+
+	/**
+	 * Views
+	 */
 	///\vendor\yongtiger\yii2-user\src\views\security\signup.php
 	'Signup' => '注册',
-	'Please fill out the following fields to signup:' => '请填写下列内容：',
+	'Please fill out the following fields:' => '请填写下列内容：',
 	//////[Yii2 uesr: verifycode]
 	'Verification Code' => '验证码',
 	'Click to change another verification code.' => '点击切换验证码',
 
 	///\vendor\yongtiger\yii2-user\src\views\security\login.php
 	'Login' => '登陆',
-	'Please fill out the following fields to login:' => '请填写下列内容：',
 	'If you forgot your password you can [{reset it}].' => "如果您忘记密码，您可以 [{reset it}]。",
 	'reset it' => '重置',
 
@@ -124,5 +154,30 @@ return [
 	'Resend e-mail activation' => '重新发送激活邮件',
 	'Please fill out your registration email. A link to activation will be sent there.' => '请填写您注册时的邮箱，系统将发送激活账户的邮件。',
 	'Resend' => '重新发送',
-	
+
+	///\vendor\yongtiger\yii2-user\src\views\account\index.php
+	//////[Yii2 uesr:account]
+	'Account' => '账户信息',
+	'Manage your personal account information.' => '管理您的个人账户信息。',
+	'Username is not set' => '用户名没有设置',
+	'Set' => '设置',
+	'Change' => '更改',
+	'Email is not set' => '邮箱没有设置',
+	'Last verified at:' => '最后验证时间：',
+	'Verify email' => '验证邮箱',
+	'Last updated at:' => '最后更新时间：',
+	'Danger!' => '危险！',
+	'Password is not set' => '密码没有设置',
+	'Oauth' => '第三方登陆',
+	'Setup' => '设置',
+
+	///\vendor\yongtiger\yii2-user\src\views\account\change.php
+	//////[Yii2 uesr:account]
+	'You must provide your account password when changing' => '更改时必须提供您的账户密码',
+
+	///\vendor\yongtiger\yii2-user\src\mail\account-verification-email-html.php
+	///\vendor\yongtiger\yii2-user\src\mail\account-verification-email-text.php
+	//////[Yii2 uesr:account]
+	'Follow the link below to verify your email:' => '请点击下面的链接验证您的邮箱：',
+
 ];

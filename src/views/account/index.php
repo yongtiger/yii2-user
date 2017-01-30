@@ -1,0 +1,92 @@
+<?php ///[Yii2 uesr:account]
+
+/**
+ * Yii2 User
+ *
+ * @link        http://www.brainbook.cc
+ * @see         https://github.com/yongtiger/yii2-user
+ * @author      Tiger Yong <tigeryang.brainbook@outlook.com>
+ * @copyright   Copyright (c) 2016 BrainBook.CC
+ * @license     http://opensource.org/licenses/MIT
+ */
+
+/**
+ * @var $this yii\base\View
+ */
+
+use yii\helpers\Html;
+use yongtiger\user\Module;
+
+$this->title = Module::t('user', 'Account');
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="registration-signup">
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <p><?= Module::t('user', 'Manage your personal account information.') ?></p>
+
+    <div class="row">
+        <div class="col-lg-2">
+            <label class="control-label"><?= Module::t('user', 'Username') ?></label>
+        </div>
+        <div class="col-lg-5">
+            <?php if (empty(Yii::$app->user->identity->username)): ?>
+                <?= '(' . Module::t('user', 'Username is not set') . ')' ?>
+            <?php else: ?>
+                <?= Yii::$app->user->identity->username ?>
+            <?php endif; ?>
+        </div>
+        <div class="col-lg-5">
+            <?= Html::a(Module::t('user', empty(Yii::$app->user->identity->username) ? 'Set': 'Change'), ['account/change', 'item' => 'username']) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+            <label class="control-label"><?= Module::t('user', 'Email') ?></label>
+        </div>
+        <div class="col-lg-5">
+            <?php if (empty(Yii::$app->user->identity->email)): ?>
+                <?= '(' . Module::t('user', 'Email is not set') . ')' ?>
+            <?php else: ?>
+                <?= Yii::$app->user->identity->email ?>
+                <!--///[Yii2 uesr:verify]-->
+                <?php if (isset(Yii::$app->user->identity->verify->email_verified_at)): ?>
+                    <?= '(' . Module::t('user', 'Last verified at:') . ' ' . date('Y-m-d H:i:s', Yii::$app->user->identity->verify->email_verified_at) . ')' ?>
+                <?php else: ?>
+                    <?= '(' . Html::a(Module::t('user', 'Verify email'), ['account/send-verification-email']) . ')' ?>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
+        <div class="col-lg-5">
+            <?= Html::a(Module::t('user', empty(Yii::$app->user->identity->email) ? 'Set': 'Change'), ['account/change', 'item' => 'email']) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+            <label class="control-label"><?= Module::t('user', 'Password') ?></label>
+        </div>
+        <div class="col-lg-5">
+            <!--///[Yii2 uesr:verify]-->
+            <?php if (isset(Yii::$app->user->identity->verify->password_verified_at)): ?>
+                *********
+                <?= '(' . Module::t('user', 'Last updated at:') . ' ' . date('Y-m-d H:i:s', Yii::$app->user->identity->verify->password_verified_at) . ')' ?>
+            <?php else: ?>
+                <?= '(' . Module::t('user', 'Danger!') . ' ' . Module::t('user', 'Password is not set') . ')' ?>
+            <?php endif; ?>
+        </div>
+        <div class="col-lg-5">
+            <?= Html::a(Module::t('user', isset(Yii::$app->user->identity->verify->password_verified_at) ? 'Change': 'Set'), ['account/change', 'item' => 'password']) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+            <label class="control-label"><?= Module::t('user', 'Oauth') ?></label>
+        </div>
+        <div class="col-lg-5">
+            
+        </div>
+        <div class="col-lg-5">
+            <?= Html::a(Module::t('user', 'Setup'), ['account/oauth-index']) ?>
+        </div>
+    </div>
+</div>

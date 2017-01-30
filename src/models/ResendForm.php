@@ -50,14 +50,11 @@ class ResendForm extends Model
             ['email', 'required'],
             ['email', 'trim'],
             ['email', 'email'],
-            ['email', 'string', 'max' => 55],
-            [
-                'email',
-                'exist',
-                'targetClass' => User::className(),
-                'filter' => function ($query) {
-                    $query->andWhere(['status' => User::STATUS_INACTIVE]);
-                }
+            ['email', 'string', 'max' => 255],
+            ['email', 'exist',
+                'targetClass' => '\yongtiger\user\models\User',
+                'filter' => ['status' => User::STATUS_ACTIVE],
+                'message' => Module::t('user', 'There is no user with such email.')
             ],
         ];
 
@@ -125,7 +122,7 @@ class ResendForm extends Model
             }
         }
 
-        Yii::$app->session->addFlash('error', Module::t('user', 'Resend activation email failed. Please try again!'));
+        Yii::$app->session->addFlash('error', Module::t('user', 'Resend activation email failed! Please try again.'));
 
         return false;
     }

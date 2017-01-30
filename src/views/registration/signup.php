@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="registration-signup">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p><?= Module::t('user', 'Please fill out the following fields to signup:') ?></p>
+    <p><?= Module::t('user', 'Please fill out the following fields:') ?></p>
 
     <div class="row">
         <div class="col-lg-5">

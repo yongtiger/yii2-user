@@ -42,7 +42,7 @@ class Module extends \yii\base\Module
 
     ///Signup
     /**
-     * @var bool Enable signup 
+     * @var bool Enable signup
      */
     public $enableSignup = true;
 
@@ -275,7 +275,7 @@ class Module extends \yii\base\Module
      *
      * ```
      * [
-     *     'baseAuthUrl' => new \yii\helpers\ReplaceArrayValue(['security/auth']),  ///cannot be `['security/auth']`! ArrayHelper::merge will get wrong resule. instead, we use `ReplaceArrayValue`.
+     *     'baseAuthUrl' => new \yii\helpers\ReplaceArrayValue(['security/auth']),  ///cannot be `['security/auth']`! ArrayHelper::merge will get wrong result. instead, we use `ReplaceArrayValue`.
      *     'popupMode' => false,     ///defaults to true
      *     'options' => ['class'=>'control-label'], ///widget div options
      *     'clientOptions' => [
@@ -303,13 +303,65 @@ class Module extends \yii\base\Module
      * [
      *     'class' => 'yii\authclient\AuthAction',
      *     // 'successCallback' => Yii::$app->user->isGuest ? [$this, 'authenticate'] : [$this, 'connect'],   ///cannot configure 'successCallback' here because of `$this`!!!
-     *     'successUrl' => '?r=site/index',  ///cannot use `Yii::$app->homeUrl` here! we will add `Yii::$app->homeUrl` in module init() later
-     *     'cancelUrl' => '?r=user/security/login', ///empty string means web home url
+     *     ///Cannot use `Yii::$app` here! we will use `Yii::$app->urlManager->createUrl()` in module init() later
+     *     ///Cannot be `['security/auth']`! `ArrayHelper::merge` will get wrong result. instead, we use `ReplaceArrayValue`.
+     *     'successUrl' => new \yii\helpers\ReplaceArrayValue(['user/account/index']),
+     *     'cancelUrl' => new \yii\helpers\ReplaceArrayValue(['user/security/login']),
      * ]
      * ```
      */
     public $auth = [];  ///init later
-    
+
+    /**
+     * @var bool Enable account changing with password
+     */
+    public $enableAccountChangeWithPassword = true;
+
+    /**
+     * @var bool Enable account changing `AjaxValidation`
+     */
+    public $enableAccountChangeAjaxValidation = true;
+
+    /**
+     * @var bool Enable account changing `ClientValidation`
+     */
+    public $enableAccountChangeClientValidation = true;
+
+    /**
+     * @var bool Enable account changing `ValidateOnBlur`
+     */
+    public $enableAccountChangeValidateOnBlur = true;
+
+    /**
+     * @var bool Enable account changing `ValidateOnSubmit`
+     */
+    public $enableAccountChangeValidateOnSubmit = true;
+
+    /**
+     * @var bool Enable account changing with Captcha
+     */
+    public $enableAccountChangeWithCaptcha = true;
+
+    /**
+     * @var bool Enable account changing password with repassword
+     */
+    public $enableAccountChangePasswordWithRepassword = true;
+
+    /**
+     * @var string Html email body file of RequestPasswordReset
+     */
+    public $accountVerificationEmailComposeHtml = '@yongtiger/user/mail/account-verification-email-html';
+
+    /**
+     * @var string Text email body file of RequestPasswordReset
+     */
+    public $accountVerificationEmailComposeText = '@yongtiger/user/mail/account-verification-email-text';
+
+    /**
+     * @var bool Enable RequestPasswordReset with email
+     */
+    public $accountVerificationEmailSetFrom; ///init later
+
     /**
      * @inheritdoc
      */
@@ -333,7 +385,11 @@ class Module extends \yii\base\Module
         if (!isset($this->requestPasswordResetSetFrom)) {
             $this->requestPasswordResetSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
         }
-   
+
+        if (!isset($this->accountVerificationEmailSetFrom)) {
+            $this->accountVerificationEmailSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
+        }
+
         if ($this->enableSignupWithCaptcha || $this->enableLoginWithCaptcha || $this->enableRequestPasswordResetWithCaptcha) {
             $this->captcha = ArrayHelper::merge([
                 'class' => 'yii\captcha\CaptchaAction',
@@ -341,11 +397,11 @@ class Module extends \yii\base\Module
                 'width' => 96,          ///The width of the generated CAPTCHA image. Defaults to 120.
                 'maxLength' =>6,        ///The maximum length for randomly generated word. Defaults to 7.
                 'minLength' =>4,        ///The minimum length for randomly generated word. Defaults to 6.
-                'testLimit'=>5,         ///How many times should the same CAPTCHA be displayed. Defaults to 3. A value less than or equal to 0 means the test is 
+                'testLimit'=>5,         ///How many times should the same CAPTCHA be displayed. Defaults to 3. A value less than or equal to 0 means the test is
             ], $this->captcha);
 
             $this->captchaActiveFieldWidget = ArrayHelper::merge([
-                'class' => 'yii\captcha\Captcha', 
+                'class' => 'yii\captcha\Captcha',
                 'imageOptions' => ['alt' => Module::t('user', 'Verification Code'), 'title' => Module::t('user', 'Click to change another verification code.')],
                 'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
             ], $this->captchaActiveFieldWidget);
@@ -358,15 +414,12 @@ class Module extends \yii\base\Module
 
             $this->auth = ArrayHelper::merge([
                 'class' => 'yii\authclient\AuthAction',
+                'successUrl' => ['user/account/index'],
+                'cancelUrl' => ['user/security/login'],
             ], $this->auth);
+            $this->auth['successUrl'] = Yii::$app->urlManager->createUrl($this->auth['successUrl']);
+            $this->auth['cancelUrl'] = Yii::$app->urlManager->createUrl($this->auth['cancelUrl']);
 
-            ///Add `Yii::$app->homeUrl` in `successUrl` and `cancelUrl`. Because `Yii::$app->homeUrl` cannot be used in the application config!
-            if (isset($this->auth['successUrl'])) {
-                $this->auth['successUrl'] = Yii::$app->homeUrl . $this->auth['successUrl'];
-            }
-            if (isset($this->auth['successUrl'])) {
-                $this->auth['cancelUrl'] = Yii::$app->homeUrl . $this->auth['cancelUrl'];
-            }
         }
     }
 

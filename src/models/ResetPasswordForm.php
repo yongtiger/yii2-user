@@ -15,6 +15,7 @@ namespace yongtiger\user\models;
 use Yii;
 use yii\base\Model;
 use yii\base\InvalidParamException;
+use yii\db\IntegrityException;
 use yongtiger\user\models\User;
 use yongtiger\user\Module;
 
@@ -118,6 +119,18 @@ class ResetPasswordForm extends Model
         $user->setPassword($this->password);
         $user->removePasswordResetToken();
 
-        return $user->save(false);
+        if ($user->save(false)) {
+
+            ///[Yii2 uesr:verify]
+            $user->verify->password_verified_at = time();
+            $user->verify->email_verified_at = time();
+            if (!$user->verify->save(false)) {
+                throw new IntegrityException();
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

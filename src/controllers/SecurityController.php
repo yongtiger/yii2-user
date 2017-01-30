@@ -222,15 +222,6 @@ class SecurityController extends Controller
                         throw new IntegrityException();
                     }
 
-                    $note = Module::t('user', 'Successfully registered.');
-                    if (Yii::$app->getModule('user')->enableOauthSignupValidation && Yii::$app->getModule('user')->enableSignupWithUsername) {
-                        $note .= ' ' . Module::t('user', 'Username') . ' [' . $model->username .']';
-                    }
-                    if (Yii::$app->getModule('user')->enableOauthSignupValidation && Yii::$app->getModule('user')->enableSignupWithEmail) {
-                        $note .= ' ' . Module::t('user', 'Email') . ' [' . $model->email .']';
-                    }
-                    Yii::$app->session->addFlash('success', $note);
-
                     ///Add a new record to the oauth database table.
                     $auth = new Oauth(['user_id' => $user->id]);
                     $auth->attributes = $client->getUserInfos();   ///massive assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment

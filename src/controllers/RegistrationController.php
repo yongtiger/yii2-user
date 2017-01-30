@@ -105,7 +105,6 @@ class RegistrationController extends Controller
             }
 
             if ($load && $user = $model->signup()) {
-                Yii::$app->session->addFlash('success', Module::t('user', 'Successfully registered.'));
 
                 ///[Yii2 uesr:oauth signup]
                 if (Yii::$app->getModule('user')->enableOauthSignup && Yii::$app->getModule('user')->enableOauthSignupValidation) {
@@ -123,6 +122,7 @@ class RegistrationController extends Controller
 
                 if (!(Yii::$app->getModule('user')->enableSignupWithEmail && Yii::$app->getModule('user')->enableSignupWithEmailActivation)) {
                     Yii::$app->user->login($user);
+                    return $this->redirect(['account/index']);  ///[Yii2 uesr:account]
                 }
                 return $this->goHome();
             }

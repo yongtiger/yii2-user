@@ -1,6 +1,13 @@
 # Development roadmap
 
 
+## Version 0.8.0 (User Basic: account)
+
+Features of this version:
+
+* user account
+
+
 ## Version 0.7.0 (User Basic: verify)
 
 Features of this version:

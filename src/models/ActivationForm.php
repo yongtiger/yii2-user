@@ -14,6 +14,7 @@ namespace yongtiger\user\models;
 
 use Yii;
 use yii\base\Model;
+use yii\db\IntegrityException;
 use yongtiger\user\Module;
 use yongtiger\user\helpers\SecurityHelper;
 
@@ -44,20 +45,10 @@ class ActivationForm extends Model
                 'exist',
                 'targetClass' => User::className(),
                 'filter' => function ($query) {
-                    $query->andWhere(['status' => User::STATUS_INACTIVE]);
+                    $query->andWhere(['status' => Yii::$app->user->isGuest ? User::STATUS_INACTIVE : User::STATUS_ACTIVE]); ///[Yii2 uesr:account verify email]
                 }
             ],
             ['activation_key', 'validateKey'],  ///[Yii2 uesr:activation via email:activation]
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'activation_key' => Module::t('user', 'Activation Key')
         ];
     }
 
@@ -81,7 +72,6 @@ class ActivationForm extends Model
     /**
      * Activates user account.
      *
-     * @return boolean true if account was successfully activated
      * @return User|false the activated user model or false if activation fails
      */
     public function activate($runValidation = true)
@@ -101,19 +91,70 @@ class ActivationForm extends Model
 
         $user = User::findOne(['activation_key' => $this->activation_key, 'status' => User::STATUS_INACTIVE]);
         if ($user !== null) {
+            
             $user->status = User::STATUS_ACTIVE;
             $user->generateAuthKey();
             $user->activation_key = null;
 
             if ($user->save(false)) {
 
-                Yii::$app->session->addFlash('success', Module::t('user', 'Your Account has been successfully activated ...'));
+                ///[Yii2 uesr:verify]
+                $user->verify->email_verified_at = time();
+                if (!$user->verify->save(false)) {
+                    throw new IntegrityException();
+                }
+
+                Yii::$app->session->addFlash('success', Module::t('user', 'Your account has been successfully activated ...'));
                 return $user;
             }
 
         }
 
-        Yii::$app->session->addFlash('error', Module::t('user', 'User has not been activated. Please try again!'));
+        Yii::$app->session->addFlash('error', Module::t('user', 'User has not been activated! Please try again.'));
+        return false;
+    }
+
+    ///[Yii2 uesr:account verify email]
+    /**
+     * Verifies user account email.
+     *
+     * @return boolean true if account email was successfully verified
+     */
+    public function verifyEmail($runValidation = true)
+    {
+        if ($runValidation && !$this->validate()) {
+
+            ///Because activation is not used ActiveForm, so output errors by `setFlash()`.
+            ///Traversing the two-dimensional array of errors. @see http://www.yiiframework.com/doc-2.0/yii-base-model.html#$errors-detail
+            foreach ($this->errors as $attribute => $errors) {
+                foreach ($errors as $error) {
+                    Yii::$app->session->addFlash('error', $error);
+                }
+            }
+
+            return false;
+        }
+
+        $user = User::findOne(['activation_key' => $this->activation_key, 'status' => User::STATUS_ACTIVE]);
+        if ($user !== null) {
+
+            $user->activation_key = null;
+
+            if ($user->save(false)) {
+
+                ///[Yii2 uesr:verify]
+                $user->verify->email_verified_at = time();
+                if (!$user->verify->save(false)) {
+                    throw new IntegrityException();
+                }
+
+                Yii::$app->session->addFlash('success', Module::t('user', 'Your email has been successfully activated.'));
+                return true;
+            }
+
+        }
+
+        Yii::$app->session->addFlash('error', Module::t('user', 'Your email has not been verified! Please try again.'));
         return false;
     }
 }

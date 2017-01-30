@@ -13,10 +13,10 @@
 namespace yongtiger\user\models;
 
 use Yii;
-use yii\base\NotSupportedException;
-use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\behaviors\TimestampBehavior;
+use yii\base\NotSupportedException;
 use yongtiger\user\helpers\SecurityHelper;
 use yongtiger\user\Module;
 
