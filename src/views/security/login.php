@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php if (Yii::$app->getModule('user')->enableOauth && Yii::$app->get("authClientCollection", false)): ?>
 
-                 <?= yongtiger\authclient\widgets\AuthChoice::widget(Yii::$app->getModule('user')->authChoiceWidgetConfig) ?>
+                <?= yongtiger\authclient\widgets\AuthChoice::widget(Yii::$app->getModule('user')->authChoiceWidgetConfig) ?>
 
             <?php endif; ?>
 

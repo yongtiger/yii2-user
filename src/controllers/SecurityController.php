@@ -44,10 +44,10 @@ class SecurityController extends Controller
      */
     public function behaviors()
     {
-        return [
+        $behaviors = [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'login', 'authenticate'],  ///except capcha
+                'only' => ['logout', 'login'],  ///except capcha
                 'rules' => [
                     [
                         'actions' => ['logout'],
@@ -68,6 +68,14 @@ class SecurityController extends Controller
                 ],
             ],
         ];
+
+        if (Yii::$app->getModule('user')->enableOauth && Yii::$app->get("authClientCollection", false)) {
+            $behaviors['access']['only'] = array_merge($behaviors['access']['only'], ['authenticate', 'connect', 'disconnect']);
+            $behaviors['access']['rules'][0]['actions'] = array_merge($behaviors['access']['rules'][0]['actions'], ['connect', 'disconnect']);
+            $behaviors['access']['rules'][1]['actions'] = array_merge($behaviors['access']['rules'][1]['actions'], ['authenticate']);
+        }
+
+        return $behaviors;
     }
 
     /**
@@ -85,9 +93,9 @@ class SecurityController extends Controller
             }
 
             ///[Yii2 uesr:oauth]
-            if (Yii::$app->getModule('user')->enableOauth) {
+            if (Yii::$app->getModule('user')->enableOauth && Yii::$app->get("authClientCollection", false)) {
                 $auth = [
-                    'successCallback' => [$this, 'authenticate'],
+                    'successCallback' => Yii::$app->user->isGuest ? [$this, 'authenticate'] : [$this, 'connect'],
                 ];
 
                 $actions = array_merge($actions, ['auth' => ArrayHelper::merge(Yii::$app->getModule('user')->auth, $auth)]);
@@ -216,7 +224,7 @@ class SecurityController extends Controller
 
                 if ($user = $model->signup(Yii::$app->getModule('user')->enableOauthSignupValidation)) {
                     ///[Yii2 uesr:verify]
-                    ///When oauth, `password` is set to `null`, that is not verified password.
+                    ///When oauth signup, `password` is set to `null`, that is not verified password.
                     $user->verify->password_verified_at = null;
                     if (!$user->verify->save(false)) {
                         throw new IntegrityException();
@@ -255,5 +263,50 @@ class SecurityController extends Controller
             $this->action->successUrl = $this->action->cancelUrl;
         }
 
+    }
+
+    ///[Yii2 uesr:account oauth]
+    /**
+     * Connects user via social network.
+     *
+     * @param \yongtiger\authclient\clients\IAuth $client
+     */
+    public function connect(\yongtiger\authclient\clients\IAuth $client)
+    {
+        $oauth = Oauth::findOne(['user_id' => Yii::$app->user->identity->id, 'provider' => $client->provider]);
+
+        if ($oauth) {
+            Yii::$app->session->addFlash('warning', Module::t('user', 'Already connected. No need to connect again.'));
+        } else {
+
+            ///Add a new record to the oauth database table.
+            $auth = new Oauth(['user_id' => Yii::$app->user->identity->id]);
+            $auth->attributes = $client->getUserInfos();   ///massive assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
+            if ($auth->save(false)) {
+                Yii::$app->session->addFlash('success', Module::t('user', 'Successfully connect.'));
+            } else {
+                Yii::$app->session->addFlash('error', Module::t('user', 'Failed connect!'));
+            }
+
+        }
+    }
+
+    ///[Yii2 uesr:account oauth]
+    /**
+     * Disconnects user via social network.
+     *
+     * @param string $provider
+     */
+    public function actionDisconnect($provider)
+    {
+        $oauth = Oauth::findOne(['user_id' => Yii::$app->user->identity->id, 'provider' => $provider]);
+
+        if ($oauth && $oauth->delete() !== 'false') {
+            Yii::$app->session->addFlash('success', Module::t('user', 'Successfully disconnect.'));
+        } else {
+            Yii::$app->session->addFlash('error', Module::t('user', 'Failed disconnect!'));
+        }
+
+        return $this->redirect(['account/index']);
     }
 }

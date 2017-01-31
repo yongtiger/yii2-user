@@ -12,13 +12,31 @@
 
 /**
  * @var $this yii\base\View
+ * @var $oauths array
  */
 
 use yii\helpers\Html;
+use yongtiger\authclient\widgets\AuthChoice;
 use yongtiger\user\Module;
 
 $this->title = Module::t('user', 'Account');
 $this->params['breadcrumbs'][] = $this->title;
+
+///[Yii2 uesr:account oauth]
+if (Yii::$app->getModule('user')->enableOauth && Yii::$app->get("authClientCollection", false)) {
+    $this->registerCss(<<<CSS
+.gray { 
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter: gray;
+}
+CSS
+    );
+}
+
 ?>
 <div class="registration-signup">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -51,9 +69,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Yii::$app->user->identity->email ?>
                 <!--///[Yii2 uesr:verify]-->
                 <?php if (isset(Yii::$app->user->identity->verify->email_verified_at)): ?>
-                    <?= '(' . Module::t('user', 'Last verified at:') . ' ' . date('Y-m-d H:i:s', Yii::$app->user->identity->verify->email_verified_at) . ')' ?>
+                    <?= '<br />(' . Module::t('user', 'Last verified at:') . ' ' . date('Y-m-d H:i:s', Yii::$app->user->identity->verify->email_verified_at) . ')' ?>
                 <?php else: ?>
-                    <?= '(' . Html::a(Module::t('user', 'Verify email'), ['account/send-verification-email']) . ')' ?>
+                    <?= '<br />(' . Html::a(Module::t('user', 'Verify email'), ['account/send-verification-email']) . ')' ?>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
@@ -69,24 +87,48 @@ $this->params['breadcrumbs'][] = $this->title;
             <!--///[Yii2 uesr:verify]-->
             <?php if (isset(Yii::$app->user->identity->verify->password_verified_at)): ?>
                 *********
-                <?= '(' . Module::t('user', 'Last updated at:') . ' ' . date('Y-m-d H:i:s', Yii::$app->user->identity->verify->password_verified_at) . ')' ?>
+                <?= '<br />(' . Module::t('user', 'Last updated at:') . ' ' . date('Y-m-d H:i:s', Yii::$app->user->identity->verify->password_verified_at) . ')' ?>
             <?php else: ?>
-                <?= '(' . Module::t('user', 'Danger!') . ' ' . Module::t('user', 'Password is not set') . ')' ?>
+                <?= '<br />(' . Module::t('user', 'Danger!') . ' ' . Module::t('user', 'Password is not set') . ')' ?>
             <?php endif; ?>
         </div>
         <div class="col-lg-5">
             <?= Html::a(Module::t('user', isset(Yii::$app->user->identity->verify->password_verified_at) ? 'Change': 'Set'), ['account/change', 'item' => 'password']) ?>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-2">
-            <label class="control-label"><?= Module::t('user', 'Oauth') ?></label>
+
+    <!--///[Yii2 uesr:account oauth]-->
+    <?php if (Yii::$app->getModule('user')->enableOauth && Yii::$app->get("authClientCollection", false)): ?>
+        <div class="row">
+            <div class="col-lg-2">
+                <label class="control-label"><?= Module::t('user', 'Oauth') ?></label>
+            </div>
+            <div class="col-lg-5">
+
+                <?php $authAuthChoice = AuthChoice::begin(array_merge(Yii::$app->getModule('user')->authChoiceWidgetConfig, [
+                    'autoRender' => false,
+                ])); ?>
+
+                <?php foreach ($authAuthChoice->getClients() as $client): ?>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <?= Html::tag('span', '', ['class' => 'auth-icon ' . $client->getName() . (in_array($client->id, $oauths) ? '': ' gray')]) ?>
+                        </div>
+                        <div class="col-lg-2">
+                            <?php if (in_array($client->id, $oauths)): ?>
+                                <?= Html::a(Module::t('user', 'Disconnect'), ['security/disconnect', 'provider' => $client->id]) ?>
+                            <?php else: ?>
+                                <?= Html::a(Module::t('user', 'Connect'), $authAuthChoice->createClientUrl($client)) ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+
+                <?php AuthChoice::end(); ?>
+
+            </div>
+
         </div>
-        <div class="col-lg-5">
-            
-        </div>
-        <div class="col-lg-5">
-            <?= Html::a(Module::t('user', 'Setup'), ['account/oauth-index']) ?>
-        </div>
-    </div>
+    <?php endif; ?>
+
 </div>

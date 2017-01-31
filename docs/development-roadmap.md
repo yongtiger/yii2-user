@@ -1,6 +1,13 @@
 # Development roadmap
 
 
+## Version 0.8.1 (User Basic: account oauth)
+
+Features of this version:
+
+* user account oauth
+
+
 ## Version 0.8.0 (User Basic: account)
 
 Features of this version:

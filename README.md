@@ -1,4 +1,4 @@
-# Yii2-user [v0.8.0] User Basic: account
+# Yii2-user [v0.8.1] User Basic: account oauth
 
 The most basic `user` module.
 
@@ -23,6 +23,7 @@ The most basic `user` module.
 * login with username or email
 * password and email verify
 * user account
+* user account oauth
 
 ## Dependences
 

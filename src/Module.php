@@ -33,7 +33,7 @@ class Module extends \yii\base\Module
      *
      * @see http://www.yiiframework.com/doc-2.0/yii-base-module.html#$defaultRoute-detail
      */
-    public $defaultRoute = 'security';
+    public $defaultRoute = 'account';
 
     /**
      * @var string The controller namespace to use
@@ -415,7 +415,7 @@ class Module extends \yii\base\Module
             $this->auth = ArrayHelper::merge([
                 'class' => 'yii\authclient\AuthAction',
                 'successUrl' => ['user/account/index'],
-                'cancelUrl' => ['user/security/login'],
+                'cancelUrl' => ['user/account/index'],
             ], $this->auth);
             $this->auth['successUrl'] = Yii::$app->urlManager->createUrl($this->auth['successUrl']);
             $this->auth['cancelUrl'] = Yii::$app->urlManager->createUrl($this->auth['cancelUrl']);

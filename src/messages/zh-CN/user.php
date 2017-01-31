@@ -21,15 +21,27 @@
 return [
 
 	/**
+	 * Modules
+	 */
+	///\vendor\yongtiger\yii2-user\src\Module.php
+	'This site has been closed registration.' => '本站已经关闭注册。',
+	'This site has been closed login.' => '本站已经关闭登陆。',
+	//////[Yii2 uesr: verifycode]
+	'Verification Code' => '验证码',
+	'Click to change another verification code.' => '点击切换验证码',
+
+	/**
 	 * Controllers
 	 */
-	///\vendor\yongtiger\yii2-user\src\controllers\RegistrationController.php
-	'This site has been closed registration.' => '本站已经关闭注册。',
-
 	///\vendor\yongtiger\yii2-user\src\controllers\SecurityController.php
-	'This site has been closed login.' => '本站已经关闭登陆。',
 	'Login failed! A user bound to this oAuth client was not found.' => '登陆失败！没找到与第三方认证绑定的用户。',
-
+	//////[Yii2 uesr:account oauth]
+	'Already connected. No need to connect again.' => '已经绑定该第三方认证，无需再次绑定。',
+	'Successfully connect.' => '绑定成功。',
+	'Failed connect!' => '绑定失败！',
+	'Successfully disconnect.' => '解绑成功。',
+	'Failed disconnect!' => '解绑失败！',
+	
 	///\vendor\yongtiger\yii2-user\src\controllers\RecoveryController.php
 	'Check your email for further instructions.' => '请查看您的邮件以获知后续的操作。',
 	'Sorry, we are unable to reset password ...' => '对不起，我们不能根据您提供的邮箱地址重置您的密码。',
@@ -121,9 +133,6 @@ return [
 	///\vendor\yongtiger\yii2-user\src\views\security\signup.php
 	'Signup' => '注册',
 	'Please fill out the following fields:' => '请填写下列内容：',
-	//////[Yii2 uesr: verifycode]
-	'Verification Code' => '验证码',
-	'Click to change another verification code.' => '点击切换验证码',
 
 	///\vendor\yongtiger\yii2-user\src\views\security\login.php
 	'Login' => '登陆',
@@ -170,6 +179,8 @@ return [
 	'Password is not set' => '密码没有设置',
 	'Oauth' => '第三方登陆',
 	'Setup' => '设置',
+	'Connect' => '绑定',
+	'Disconnect' => '解绑',
 
 	///\vendor\yongtiger\yii2-user\src\views\account\change.php
 	//////[Yii2 uesr:account]

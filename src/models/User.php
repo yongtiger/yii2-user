@@ -19,6 +19,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\base\NotSupportedException;
 use yongtiger\user\helpers\SecurityHelper;
 use yongtiger\user\Module;
+use yongtiger\user\models\Oauth;
 
 /**
  * User Model

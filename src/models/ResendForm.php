@@ -53,7 +53,7 @@ class ResendForm extends Model
             ['email', 'string', 'max' => 255],
             ['email', 'exist',
                 'targetClass' => '\yongtiger\user\models\User',
-                'filter' => ['status' => User::STATUS_ACTIVE],
+                'filter' => ['status' => User::STATUS_INACTIVE],
                 'message' => Module::t('user', 'There is no user with such email.')
             ],
         ];
@@ -86,6 +86,33 @@ class ResendForm extends Model
     }
 
     /**
+     * Finds user by username or email.
+     *
+     * @return User|null User object or null
+     */
+    public function getUser()
+    {
+        if ($this->_user === null) {
+
+            $this->_user = User::findOne([
+                'status' => User::STATUS_INACTIVE,
+                'email' => $this->email,
+            ]);
+        }
+        return $this->_user;
+    }
+
+    /**
+     * Set user.
+     *
+     * @param User $user
+     */
+    public function setUser($user)
+    {
+        $this->_user = $user;
+    }
+
+    /**
      * Resend email activation key.
      *
      * @return boolean true if sent successfully
@@ -96,20 +123,19 @@ class ResendForm extends Model
             return false;
         }
 
-        $this->_user = User::findOne(['email' => $email, 'status' => self::STATUS_INACTIVE]);
-        if ($this->_user !== null) {
+        if ($user = $this->getUser()) {
 
-            $this->_user->generateAuthKey();
-            $this->_user->activation_key = SecurityHelper::generateExpiringRandomKey(Yii::$app->getModule('user')->registrationActivationWithin);
+            $user ->generateAuthKey();
+            $user ->activation_key = SecurityHelper::generateExpiringRandomKey(Yii::$app->getModule('user')->signupWithEmailActivationExpire);
 
-            if ($this->_user->save(false)) {
+            if ($user ->save(false)) {
 
                 ///send activation email
                 Yii::$app
                     ->mailer
                     ->compose(
                         ['html' => Yii::$app->getModule('user')->signupWithEmailActivationComposeHtml, 'text' => Yii::$app->getModule('user')->signupWithEmailActivationComposeText],
-                        ['user' => $this->getUser()]
+                        ['user' => $user]
                     )
                     ->setFrom(Yii::$app->getModule('user')->signupWithEmailActivationSetFrom)
                     ->setTo($this->email)

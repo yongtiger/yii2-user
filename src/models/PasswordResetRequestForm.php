@@ -47,7 +47,7 @@ class PasswordResetRequestForm extends Model
             ['email', 'email'],
             ['email', 'exist',
                 'targetClass' => '\yongtiger\user\models\User',
-                'filter' => ['status' => User::STATUS_ACTIVE],
+                'filter' => ['status' => User::STATUS_INACTIVE],
                 'message' => Module::t('user', 'There is no user with such email.')
             ],
         ];
@@ -80,38 +80,48 @@ class PasswordResetRequestForm extends Model
     }
 
     /**
+     * Finds user by email.
+     *
+     * @return User|null User object or null
+     */
+    public function getUser()
+    {
+        if ($this->_user === null) {
+
+            $this->_user = User::findOne([
+                'status' => User::STATUS_ACTIVE,
+                'email' => $this->email,
+            ]);
+        }
+        return $this->_user;
+    }
+
+    /**
      * Sends an email with a link, for resetting the password.
      *
      * @return bool whether the email was send
      */
     public function sendEmail()
     {
-        $user = User::findOne([
-            'status' => User::STATUS_ACTIVE,
-            'email' => $this->email,
-        ]);
-
-        if (!$user) {
-            return false;
-        }
-        
-        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+        if ($user = $this->getUser() && !User::isPasswordResetTokenValid($user->password_reset_token) {
             $user->generatePasswordResetToken();
-            if (!$user->save()) {
-                return false;
+            if ($user->save()) {
+
+                ///[Yii2 uesr:mail]
+                return Yii::$app
+                    ->mailer
+                    ->compose(
+                        ['html' => Yii::$app->getModule('user')->requestPasswordResetComposeHtml, 'text' => Yii::$app->getModule('user')->requestPasswordResetComposeText],
+                        ['user' => $user]
+                    )
+                    ->setFrom(Yii::$app->getModule('user')->requestPasswordResetSetFrom)
+                    ->setTo($this->email)
+                    ->setSubject(Module::t('user', 'Password reset for ') . Yii::$app->name)
+                    ->send();
+
             }
         }
-
-        ///[Yii2 uesr:mail]
-        return Yii::$app
-            ->mailer
-            ->compose(
-                ['html' => Yii::$app->getModule('user')->requestPasswordResetComposeHtml, 'text' => Yii::$app->getModule('user')->requestPasswordResetComposeText],
-                ['user' => $user]
-            )
-            ->setFrom(Yii::$app->getModule('user')->requestPasswordResetSetFrom)
-            ->setTo($this->email)
-            ->setSubject(Module::t('user', 'Password reset for ') . Yii::$app->name)
-            ->send();
+        
+        return false;
     }
 }

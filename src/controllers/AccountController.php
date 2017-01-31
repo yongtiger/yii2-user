@@ -39,19 +39,21 @@ class AccountController extends Controller
      */
     public function behaviors()
     {
-        return [
+        $behaviors = [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'change', 'send-verification-email', 'verify-email', 'oauth-index', 'oauth-view'],  ///except capcha
+                'only' => ['index', 'change', 'send-verification-email', 'verify-email'],  ///except capcha
                 'rules' => [
                     [
-                        'actions' => ['index', 'change', 'send-verification-email', 'verify-email', 'oauth-index', 'oauth-view'],
+                        'actions' => ['index', 'change', 'send-verification-email', 'verify-email'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
             ],
         ];
+
+        return $behaviors;
     }
 
     /**
@@ -66,6 +68,18 @@ class AccountController extends Controller
             $actions = array_merge($actions, ['captcha' => Yii::$app->getModule('user')->captcha]);
         }
 
+        ///[Yii2 uesr:oauth]
+        if (Yii::$app->getModule('user')->enableOauth && Yii::$app->get("authClientCollection", false)) {
+            $auth = [
+                'class' => 'yii\authclient\AuthAction',
+                'successUrl' => ['user/account/index'],
+                'cancelUrl' => ['user/account/index'],
+                'successCallback' => [$this, 'connect'],
+            ];
+
+            $actions = array_merge($actions, ['auth' => ArrayHelper::merge(Yii::$app->getModule('user')->auth, $auth)]);
+        }
+
         return $actions;
     }
 
@@ -76,7 +90,16 @@ class AccountController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        ///[Yii2 uesr:account oauth]
+        if (Yii::$app->getModule('user')->enableOauth && Yii::$app->get("authClientCollection", false)) {
+            $oauths = [];
+            foreach (Yii::$app->user->identity->oauths as $auth) {
+                $oauths[] = $auth->provider;
+            }
+            return $this->render('index', ['oauths' => $oauths]);
+        } else {
+            return $this->render('index');
+        }
     }
 
     /**
@@ -126,7 +149,7 @@ class AccountController extends Controller
      *
      * @return mixed
      */
-    public function actionSendVerificationEmail() 
+    public function actionSendVerificationEmail()
     {
         $user = Yii::$app->user->identity;
         $user->activation_key = SecurityHelper::generateExpiringRandomKey(Yii::$app->getModule('user')->signupWithEmailActivationExpire);
