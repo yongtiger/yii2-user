@@ -72,7 +72,7 @@ class ChangeUsernameForm extends ChangeForm
     }
 
     /**
-     * Change username.
+     * Changes username.
      *
      * @return bool whether the changing is successfully
      */
@@ -87,7 +87,6 @@ class ChangeUsernameForm extends ChangeForm
             // ...custom code here...
             $this->getUser()->username = $this->username;
             if ($this->getUser()->save(false)) {
-                Yii::$app->session->addFlash('success', Module::t('user', 'Successfully changed.'));
                 $this->afterChange();
                 return true;
             }

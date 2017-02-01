@@ -26,6 +26,7 @@ use yongtiger\user\models\User;
 use yongtiger\user\models\LoginForm;
 use yongtiger\user\models\SignupForm;
 use yongtiger\user\models\Oauth;
+use yongtiger\user\traits\OauthTrait;
 
 /**
  * Security Controller
@@ -34,6 +35,8 @@ use yongtiger\user\models\Oauth;
  */
 class SecurityController extends Controller
 {
+    use OauthTrait;
+
     /**
      * @inheritdoc
      */
@@ -149,9 +152,7 @@ class SecurityController extends Controller
             if ($load && $model->login()) {
                 return $this->goBack();
             } else {
-                return $this->render('login', [
-                    'model' => $model,
-                ]);
+                return $this->render('login', ['model' => $model]);
             }
         } else {
             Yii::$app->session->addFlash('info', Yii::$app->getModule('user')->disableLoginMessage);
@@ -181,26 +182,6 @@ class SecurityController extends Controller
      */
     public function authenticate(\yongtiger\authclient\clients\IAuth $client)
     {
-        ///Uncomment below to see which attributes you get back.
-        ///First time to call `getUserAttributes()`, only return the basic attrabutes info for login, such as openid.
-        // echo "<pre>";print_r($client->getUserAttributes());echo "</pre>";
-        // echo "<pre>";print_r($client->provider);echo "</pre>";
-        // echo "<pre>";print_r($client->openid);echo "</pre>";
-        ///If `$attribute` is not exist in the basic user attrabutes, call `initUserInfoAttributes()` and merge the results into the basic user attrabutes.
-        // echo "<pre>";print_r($client->email);echo "</pre>";
-        ///After calling `initUserInfoAttributes()`, will return all user attrabutes.
-        // echo "<pre>";print_r($client->getUserAttributes());echo "</pre>";
-        // echo "<pre>";print_r($client->fullName);echo "</pre>";
-        // echo "<pre>";print_r($client->firstName);echo "</pre>";
-        // echo "<pre>";print_r($client->lastName);echo "</pre>";
-        // echo "<pre>";print_r($client->language);echo "</pre>";
-        // echo "<pre>";print_r($client->gender);echo "</pre>";
-        // echo "<pre>";print_r($client->avatar);echo "</pre>";
-        // echo "<pre>";print_r($client->link);echo "</pre>";
-        ///Get all user infos at once.
-        // echo "<pre>";print_r($client->getUserInfos());echo "</pre>";
-        // exit;
-
         $user = User::findByOauth($client->provider, $client->openid);
 
         if ($user) {
@@ -223,31 +204,12 @@ class SecurityController extends Controller
                 }
 
                 if ($user = $model->signup(Yii::$app->getModule('user')->enableOauthSignupValidation)) {
-                    ///[Yii2 uesr:verify]
-                    ///When oauth signup, `password` is set to `null`, that is not verified password.
-                    $user->verify->password_verified_at = null;
-                    if (!$user->verify->save(false)) {
-                        throw new IntegrityException();
-                    }
-
-                    ///Add a new record to the oauth database table.
-                    $auth = new Oauth(['user_id' => $user->id]);
-                    $auth->attributes = $client->getUserInfos();   ///massive assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
-                    if (!$auth->save(false)) {
-                        throw new IntegrityException();
-                    }
-
+                    ///Insert a new record to the oauth ActiveRecord.
+                    $this->insertOauth($user->id, $client->getUserInfos());
                 } else {
-
-                    ///Passes the authentication error messages to the signup page.
-                    ///@see http://p2code.com/post/yii2-facebook-login-step-by-step-4
-                    ///@see http://www.hafidmukhlasin.com/2014/10/29/yii2-super-easy-to-create-login-social-account-with-authclient-facebook-google-twitter-etc/
-                    Yii::$app->session['signup-form'] = $model;
-                    // Yii::$app->session['auth-client'] = $client; ///Note: `$client` object can not be saved in session! Anonymous functions can not be serialized
-                    Yii::$app->session['auth-client'] = $client->getUserInfos();
-                    $this->action->successUrl = Url::to(['registration/signup']);
+                    ///Sets oauth session and passes to the signup page.
+                    $this->setOauthSession($model, $client->getUserInfos());
                     return;
-
                 }
 
             } else {
@@ -278,16 +240,12 @@ class SecurityController extends Controller
         if ($oauth) {
             Yii::$app->session->addFlash('warning', Module::t('user', 'Already connected. No need to connect again.'));
         } else {
-
-            ///Add a new record to the oauth database table.
-            $auth = new Oauth(['user_id' => Yii::$app->user->identity->id]);
-            $auth->attributes = $client->getUserInfos();   ///massive assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
-            if ($auth->save(false)) {
-                Yii::$app->session->addFlash('success', Module::t('user', 'Successfully connect.'));
-            } else {
+            ///Insert a new record to the oauth ActiveRecord.
+            try {
+                $this->insertOauth(Yii::$app->user->identity->id, $client->getUserInfos());
+            } catch (Exception $e) {
                 Yii::$app->session->addFlash('error', Module::t('user', 'Failed connect!'));
             }
-
         }
     }
 

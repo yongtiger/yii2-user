@@ -38,38 +38,54 @@ class SecurityHelper
     }
 
     /**
-     * Check if key is not expired.
+     * Finds out if token is valid.
      *
-     * @param string $key Token that must be validated
-     * @return boolean true if key is not expired
+     * @param string $token Token that must be validated
+     * @return boolean|null boolean if token is or not expired, null if token is empty 
      */
-    public static function isValidKey($key)
+    public static function isValidKey($token)
     {
-        if (empty($key)) {
-            return false;
+        if (empty($token)) {
+            return null;
         }
 
-        list($createdTime, $expiryTime) = static::getKeyTime($key);
+        list($createdTime, $expiryTime) = static::getKeyTime($token);
 
         if ($createdTime < $expiryTime) {
             return $expiryTime > time();
         }else{
-            return true;    ///while $duration <= 0
+            return true;
         }
     }
 
     /**
-     * Get created time of a key.
+     * Gets created time of a token.
      *
-     * @param string $key Token that must be validated
-     * @return array|null [createdTime, expiryTime], null if key is empty
+     * @param string $token Token that must be validated
+     * @return array|null [createdTime, expiryTime], null if token is empty
      */
-    public static function getKeyTime($key)
+    public static function getKeyTime($token)
     {
-        if (empty($key)) {
+        if (empty($token)) {
             return null;
         }
-        $parts = explode('_', $key);
+        $parts = explode('_', $token);
         return [(int)$parts[0], (int)$parts[1]];
+    }
+
+    /**
+     * Gets valid duration time of a token.
+     *
+     * @param string $token Token that must be validated
+     * @return intger|null The valid duration time in seconds, null if token is empty
+     */
+    public static function getValidDuration($token)
+    {
+        if (empty($token)) {
+            return null;
+        }
+        list($createdTime, $expiryTime) = static::getKeyTime($token);
+
+        return $expiryTime - time();
     }
 }

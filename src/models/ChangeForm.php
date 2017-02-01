@@ -23,7 +23,7 @@ use yongtiger\user\Module;
  * @package yongtiger\user\models
  * @property string $password
  * @property string $verifyCode
- * @property User $user
+ * @property \yongtiger\user\models\User $user read-only user
  */
 class ChangeForm extends Model
 {
@@ -122,16 +122,6 @@ class ChangeForm extends Model
     }
 
     /**
-     * Set user.
-     *
-     * @param User $user
-     */
-    public function setUser($user)
-    {
-        $this->_user = $user;
-    }
-
-    /**
      * This method is called before changing in a user.
      *
      * The default implementation will trigger the [[EVENT_BEFORE_CHANGE]] event.
@@ -191,6 +181,7 @@ class ChangeForm extends Model
     protected function afterChange()
     {
         // ...custom code here...
+        Yii::$app->session->addFlash('success', Module::t('user', 'Successfully changed.'));
 
         $this->trigger(self::EVENT_AFTER_CHANGE, new ModelEvent());
     }

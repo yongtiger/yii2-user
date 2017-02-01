@@ -27,7 +27,7 @@ use yongtiger\user\Module;
  * @property string $password
  * @property string $rememberMe
  * @property string $verifyCode
- * @property User $user
+ * @property \yongtiger\user\models\User $user
  */
 class LoginForm extends Model
 {
@@ -104,7 +104,6 @@ class LoginForm extends Model
                 ]);
             }
         }
-
 
         if (Yii::$app->getModule('user')->enableLoginWithUsername || Yii::$app->getModule('user')->enableLoginWithEmail) {
             $rules = array_merge($rules, [
@@ -205,12 +204,15 @@ class LoginForm extends Model
             }
 
             $this->_user = User::findOne($condition);
+            
         }
         return $this->_user;
     }
 
     /**
      * Set user.
+     *
+     * This method is called in `SecurityController::authenticate()`.
      *
      * @param User $user
      */
@@ -222,7 +224,8 @@ class LoginForm extends Model
     /**
      * Logs in a user using the provided username and password.
      *
-     * @return bool whether the user is logged in successfully
+     * @param boolean $runValidation whether to perform validation (calling [[validate()]])
+     * @return boolean whether the user is logged in successfully
      */
     public function login($runValidation = true)
     {
@@ -235,13 +238,11 @@ class LoginForm extends Model
 
             // ...custom code here...
             if (Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0)) {
-
                 $this->afterLogin();
                 return true;
             }
 
         }
-
         return false;
     }
 
@@ -282,10 +283,8 @@ class LoginForm extends Model
             if (empty($this->getUser())) {
                 Yii::$app->session->addFlash('error', Module::t('user', 'Your account is invalid!'));
                 $event->isValid = false;
-            }
-
-            ///[Yii2 uesr:activation via email:login]
-            if ($this->getUser()->status == User::STATUS_INACTIVE) {
+            } else if ($this->getUser()->status == User::STATUS_INACTIVE) {
+                ///[Yii2 uesr:activation via email:login]
                 Yii::$app->session->addFlash('warning',
                     Module::t('user',
                         'Your account is not activated! Click [{resend}] an activation Email.',

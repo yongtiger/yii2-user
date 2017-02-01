@@ -23,6 +23,7 @@ use yongtiger\user\helpers\SecurityHelper;
  * @package yongtiger\user\models
  * @property string $email
  * @property string $verifyCode
+ * @property \yongtiger\user\models\User $user read-only user
  */
 class ResendForm extends Model
 {
@@ -103,16 +104,6 @@ class ResendForm extends Model
     }
 
     /**
-     * Set user.
-     *
-     * @param User $user
-     */
-    public function setUser($user)
-    {
-        $this->_user = $user;
-    }
-
-    /**
      * Resend email activation key.
      *
      * @return boolean true if sent successfully
@@ -123,7 +114,8 @@ class ResendForm extends Model
             return false;
         }
 
-        if ($user = $this->getUser()) {
+        $user = $this->getUser();
+        if ($user && !SecurityHelper::isValidKey($user->activation_key)) {
 
             $user ->generateAuthKey();
             $user ->activation_key = SecurityHelper::generateExpiringRandomKey(Yii::$app->getModule('user')->signupWithEmailActivationExpire);

@@ -77,7 +77,7 @@ class ChangePasswordForm extends ChangeForm
     }
 
     /**
-     * Change password.
+     * Changes password.
      *
      * @return bool whether the changing is successfully
      */
@@ -92,7 +92,6 @@ class ChangePasswordForm extends ChangeForm
             // ...custom code here...
             $this->getUser()->setPassword($this->newpassword);
             if ($this->getUser()->save(false)) {
-                Yii::$app->session->addFlash('success', Module::t('user', 'Successfully changed.'));
                 $this->afterChange();
                 return true;
             }
@@ -101,7 +100,6 @@ class ChangePasswordForm extends ChangeForm
 
         return false;
     }
-
 
     /**
      * @inheritdoc

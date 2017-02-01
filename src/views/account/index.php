@@ -48,11 +48,13 @@ CSS
             <label class="control-label"><?= Module::t('user', 'Username') ?></label>
         </div>
         <div class="col-lg-5">
-            <?php if (empty(Yii::$app->user->identity->username)): ?>
-                <?= '(' . Module::t('user', 'Username is not set') . ')' ?>
-            <?php else: ?>
-                <?= Yii::$app->user->identity->username ?>
-            <?php endif; ?>
+            <p class="help-block">
+                <?php if (empty(Yii::$app->user->identity->username)): ?>
+                    <?= '(' . Module::t('user', 'Username is not set') . ')' ?>
+                <?php else: ?>
+                    <?= Yii::$app->user->identity->username ?>
+                <?php endif; ?>
+            </p>
         </div>
         <div class="col-lg-5">
             <?= Html::a(Module::t('user', empty(Yii::$app->user->identity->username) ? 'Set': 'Change'), ['account/change', 'item' => 'username']) ?>
@@ -63,17 +65,19 @@ CSS
             <label class="control-label"><?= Module::t('user', 'Email') ?></label>
         </div>
         <div class="col-lg-5">
-            <?php if (empty(Yii::$app->user->identity->email)): ?>
-                <?= '(' . Module::t('user', 'Email is not set') . ')' ?>
-            <?php else: ?>
-                <?= Yii::$app->user->identity->email ?>
-                <!--///[Yii2 uesr:verify]-->
-                <?php if (isset(Yii::$app->user->identity->verify->email_verified_at)): ?>
-                    <?= '<br />(' . Module::t('user', 'Last verified at:') . ' ' . date('Y-m-d H:i:s', Yii::$app->user->identity->verify->email_verified_at) . ')' ?>
+            <p class="help-block">
+                <?php if (empty(Yii::$app->user->identity->email)): ?>
+                    <?= '(' . Module::t('user', 'Email is not set') . ')' ?>
                 <?php else: ?>
-                    <?= '<br />(' . Html::a(Module::t('user', 'Verify email'), ['account/send-verification-email']) . ')' ?>
+                    <?= Yii::$app->user->identity->email ?>
+                    <!--///[Yii2 uesr:verify]-->
+                    <?php if (isset(Yii::$app->user->identity->verify->email_verified_at)): ?>
+                        <?= '<br />(' . Module::t('user', 'Last verified at:') . ' ' . date('Y-m-d H:i:s', Yii::$app->user->identity->verify->email_verified_at) . ')' ?>
+                    <?php else: ?>
+                        <?= '<br />(' . Html::a(Module::t('user', 'Verify email'), ['account/send-verification-email']) . ')' ?>
+                    <?php endif; ?>
                 <?php endif; ?>
-            <?php endif; ?>
+            </p>
         </div>
         <div class="col-lg-5">
             <?= Html::a(Module::t('user', empty(Yii::$app->user->identity->email) ? 'Set': 'Change'), ['account/change', 'item' => 'email']) ?>
@@ -84,13 +88,15 @@ CSS
             <label class="control-label"><?= Module::t('user', 'Password') ?></label>
         </div>
         <div class="col-lg-5">
-            <!--///[Yii2 uesr:verify]-->
-            <?php if (isset(Yii::$app->user->identity->verify->password_verified_at)): ?>
-                *********
-                <?= '<br />(' . Module::t('user', 'Last updated at:') . ' ' . date('Y-m-d H:i:s', Yii::$app->user->identity->verify->password_verified_at) . ')' ?>
-            <?php else: ?>
-                <?= '<br />(' . Module::t('user', 'Danger!') . ' ' . Module::t('user', 'Password is not set') . ')' ?>
-            <?php endif; ?>
+            <p class="help-block">
+                <!--///[Yii2 uesr:verify]-->
+                <?php if (isset(Yii::$app->user->identity->verify->password_verified_at)): ?>
+                    *********
+                    <?= '<br />(' . Module::t('user', 'Last updated at:') . ' ' . date('Y-m-d H:i:s', Yii::$app->user->identity->verify->password_verified_at) . ')' ?>
+                <?php else: ?>
+                    <?= '(' . Module::t('user', 'Danger!') . ' ' . Module::t('user', 'Password is not set') . ')' ?>
+                <?php endif; ?>
+            </p>
         </div>
         <div class="col-lg-5">
             <?= Html::a(Module::t('user', isset(Yii::$app->user->identity->verify->password_verified_at) ? 'Change': 'Set'), ['account/change', 'item' => 'password']) ?>

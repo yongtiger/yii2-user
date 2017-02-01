@@ -26,6 +26,7 @@ use yongtiger\user\Module;
  * @property string $password
  * @property string $resetPassword
  * @property string $verifyCode
+ * @property \yongtiger\user\models\User $user read-only user
  */
 class ResetPasswordForm extends Model
 {
@@ -122,8 +123,7 @@ class ResetPasswordForm extends Model
         if ($user->save(false)) {
 
             ///[Yii2 uesr:verify]
-            $user->verify->password_verified_at = time();
-            $user->verify->email_verified_at = time();
+            $user->verify->email_verified_at = $user->verify->password_verified_at = time();
             if (!$user->verify->save(false)) {
                 throw new IntegrityException();
             }

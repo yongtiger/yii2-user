@@ -1,4 +1,4 @@
-# Yii2-user [v0.8.1] User Basic: account oauth
+# Yii2-user [v0.8.2] User Basic: typo
 
 The most basic `user` module.
 

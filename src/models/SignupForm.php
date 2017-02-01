@@ -28,6 +28,7 @@ use yongtiger\user\helpers\SecurityHelper;
  * @property string $password
  * @property string $repassword
  * @property string $verifyCode
+ * @property \yongtiger\user\models\User $user read-only user
  */
 class SignupForm extends Model
 {
@@ -35,6 +36,7 @@ class SignupForm extends Model
     const EVENT_BEFORE_SIGNUP = 'beforeSignup';
     const EVENT_AFTER_SIGNUP = 'afterSignup';
 
+    ///[Yii2 uesr:oauth signup]
     const SCENARIO_DEFAULT = 'default';
     const SCENARIO_OAUTH = 'oauth';
 
@@ -63,11 +65,27 @@ class SignupForm extends Model
      */
     public $verifyCode; ///[Yii2 uesr:verifycode]
 
-    ///[Yii2 uesr:activation via email:signup]signup events
     /**
      * @var \yongtiger\user\models\User
      */
     private $_user;
+
+    /**
+     * Creates a form model.
+     *
+     * @param array $config name-value pairs that will be used to initialize the object properties
+     */
+    public function __construct($config = [])
+    {
+        ///[Yii2 uesr:oauth signup]
+        ///Note: `errors` property is read-only (without `setter`, instead of `addErrors`)
+        if (!empty($config['errors'])) {
+            $this->addErrors($config['errors']);
+            unset($config['errors']);
+        }
+        
+        parent::__construct($config);
+    }
 
     public function scenarios()
     {
@@ -170,15 +188,15 @@ class SignupForm extends Model
         return $attributeLabels;
     }
 
-    ///[Yii2 uesr:activation via email:signup]signup events
     /**
-     * Finds user by [[username]].
+     * Finds user. if null, create a new user.
      *
-     * @return User|null
+     * @return User|null User object or null
      */
-    protected function getUser()
+    public function getUser()
     {
         if ($this->_user === null) {
+
             $this->_user = new User();
 
             if (Yii::$app->getModule('user')->enableSignupWithUsername) {
@@ -191,6 +209,7 @@ class SignupForm extends Model
 
             $this->_user->setPassword($this->password);
             $this->_user->generateAuthKey();
+
         }
         return $this->_user;
     }
@@ -212,7 +231,6 @@ class SignupForm extends Model
 
             // ...custom code here...
             if ($this->getUser()->save(false)) {
-                Yii::$app->session->addFlash('success', Module::t('user', 'Successfully registered.'));
                 $this->afterSignup();
                 return $this->getUser();
             }else{
@@ -290,8 +308,10 @@ class SignupForm extends Model
     protected function afterSignup()
     {
         // ...custom code here...
+        Yii::$app->session->addFlash('success', Module::t('user', 'Successfully registered.'));
+
+        ///[Yii2 uesr:activation via email:signup]send activation email
         if (Yii::$app->getModule('user')->enableSignupWithEmail && Yii::$app->getModule('user')->enableSignupWithEmailActivation) {
-            ///[Yii2 uesr:activation via email:signup]send activation email
             Yii::$app
                 ->mailer
                 ->compose(
@@ -308,7 +328,8 @@ class SignupForm extends Model
 
         ///[Yii2 uesr:verify]
         ///After signup, `password_verified_at` is set to now, that is verified password.
-        $this->getUser()->link('verify', new Verify(['password_verified_at' => time()]));
+        ///When oauth signup, `password` is set to null, that is not verified password.
+        $this->getUser()->link('verify', new Verify(['password_verified_at' => $this->scenario == self::SCENARIO_OAUTH ? null : time()]));
 
         $this->trigger(self::EVENT_AFTER_SIGNUP, new ModelEvent());
     }

@@ -24,6 +24,7 @@ use yongtiger\user\models\SignupForm;
 use yongtiger\user\models\ActivationForm;
 use yongtiger\user\models\ResendForm;
 use yongtiger\user\models\Oauth;
+use yongtiger\user\traits\OauthTrait;
 
 /**
  * Registration Controller
@@ -32,6 +33,8 @@ use yongtiger\user\models\Oauth;
  */
 class RegistrationController extends Controller
 {
+    use OauthTrait;
+
     /**
      * @inheritdoc
      */
@@ -88,8 +91,7 @@ class RegistrationController extends Controller
         if (Yii::$app->getModule('user')->enableSignup && (Yii::$app->getModule('user')->enableSignupWithEmail || Yii::$app->getModule('user')->enableSignupWithUsername)) {
 
             ///[Yii2 uesr:oauth signup]
-            $model = Yii::$app->session['signup-form'] ? : new SignupForm();
-            unset(Yii::$app->session['signup-form']);
+            $model = new SignupForm($this->getOauthSession()['signup-form']);
 
             $load = $model->load(Yii::$app->request->post());
 
@@ -108,15 +110,9 @@ class RegistrationController extends Controller
 
                 ///[Yii2 uesr:oauth signup]
                 if (Yii::$app->getModule('user')->enableOauthSignup && Yii::$app->getModule('user')->enableOauthSignupValidation) {
-                    if ($client = Yii::$app->session['auth-client']) {
-                        unset(Yii::$app->session['auth-client']); 
-
-                        ///Add a new record to the oauth database table.
-                        $auth = new Oauth(['user_id' => $user->id]);
-                        $auth->attributes = $client;   ///massive assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
-                        if (!$auth->save(false)) {
-                            throw new IntegrityException();
-                        }
+                    if ($client = $this->getOauthSession()['auth-client']) {
+                        ///Insert a new record to the oauth ActiveRecord.
+                        $this->insertOauth($user->id, $client);
                     }
                 }
 
@@ -124,34 +120,16 @@ class RegistrationController extends Controller
                     Yii::$app->user->login($user);
                     return $this->redirect(['account/index']);  ///[Yii2 uesr:account]
                 }
+
                 return $this->goHome();
             }
 
-            return $this->render('signup', [
-                'model' => $model,
-            ]);
+            return $this->render('signup', ['model' => $model]);
 
         } else {
             Yii::$app->session->addFlash('info', Yii::$app->getModule('user')->disableSignupMessage);
             return $this->goHome();
         }
-    }
-
-    ///[Yii2 uesr:activation via email:activate]
-    /**
-     * Activates a new user.
-     *
-     * @param string $key Activation key.
-     */
-    public function actionActivate($key)
-    {
-        $model = new ActivationForm(['activation_key' => $key]);
-
-        if ($user = $model->activate()) {
-            Yii::$app->user->login($user);
-        }
-
-        return $this->goHome();
     }
 
     ///[Yii2 uesr:activation via email:resend]
@@ -179,11 +157,24 @@ class RegistrationController extends Controller
             return $this->goHome();
         }
 
-        return $this->render(
-            'resend',
-            [
-                'model' => $model
-            ]
-        );
+        return $this->render('resend', ['model' => $model]);
     }
+
+    ///[Yii2 uesr:activation via email:activate]
+    /**
+     * Activates a new user.
+     *
+     * @param string $key Activation key.
+     */
+    public function actionActivate($key)
+    {
+        $model = new ActivationForm(['activation_key' => $key]);
+
+        if ($model->activate()) {
+            Yii::$app->user->login($model->getUser());
+        }
+
+        return $this->redirect(['account/index']);
+    }
+
 }

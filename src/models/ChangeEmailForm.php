@@ -62,7 +62,7 @@ class ChangeEmailForm extends ChangeForm
     }
 
     /**
-     * Change email.
+     * Changes email.
      *
      * @return bool whether the changing is successfully
      */
@@ -77,7 +77,6 @@ class ChangeEmailForm extends ChangeForm
             // ...custom code here...
             $this->getUser()->email = $this->email;
             if ($this->getUser()->save(false)) {
-                Yii::$app->session->addFlash('success', Module::t('user', 'Successfully changed.'));
                 $this->afterChange();
                 return true;
             }

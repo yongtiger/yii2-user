@@ -96,17 +96,15 @@ class RecoveryController extends Controller
 
         if ($load && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->addFlash('success', Module::t('user', 'Check your email for further instructions.'));
+                
 
                 return $this->goHome();
             } else {
-                Yii::$app->session->addFlash('error', Module::t('user', 'Sorry, we are unable to reset password ...'));
+                
             }
         }
 
-        return $this->render('requestPasswordResetToken', [
-            'model' => $model,
-        ]);
+        return $this->render('requestPasswordResetToken', ['model' => $model]);
     }
 
     /**
@@ -130,8 +128,6 @@ class RecoveryController extends Controller
             return $this->goHome();
         }
 
-        return $this->render('resetPassword', [
-            'model' => $model,
-        ]);
+        return $this->render('resetPassword', ['model' => $model]);
     }
 }

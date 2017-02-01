@@ -16,6 +16,7 @@ use Yii;
 use yii\base\Model;
 use yongtiger\user\Models\User;
 use yongtiger\user\Module;
+use yongtiger\user\helpers\SecurityHelper;
 
 /**
  * Password Reset Request Form Msodel
@@ -23,6 +24,7 @@ use yongtiger\user\Module;
  * @package yongtiger\user\models
  * @property string $email
  * @property string $verifyCode
+ * @property \yongtiger\user\models\User $user read-only user
  */
 class PasswordResetRequestForm extends Model
 {
@@ -37,6 +39,11 @@ class PasswordResetRequestForm extends Model
     public $verifyCode; ///[Yii2 uesr:verifycode]
 
     /**
+     * @var \yongtiger\user\models\User
+     */
+    private $_user;
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -47,7 +54,7 @@ class PasswordResetRequestForm extends Model
             ['email', 'email'],
             ['email', 'exist',
                 'targetClass' => '\yongtiger\user\models\User',
-                'filter' => ['status' => User::STATUS_INACTIVE],
+                'filter' => ['status' => User::STATUS_ACTIVE],
                 'message' => Module::t('user', 'There is no user with such email.')
             ],
         ];
@@ -103,25 +110,31 @@ class PasswordResetRequestForm extends Model
      */
     public function sendEmail()
     {
-        if ($user = $this->getUser() && !User::isPasswordResetTokenValid($user->password_reset_token) {
-            $user->generatePasswordResetToken();
-            if ($user->save()) {
+        if ($user = $this->getUser()) {
 
-                ///[Yii2 uesr:mail]
-                return Yii::$app
-                    ->mailer
-                    ->compose(
-                        ['html' => Yii::$app->getModule('user')->requestPasswordResetComposeHtml, 'text' => Yii::$app->getModule('user')->requestPasswordResetComposeText],
-                        ['user' => $user]
-                    )
-                    ->setFrom(Yii::$app->getModule('user')->requestPasswordResetSetFrom)
-                    ->setTo($this->email)
-                    ->setSubject(Module::t('user', 'Password reset for ') . Yii::$app->name)
-                    ->send();
+            if (($validDuration = SecurityHelper::getValidDuration($user->password_reset_token)) > 0) {
+                Yii::$app->session->addFlash('error', Module::t('user', 'Please do not send email repeatedly! Try again in {valid-duration}.', ['valid-duration' => Yii::$app->formatter->asDuration($validDuration)]));
+                return false;
+            } else {
+                $user->generatePasswordResetToken();
+                if ($user->save()) {
+                    Yii::$app->session->addFlash('success', Module::t('user', 'Check your email for further instructions.'));
+                    return Yii::$app
+                        ->mailer
+                        ->compose(
+                            ['html' => Yii::$app->getModule('user')->requestPasswordResetComposeHtml, 'text' => Yii::$app->getModule('user')->requestPasswordResetComposeText],
+                            ['user' => $user]
+                        )
+                        ->setFrom(Yii::$app->getModule('user')->requestPasswordResetSetFrom)
+                        ->setTo($this->email)
+                        ->setSubject(Module::t('user', 'Password reset for ') . Yii::$app->name)
+                        ->send();
 
+                }
+                
             }
         }
-        
+        Yii::$app->session->addFlash('error', Module::t('user', 'The email address for resetting the password is invalid!'));
         return false;
     }
 }

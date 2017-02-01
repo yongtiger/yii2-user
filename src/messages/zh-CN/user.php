@@ -44,7 +44,8 @@ return [
 	
 	///\vendor\yongtiger\yii2-user\src\controllers\RecoveryController.php
 	'Check your email for further instructions.' => '请查看您的邮件以获知后续的操作。',
-	'Sorry, we are unable to reset password ...' => '对不起，我们不能根据您提供的邮箱地址重置您的密码。',
+	'Please do not send email repeatedly! Try again in {valid-duration}.' => '请不要重复发送验证邮件！过 {valid-duration} 再尝试发送。',
+	'The email address for resetting the password is invalid!' => '重置密码的邮箱地址无效！',
 	'New password saved.' => '新密码已保存。',
 
 	///\vendor\yongtiger\yii2-user\src\controllers\AccountController.php
@@ -116,11 +117,6 @@ return [
 	///\vendor\yongtiger\yii2-user\src\models\ChangeForm.php
 	//////[Yii2 uesr:account]
 	'Incorrect password.' => '密码不正确。',
-
-	///\vendor\yongtiger\yii2-user\src\models\ChangeUsernameForm.php
-	///\vendor\yongtiger\yii2-user\src\models\ChangeEmailForm.php
-	///\vendor\yongtiger\yii2-user\src\models\ChangePasswordForm.php
-	//////[Yii2 uesr:account]
 	'Successfully changed.' => '修改成功。',
 
 	///\vendor\yongtiger\yii2-user\src\models\ChangePasswordForm.php

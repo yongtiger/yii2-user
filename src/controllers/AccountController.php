@@ -137,10 +137,7 @@ class AccountController extends Controller
             return $this->redirect(['account/index']);
         }
 
-        return $this->render('change', [
-            'item' => $item,
-            'model' => $model,
-        ]);
+        return $this->render('change', ['item' => $item, 'model' => $model]);
     }
 
     ///[Yii2 uesr:account verify email]
@@ -184,7 +181,7 @@ class AccountController extends Controller
     {
         $model = new ActivationForm(['activation_key' => $key]);
 
-        if ($model->verifyEmail()) {
+        if ($model->activate()) {
             return $this->redirect(['account/index']);
         }
 
