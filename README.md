@@ -117,54 +117,71 @@ to the require section of your composer.json.
         'class' => 'yongtiger\user\Module',
 
         ///Signup
-        'enableSignup' => true,
+        'enableSignup' => false,
         'disableSignupMessage' => Yii::t('user', 'This site has been closed registration.'),
 
-        'enableSignupWithUsername' => true,
+        'enableSignupWithUsername' => false,
+        'enableSignupWithRepassword' => false,
+        'enableSignupWithEmail' => false,
 
-        'enableSignupWithEmail' => true,
-        'enableSignupWithEmailActivation' => true,
-        'signupWithEmailActivationExpire' => 886400,
-        'signupWithEmailActivationComposeHtml' => '@yongtiger/user/mail/activationKey-html',
-        'signupWithEmailActivationComposeText' => '@yongtiger/user/mail/activationKey-text',
+        'enableSignupWithEmailActivation' => false,
+        'signupWithEmailActivationExpire' => 600,
+        'signupWithEmailActivationComposeHtml' => '@yongtiger/user/mail/activate-status-html',
+        'signupWithEmailActivationComposeText' => '@yongtiger/user/mail/activate-status-text',
         'signupWithEmailActivationSetFrom' => ['support@brainbook.cc' => 'My Application robot'],
 
-        'enableSignupWithRepassword' => true,
+        'enableSignupAjaxValidation' => false,
+        'enableSignupClientValidation' => false,
+        'enableSignupValidateOnBlur' => false,
+        'enableSignupValidateOnSubmit' => false,
 
-        'enableSignupAjaxValidation' => true,
-        'enableSignupClientValidation' => true,
-        'enableSignupValidateOnBlur' => true,
-        'enableSignupValidateOnSubmit' => true,
-
-        'enableSignupWithCaptcha' => true,
+        'enableSignupWithCaptcha' => false,
 
         ///Login
-        'enableLogin' => true,
+        'enableLogin' => false,
         'disableLoginMessage' => Yii::t('user', 'This site has been closed login.'),
-        //////[Yii2 uesr:login with username or email]when both `enableLoginWithUsername` and `enableLoginWithEmail` are `true`
-        'enableLoginWithUsername' => true,
-        'enableLoginWithEmail' => true,
+        //////[Yii2 uesr:login with username or email]when both `enableLoginWithUsername` and `enableLoginWithEmail` are `true` 
+        'enableLoginWithUsername' => false,
+        'enableLoginWithEmail' => false,
 
-        'enableLoginAjaxValidation' => true,
-        'enableLoginClientValidation' => true,
-        'enableLoginValidateOnBlur' => true,
-        'enableLoginValidateOnSubmit' => true,
+        'enableLoginAjaxValidation' => false,
+        'enableLoginClientValidation' => false,
+        'enableLoginValidateOnBlur' => false,
+        'enableLoginValidateOnSubmit' => false,
 
-        'enableLoginWithCaptcha' => true,
+        'enableLoginWithCaptcha' => false,
 
-        ///RequestPasswordReset
-        'enableRequestPasswordResetAjaxValidation' => true,
-        'enableRequestPasswordResetClientValidation' => true,
-        'enableRequestPasswordResetValidateOnBlur' => true,
-        'enableRequestPasswordResetValidateOnSubmit' => true,
+        ///[Yii2 uesr:recovery]
+        'recoveryPasswordExpire' => 0,
+        'recoveryPasswordComposeHtml' => '@yongtiger/user/mail/recover-password-html',
+        'recoveryPasswordComposeText' => '@yongtiger/user/mail/recover-password-text',
+        'recoveryPasswordSetFrom' => ['support@brainbook.cc' => 'My Application robot'],
 
-        'enableRequestPasswordResetWithCaptcha' => true,
+        ///[Yii2 uesr:account]
+        'enableAccountChangeWithPassword' => false,
+        'enableAccountChangePasswordWithRepassword' => false,
+        'accountVerificatonExpire' => 600,
+        'accountVerifyEmailComposeHtml' => '@yongtiger/user/mail/verify-email-html',
+        'accountVerifyEmailComposeText' => '@yongtiger/user/mail/verify-email-text',
+        'accountVerifyEmailSetFrom' => ['support@brainbook.cc' => 'My Application robot'],
 
-        'requestPasswordResetComposeHtml' => '@yongtiger/user/mail/passwordResetToken-html',
-        'requestPasswordResetComposeText' => '@yongtiger/user/mail/passwordResetToken-text',
-        'requestPasswordResetSetFrom' => ['support@brainbook.cc' => 'My Application robot'],
+        'enableAccountChangeAjaxValidation' => false,
+        'enableAccountChangeClientValidation' => false,
+        'enableAccountChangeValidateOnBlur' => false,
+        'enableAccountChangeValidateOnSubmit' => false,
 
-        ///Captcha
+        'enableAccountChangeWithCaptcha' => false,
+
+        ///[Yii2 uesr:token]
+        'enableSendTokenWithoutLoad' => false,
+        'enableSendTokenAjaxValidation' => false,
+        'enableSendTokenClientValidation' => false,
+        'enableSendTokenValidateOnBlur' => false,
+        'enableSendTokenValidateOnSubmit' => false,
+
+        'enableSendTokenWithCaptcha' => false,
+
+        ///[Yii2 uesr:captcha]
         'captcha' => [
             'class' => 'yii\captcha\CaptchaAction',
             // 'controller'=>'login',  ///The controller that owns this action
@@ -185,12 +202,12 @@ to the require section of your composer.json.
             'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
         ],
 
-        ///Oauth
-        'enableOauth' => true,
-        'enableOauthSignup' => true,
-        'enableOauthSignupValidation' => true,
+        ///[Yii2 uesr:oauth]
+        'enableOauth' => false,
+        'enableOauthSignup' => false,
+        'enableOauthSignupValidation' => false,
         'authChoiceWidgetConfig' => [
-            'baseAuthUrl' => new \yii\helpers\ReplaceArrayValue(['security/auth']),  ///cannot be `['security/auth']`! ArrayHelper::merge will get wrong resule. instead, we use `ReplaceArrayValue`.
+            'baseAuthUrl' => new \yii\helpers\ReplaceArrayValue(['security/auth']),  ///cannot be `['security/auth']`! ArrayHelper::merge will get wrong result. instead, we use `ReplaceArrayValue`.
             // 'popupMode' => false,     ///defaults to true
             // 'options' => ['class'=>'control-label'], ///widget div options
             'clientOptions' => [
@@ -210,9 +227,10 @@ to the require section of your composer.json.
         'auth' => [
             'class' => 'yii\authclient\AuthAction',
             // 'successCallback' => Yii::$app->user->isGuest ? [$this, 'authenticate'] : [$this, 'connect'],   ///cannot configure 'successCallback' here because of `$this`!!!
-            'successUrl' => '?r=site/index',  ///cannot use `Yii::$app->homeUrl` here! we will add `Yii::$app->homeUrl` in module init() later
-            // 'successUrl' => '', ///empty string means web home url
-            'cancelUrl' => '?r=user/security/login',
+            ///Cannot use `Yii::$app` here! we will use `Yii::$app->urlManager->createUrl()` in module init() later
+            ///Cannot be `['security/auth']`! ArrayHelper::merge will get wrong result. instead, we use `ReplaceArrayValue`.
+            'successUrl' => new \yii\helpers\ReplaceArrayValue(['user/account/index']),
+            'cancelUrl' => new \yii\helpers\ReplaceArrayValue(['user/security/login']),
         ]
     ],
 ],
@@ -394,24 +412,32 @@ return [
 
 ## Usage in frontend
 
+- guest:
 ```
 /user
 /user/security
 /user/security/login
 /user/security/logout
 /user/registration/signup
-/user/recovery/request-password-reset
-/user/recovery/reset-password
+/user/token/send-token&type=recovery
+/user/token/send-token&type=activation
+```
+
+- after logged in:
+```
+/user/account/index
+/user/account/change&item=username
+/user/account/change&item=email
+/user/account/change&item=password
+/user/security/disconnect&provider=<auth-client>
+/user/security/auth&authclient=<auth-client>
 ```
 
 
 ## Usage in backend
 
 ```
-/admin
-/admin/security
-/admin/security/login
-/admin/security/logout
+
 ```
 
 ## Notes
