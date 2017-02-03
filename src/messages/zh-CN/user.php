@@ -41,18 +41,12 @@ return [
 	'Failed connect!' => '绑定失败！',
 	'Successfully disconnect.' => '解绑成功。',
 	'Failed disconnect!' => '解绑失败！',
-	
-	///\vendor\yongtiger\yii2-user\src\controllers\RecoveryController.php
-	'Check your email for further instructions.' => '请查看您的邮件以获知后续的操作。',
-	'Please do not send email repeatedly! Try again in {valid-duration}.' => '请不要重复发送验证邮件！过 {valid-duration} 再尝试发送。',
-	'The email address for resetting the password is invalid!' => '重置密码的邮箱地址无效！',
-	'New password saved.' => '新密码已保存。',
 
 	///\vendor\yongtiger\yii2-user\src\controllers\AccountController.php
 	//////[Yii2 uesr:account]
 	'Invalid action!' => '无效操作！',
-	'Verification mail from ' => '邮箱验证邮件 - ',
-	'Please check your email [{youremail}] to verify your email.' => '请查收您的邮件 [{youremail}] 以验证您的邮箱。',
+	
+	
 
 	/**
 	 * Models
@@ -73,9 +67,6 @@ return [
 	//////[Yii2 uesr:activation via email:signup]
 	'An activation email will be sent.' => '系统将发送激活邮件到您的邮箱。',
 	'Successfully registered.'  => '注册成功。',
-	'Resend' => '重新发送',
-	'Please check your email [{youremail}] to activate your account.'  => '请查收您的邮件 [{youremail}] 以激活账户。',
-	'Activation mail of the registration from ' => '注册激活邮件 - ',
 
 	///\vendor\yongtiger\yii2-user\src\models\LoginForm.php
 	'Username or Email' => '用户名或邮箱',
@@ -85,34 +76,7 @@ return [
 	'Incorrect username or password.' => '用户名或密码不正确。',
 	'Your account is invalid!' => '您的账户无效！',
 	'Your account is not activated! Click [{resend}] an activation Email.' => '您的账户没有激活！点击 [{resend}] 激活邮件。',
-
-	///\vendor\yongtiger\yii2-user\src\models\PasswordResetRequestForm.php
-	'There is no user with such email.' => '没有用户使用该邮箱。',
-	'Password reset for ' => '密码重置 ',
-
-	///\vendor\yongtiger\yii2-user\src\models\ResetPasswordForm.php
-	'Password' => '密码',
-	'Password reset token cannot be blank.' => '重置密码的令牌不能为空。',
-	'Wrong password reset token.' => '重置密码的令牌不正确。',
-	//////[Yii2 uesr:repassword]
-	'Repeat Password' => '再次输入密码',
-	'The two passwords do not match.' => '两次输入的密码不一致。',
-
-	///\vendor\yongtiger\yii2-user\src\models\ActivationForm.php
-	//////[Yii2 uesr:activation via email:activation]
-	'Activation Key' => '激活码',
-	'The activation link is expired!' => '激活链接已经过期！',
-	'Your account has been successfully activated ...' => '您的账户已经被成功激活。您可以用注册时填写的用户名和密码进行登陆。',
-	'User has not been activated! Please try again.' => '用户没有被激活！请重新试一试。',
-	//////[Yii2 uesr:account]
-	'Your email has not been verified! Please try again.' => '您的邮箱没有被验证！请重新试一试。',
-	'Your email has been successfully activated.' => '您的邮箱已经被验证。',
-
-	///\vendor\yongtiger\yii2-user\src\models\ResendForm.php
-	//////[Yii2 uesr:activation via email:resend]
-	'Activation mail of the registration from ' => '注册激活邮件 - ',
-	'An activation link has been sent to the email address you entered.' => '激活链接已经发送到您注册的邮箱。',
-	'Resend activation email failed! Please try again.' => '重新发送激活邮件失败！请重新试一试。',
+	'Resend' => '重新发送',
 
 	///\vendor\yongtiger\yii2-user\src\models\ChangeForm.php
 	//////[Yii2 uesr:account]
@@ -123,6 +87,26 @@ return [
 	//////[Yii2 uesr:account]
 	'New Password' => '新密码',
 
+	///\vendor\yongtiger\yii2-user\src\models\SendTokenForm.php
+	'There is no user with such email.' => '没有用户使用该邮箱。',
+	'Please do not send email repeatedly! Try again in {valid-duration}.' => '请不要重复发送验证邮件！过 {valid-duration} 再尝试发送。',
+	'Failed to find a user!' => '没有找到用户！',
+	'Activation mail of the registration from ' => '注册激活邮件 - ',
+	'Please check your email [{youremail}] to activate your account.'  => '请查收您的邮箱 [{youremail}] 以激活账户。',
+	'Password reset for ' => '密码重置 ',
+	'Please check your email [{youremail}] for further instructions.' => '请查收您的邮箱 [{youremail}] 进行下一步操作。',
+	'Verification mail from ' => '邮箱验证邮件 - ',
+	'Please check your email [{youremail}] to verify your email.' => '请查收您的邮箱 [{youremail}] 以验证您的邮箱。',
+
+	///\vendor\yongtiger\yii2-user\src\models\TokenHandler.php
+	'The token has been expired!' => 'Token已经过期！',
+	'Your account has been successfully activated ...' => '您的账户已经被成功激活。您可以用注册时填写的用户名和密码进行登陆。',
+	'Your account has not been activated! Please try again.' => '您的账户没有被激活！请重新试一试。',
+	'Please reset your password.' => '请重置您的密码。',
+	'Failed to reset password! Please try again.' => '重置密码失败！请重新试一试。',
+	'Your email has been successfully verified.' => '您的邮箱被成功验证。',
+	'Your email has not been verified! Please try again.' => '您的邮箱验证失败！请重新试一试。',
+	
 	/**
 	 * Views
 	 */
@@ -135,30 +119,18 @@ return [
 	'If you forgot your password you can [{reset it}].' => "如果您忘记密码，您可以 [{reset it}]。",
 	'reset it' => '重置',
 
-	///\vendor\yongtiger\yii2-user\src\views\security\requestPasswordResetToken.php
-	'Request password reset' => '请求密码重置',
-	'Please fill out your registration email. A link to reset password will be sent there.' => '请填写您注册时的邮箱，系统将发送重置密码的邮件。',
-	'Send' => '发送',
-
-	///\vendor\yongtiger\yii2-user\src\views\security\resetPassword.php
-	'Reset password' => '重置密码',
-	'Please choose your new password:' => '请选择您的新密码：',
-	'Save' => '保存',
-
-	///\vendor\yongtiger\yii2-user\src\mail\passwordResetToken-html.php
-	///\vendor\yongtiger\yii2-user\src\mail\passwordResetToken-text.php
+	///\vendor\yongtiger\yii2-user\src\mail\recover-password-html.php
+	///\vendor\yongtiger\yii2-user\src\mail\recover-password-text.php
 	'Hello ' => '您好 ',
 	'Follow the link below to reset your password:' => '请点击下面的链接重置密码：',
 
-	///\vendor\yongtiger\yii2-user\src\mail\activationKey-html.php
-	///\vendor\yongtiger\yii2-user\src\mail\activationKey-text.php
+	///\vendor\yongtiger\yii2-user\src\mail\activate-status-html.php
+	///\vendor\yongtiger\yii2-user\src\mail\activate-status-text.php
 	'Follow the link below to activate your account:' => '请点击下面的链接激活账户：',
 
-	///\vendor\yongtiger\yii2-user\src\views\registration\resend.php
-	//////[Yii2 uesr:activation via email:resend]
-	'Resend e-mail activation' => '重新发送激活邮件',
-	'Please fill out your registration email. A link to activation will be sent there.' => '请填写您注册时的邮箱，系统将发送激活账户的邮件。',
-	'Resend' => '重新发送',
+	///\vendor\yongtiger\yii2-user\src\mail\verify-email-html.php
+	///\vendor\yongtiger\yii2-user\src\mail\verify-email-text.php
+	'Follow the link below to verify your email:' => '请点击下面的链接验证邮箱：',
 
 	///\vendor\yongtiger\yii2-user\src\views\account\index.php
 	//////[Yii2 uesr:account]
@@ -179,6 +151,7 @@ return [
 	'Disconnect' => '解绑',
 
 	///\vendor\yongtiger\yii2-user\src\views\account\change.php
+	'Save' => '保存',
 	//////[Yii2 uesr:account]
 	'You must provide your account password when changing' => '更改时必须提供您的账户密码',
 
@@ -186,5 +159,13 @@ return [
 	///\vendor\yongtiger\yii2-user\src\mail\account-verification-email-text.php
 	//////[Yii2 uesr:account]
 	'Follow the link below to verify your email:' => '请点击下面的链接验证您的邮箱：',
+
+	///\vendor\yongtiger\yii2-user\src\views\token\sendToken.php
+	'Send activation email' => '发送账户激活邮件',
+	'Please fill out your registration email. A link to activation will be sent there.' => '请填写您注册时的邮箱，系统将发送激活账户的邮件。',
+	'Request password reset' => '请求密码重置',
+	'Please fill out your registration email. A link to reset password will be sent there.' => '请填写您注册时的邮箱，系统将发送重置密码的邮件。',
+	'Please fill out your registration email. A link to verify email will be sent there.' => '请填写您注册时的邮箱，系统将发送邮箱验证的邮件。',
+	'Send' => '发送',
 
 ];

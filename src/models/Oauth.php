@@ -71,7 +71,7 @@ class Oauth extends ActiveRecord
             [['user_id', 'gender', 'created_at', 'updated_at'], 'integer'],
             [['provider', 'openid', 'email', 'fullname', 'firstname', 'lastname', 'language', 'avatar', 'link'], 'string', 'max' => 255],
             [['provider', 'openid'], 'unique', 'targetAttribute' => ['provider', 'openid'], 'message' => 'The combination of Provider and Openid has already been taken.'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],    ///@see http://www.yiiframework.com/doc-2.0/guide-tutorial-core-validators.html#exist
         ];
     }
 

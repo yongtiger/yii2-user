@@ -52,7 +52,8 @@ class ChangeForm extends Model
     {
         $rules =  [];
 
-        if (isset(Yii::$app->user->identity->verify->password_verified_at)) {   ///[Yii2 uesr:verify]
+        ///[Yii2 uesr:verify]
+        if (isset(Yii::$app->user->identity->verify->password_verified_at)) {
             $rules = array_merge($rules, [
                 // password is required
                 ['password', 'required'],
@@ -79,12 +80,16 @@ class ChangeForm extends Model
      */
     public function attributeLabels()
     {
-        if (isset(Yii::$app->user->identity->verify->password_verified_at)) {   ///[Yii2 uesr:verify]
+        $attributeLabels = [];
+
+        ///[Yii2 uesr:verify]
+        if (isset(Yii::$app->user->identity->verify->password_verified_at)) {
             $attributeLabels['password'] = Module::t('user', 'Password');
         }
 
+        ///[Yii2 uesr:verifycode]
         if (Yii::$app->getModule('user')->enableAccountChangeWithCaptcha) {
-            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');  ///[Yii2 uesr:verifycode]
+            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');
         }
 
         return $attributeLabels;
@@ -149,7 +154,7 @@ class ChangeForm extends Model
     protected function beforeChange()
     {
         $event = new ModelEvent();
-        $this->trigger(self::EVENT_BEFORE_CHANGE, $event);
+        $this->trigger(static::EVENT_BEFORE_CHANGE, $event);
 
         if ($event->isValid) {
 
@@ -183,6 +188,6 @@ class ChangeForm extends Model
         // ...custom code here...
         Yii::$app->session->addFlash('success', Module::t('user', 'Successfully changed.'));
 
-        $this->trigger(self::EVENT_AFTER_CHANGE, new ModelEvent());
+        $this->trigger(static::EVENT_AFTER_CHANGE, new ModelEvent());
     }
 }

@@ -224,8 +224,8 @@ class LoginForm extends Model
     /**
      * Logs in a user using the provided username and password.
      *
-     * @param boolean $runValidation whether to perform validation (calling [[validate()]])
-     * @return boolean whether the user is logged in successfully
+     * @param bool $runValidation whether to perform validation (calling [[validate()]])
+     * @return bool whether the user is logged in successfully
      */
     public function login($runValidation = true)
     {
@@ -275,7 +275,7 @@ class LoginForm extends Model
     protected function beforeLogin()
     {
         $event = new ModelEvent();
-        $this->trigger(self::EVENT_BEFORE_LOGIN, $event);
+        $this->trigger(static::EVENT_BEFORE_LOGIN, $event);
 
         if ($event->isValid) {
 
@@ -288,7 +288,7 @@ class LoginForm extends Model
                 Yii::$app->session->addFlash('warning',
                     Module::t('user',
                         'Your account is not activated! Click [{resend}] an activation Email.',
-                        ['resend'=>Module::t('user', Html::a(Module::t('user', 'Resend'), ['registration/resend']))]
+                        ['resend'=>Module::t('user', Html::a(Module::t('user', 'Resend'), ['token/send-token', 'type' => 'activation']))]
                     )
                 );
                 $event->isValid = false;
@@ -321,6 +321,6 @@ class LoginForm extends Model
     {
         // ...custom code here...
         
-        $this->trigger(self::EVENT_AFTER_LOGIN, new ModelEvent());
+        $this->trigger(static::EVENT_AFTER_LOGIN, new ModelEvent());
     }
 }

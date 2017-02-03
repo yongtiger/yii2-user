@@ -17,20 +17,19 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use yii\base\NotSupportedException;
-use yongtiger\user\helpers\SecurityHelper;
 use yongtiger\user\Module;
 use yongtiger\user\models\Oauth;
 
 /**
- * User Model
+ * This is the model class for table "{{%user}}".
  *
  * @package yongtiger\user\models
  * @property integer $id
  * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $email
  * @property string $auth_key
+ * @property string $password_hash
+ * @property string $token
+ * @property string $email
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
@@ -39,8 +38,8 @@ use yongtiger\user\models\Oauth;
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
-    const STATUS_INACTIVE = -10;  ///[Yii2 uesr:activation via email:INACTIVE]
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = -1;  ///[Yii2 uesr:activation via email:INACTIVE]
 
     /**
      * @inheritdoc
@@ -66,8 +65,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED, self::STATUS_INACTIVE]],    ///[Yii2 uesr:activation via email:INACTIVE]
+            ['status', 'default', 'value' => static::STATUS_ACTIVE],
+            ['status', 'in', 'range' => [static::STATUS_ACTIVE, static::STATUS_DELETED, static::STATUS_INACTIVE]],    ///[Yii2 uesr:activation via email:INACTIVE]
         ];
     }
 
@@ -158,17 +157,6 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(Verify::className(), ['user_id' => 'id']);
     }
 
-    /**
-     * Finds user by username.
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        return static::findOne(['username' => $username, 'status' => static::STATUS_ACTIVE]);
-    }
-
     ///[Yii2 uesr:oauth]
     /**
      * Finds user by Oauth provider and openid.
@@ -185,21 +173,4 @@ class User extends ActiveRecord implements IdentityInterface
             ->andWhere(['{{oauth}}.openid' => $openid])
             ->one();
     }
-
-    ///[Yii2 uesr:activation]
-    /**
-     * Finds user by token.
-     *
-     * @param string $token
-     * @return static|null
-     */
-    public static function findByActivationKey($token)
-    {
-        if (!SecurityHelper::isValidKey($token)) {
-            return null;
-        }
-
-        return static::findOne(['activation_key' => $token, 'status' => Yii::$app->user->isGuest ? static::STATUS_INACTIVE : static::STATUS_ACTIVE]);
-    }
-
 }

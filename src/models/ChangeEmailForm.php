@@ -19,7 +19,7 @@ use yii\db\IntegrityException;
 use yongtiger\user\Module;
 
 /**
- * ChangeEmail Form Model
+ * Change Email Form Model
  *
  * @package yongtiger\user\models
  * @property string $email

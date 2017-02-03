@@ -17,12 +17,10 @@ use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
-use yii\db\IntegrityException;
 use yongtiger\user\Module;
 use yongtiger\user\models\User;
 use yongtiger\user\models\SignupForm;
-use yongtiger\user\models\ActivationForm;
-use yongtiger\user\models\ResendForm;
+use yongtiger\user\models\SendTokenForm;
 use yongtiger\user\models\Oauth;
 use yongtiger\user\traits\OauthTrait;
 
@@ -48,16 +46,20 @@ class RegistrationController extends Controller
         $behaviors = [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['signup','activate', 'resend'],  ///except capcha
                 'rules' => [
                     [
-                        'actions' => ['signup','activate', 'resend'],
+                        'actions' => ['signup'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                 ],
             ],
         ];
+
+        ///[Yii2 uesr:verifycode]
+        if (Yii::$app->getModule('user')->enableSignupWithCaptcha) {
+            $behaviors['access']['rules'][0]['actions'] = array_merge($behaviors['access']['rules'][0]['actions'], ['captcha']);
+        }
 
         return $behaviors;
     }
@@ -73,7 +75,7 @@ class RegistrationController extends Controller
 
             ///[Yii2 uesr:verifycode]
             if (Yii::$app->getModule('user')->enableSignupWithCaptcha) {
-                $actions = array_merge($actions, ['captcha' => Yii::$app->getModule('user')->captcha]);
+                $actions = array_merge($actions ,['captcha' => Yii::$app->getModule('user')->captcha]);
             }
 
         }
@@ -96,14 +98,9 @@ class RegistrationController extends Controller
             $load = $model->load(Yii::$app->request->post());
 
             ///[Yii2 uesr:Ajax validation]
-            if (Yii::$app->getModule('user')->enableSignupAjaxValidation) {
-                ///Note: Should be handled as soon as possible ajax!
-                ///Note: CAPTCHA validation should not be used in AJAX validation mode.
-                ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-                if (Yii::$app->request->isAjax) {
-                    Yii::$app->response->format = Response::FORMAT_JSON;
-                    return ActiveForm::validate($model);
-                }
+            if (Yii::$app->getModule('user')->enableSignupAjaxValidation && Yii::$app->request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
             }
 
             if ($load && $user = $model->signup()) {
@@ -111,14 +108,14 @@ class RegistrationController extends Controller
                 ///[Yii2 uesr:oauth signup]
                 if (Yii::$app->getModule('user')->enableOauthSignup && Yii::$app->getModule('user')->enableOauthSignupValidation) {
                     if ($client = $this->getOauthSession()['auth-client']) {
-                        ///Insert a new record to the oauth ActiveRecord.
-                        $this->insertOauth($user->id, $client);
+                        $this->insertOauth($user->id, $client); ///Insert a new record to the oauth ActiveRecord.
+                        $this->clearOauthSession();
                     }
                 }
 
                 if (!(Yii::$app->getModule('user')->enableSignupWithEmail && Yii::$app->getModule('user')->enableSignupWithEmailActivation)) {
                     Yii::$app->user->login($user);
-                    return $this->redirect(['account/index']);  ///[Yii2 uesr:account]
+                    return $this->redirect(['account/index']);
                 }
 
                 return $this->goHome();
@@ -131,50 +128,4 @@ class RegistrationController extends Controller
             return $this->goHome();
         }
     }
-
-    ///[Yii2 uesr:activation via email:resend]
-    /**
-     * Resends email activation key.
-     */
-    public function actionResend()
-    {
-        $model = new ResendForm();
-
-        $load = $model->load(Yii::$app->request->post());
-
-        ///[Yii2 uesr:Ajax validation]
-        if (Yii::$app->getModule('user')->enableSignupAjaxValidation) {
-            ///Note: Should be handled as soon as possible ajax!
-            ///Note: CAPTCHA validation should not be used in AJAX validation mode.
-            ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-            if (Yii::$app->request->isAjax) {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-            }
-        }
-
-        if ($load && $model->resend()) {
-            return $this->goHome();
-        }
-
-        return $this->render('resend', ['model' => $model]);
-    }
-
-    ///[Yii2 uesr:activation via email:activate]
-    /**
-     * Activates a new user.
-     *
-     * @param string $key Activation key.
-     */
-    public function actionActivate($key)
-    {
-        $model = new ActivationForm(['activation_key' => $key]);
-
-        if ($model->activate()) {
-            Yii::$app->user->login($model->getUser());
-        }
-
-        return $this->redirect(['account/index']);
-    }
-
 }

@@ -16,9 +16,11 @@
  * @var $model yongtiger\user\models\LoginForm
  */
 
+use Yii;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yongtiger\user\Module;
+use yongtiger\user\models\TokenHandler;
 
 $this->title = Module::t('user', 'Login');
 $this->params['breadcrumbs'][] = $this->title;
@@ -64,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $form->field($model, 'password')->passwordInput() ?>
 
                     <div style="color:#999;margin:1em 0">
-                        <?= Module::t('user', 'If you forgot your password you can [{reset it}].', ['reset it' => Html::a(Module::t('user', 'reset it'), ['recovery/request-password-reset'])]) ?>
+                        <?= Module::t('user', 'If you forgot your password you can [{reset it}].', ['reset it' => Html::a(Module::t('user', 'reset it'), ['token/send-token', 'type' => TokenHandler::SCENARIO_RECOVERY])]) ?>
                     </div>
 
                     <!--///[Yii2 uesr:verifycode]-->

@@ -20,7 +20,6 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
-use yii\db\IntegrityException;
 use yongtiger\user\Module;
 use yongtiger\user\models\User;
 use yongtiger\user\models\LoginForm;
@@ -50,17 +49,16 @@ class SecurityController extends Controller
         $behaviors = [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'login'],  ///except capcha
                 'rules' => [
+                    [
+                        'actions' => ['login'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
                     [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
-                    ],
-                    [
-                        'actions' => ['login', 'authenticate'],
-                        'allow' => true,
-                        'roles' => ['?'],
                     ],
                 ],
             ],
@@ -72,10 +70,15 @@ class SecurityController extends Controller
             ],
         ];
 
+        ///[Yii2 uesr:verifycode]
+        if (Yii::$app->getModule('user')->enableLoginWithCaptcha) {
+            $behaviors['access']['rules'][0]['actions'] = array_merge($behaviors['access']['rules'][0]['actions'], ['captcha']);
+        }
+
+        ///[Yii2 uesr:oauth]
         if (Yii::$app->getModule('user')->enableOauth && Yii::$app->get("authClientCollection", false)) {
-            $behaviors['access']['only'] = array_merge($behaviors['access']['only'], ['authenticate', 'connect', 'disconnect']);
-            $behaviors['access']['rules'][0]['actions'] = array_merge($behaviors['access']['rules'][0]['actions'], ['connect', 'disconnect']);
-            $behaviors['access']['rules'][1]['actions'] = array_merge($behaviors['access']['rules'][1]['actions'], ['authenticate']);
+            $behaviors['access']['rules'][0]['actions'] = array_merge($behaviors['access']['rules'][0]['actions'], ['auth']);
+            $behaviors['access']['rules'][1]['actions'] = array_merge($behaviors['access']['rules'][1]['actions'], ['connect', 'disconnect', 'auth']);
         }
 
         return $behaviors;
@@ -92,7 +95,7 @@ class SecurityController extends Controller
 
             ///[Yii2 uesr:verifycode]
             if (Yii::$app->getModule('user')->enableLoginWithCaptcha) {
-                $actions = array_merge($actions, ['captcha' => Yii::$app->getModule('user')->captcha]);
+                $actions = array_merge($actions ,['captcha' => Yii::$app->getModule('user')->captcha]);
             }
 
             ///[Yii2 uesr:oauth]
@@ -101,7 +104,7 @@ class SecurityController extends Controller
                     'successCallback' => Yii::$app->user->isGuest ? [$this, 'authenticate'] : [$this, 'connect'],
                 ];
 
-                $actions = array_merge($actions, ['auth' => ArrayHelper::merge(Yii::$app->getModule('user')->auth, $auth)]);
+                $actions = array_merge($actions ,['auth' => ArrayHelper::merge(Yii::$app->getModule('user')->auth, $auth)]);
             }
         }
 
@@ -139,14 +142,9 @@ class SecurityController extends Controller
             $load = $model->load($post);
 
             ///[Yii2 uesr:Ajax validation]
-            if (Yii::$app->getModule('user')->enableLoginAjaxValidation) {
-                ///Note: Should be handled as soon as possible ajax!
-                ///Note: CAPTCHA validation should not be used in AJAX validation mode.
-                ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-                if (Yii::$app->request->isAjax) {
-                    Yii::$app->response->format = Response::FORMAT_JSON;
-                    return ActiveForm::validate($model);
-                }
+            if (Yii::$app->getModule('user')->enableLoginAjaxValidation && Yii::$app->request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
             }
 
             if ($load && $model->login()) {

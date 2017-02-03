@@ -17,6 +17,7 @@
  * @var $model yongtiger\user\models\ChangeUsernameForm, ChangeEmailForm or ChangePasswordForm
  */
 
+use Yii;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
@@ -47,15 +48,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ]); ?>
                 
-                <?php if (isset(Yii::$app->user->identity->verify->password_verified_at)): ?><!--///[Yii2 uesr:verify]-->
+                <?php if (isset(Yii::$app->user->identity->verify->password_verified_at) && Yii::$app->getModule('user')->enableAccountChangeWithPassword): ?><!--///[Yii2 uesr:verify]-->
                     <?= $form->field($model, 'password')->passwordInput(['autofocus' => true])->label(Module::t('user', 'You must provide your account password when changing')) ?>
                 <?php endif; ?>
 
-                <?php if ($item == 'username'): ?>
+                <?php if ($item === 'username'): ?>
                     <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-                <?php elseif ($item == 'email'): ?>
+                <?php elseif ($item === 'email'): ?>
                     <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
-                <?php elseif ($item == 'password'): ?>
+                <?php elseif ($item === 'password'): ?>
                     <?= $form->field($model,'newpassword')->passwordInput(['autofocus' => true]) ?>
                     <!--///[Yii2 uesr:repassword]-->
                     <?php if (Yii::$app->getModule('user')->enableAccountChangePasswordWithRepassword): ?>

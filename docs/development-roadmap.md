@@ -1,6 +1,27 @@
 # Development roadmap
 
 
+## Version 0.9.2 (User Basic: change forms)
+
+Features of this version:
+
+* change forms (ChangeUsernameForm, ChangeEmailForm, ChangePasswordForm)
+
+
+## Version 0.9.1 (User Basic: token sender and handler)
+
+Features of this version:
+
+* token sender and handler
+
+
+## Version 0.9.0 (User Basic: token)
+
+Features of this version:
+
+* token handler
+
+
 ## Version 0.8.1 (User Basic: account oauth)
 
 Features of this version:

@@ -19,7 +19,7 @@ use yii\db\IntegrityException;
 use yongtiger\user\Module;
 
 /**
- * ChangePassword Form Model
+ * Change Password Form Model
  *
  * @package yongtiger\user\models
  * @property string $newpassword

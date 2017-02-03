@@ -15,9 +15,11 @@
  * @var $oauths array
  */
 
+use Yii;
 use yii\helpers\Html;
 use yongtiger\authclient\widgets\AuthChoice;
 use yongtiger\user\Module;
+use yongtiger\user\models\TokenHandler;
 
 $this->title = Module::t('user', 'Account');
 $this->params['breadcrumbs'][] = $this->title;
@@ -74,7 +76,7 @@ CSS
                     <?php if (isset(Yii::$app->user->identity->verify->email_verified_at)): ?>
                         <?= '<br />(' . Module::t('user', 'Last verified at:') . ' ' . date('Y-m-d H:i:s', Yii::$app->user->identity->verify->email_verified_at) . ')' ?>
                     <?php else: ?>
-                        <?= '<br />(' . Html::a(Module::t('user', 'Verify email'), ['account/send-verification-email']) . ')' ?>
+                        <?= '<br />(' . Html::a(Module::t('user', 'Verify email'), ['token/send-token', 'type' => TokenHandler::SCENARIO_VERIFICATION]) . ')' ?>
                     <?php endif; ?>
                 <?php endif; ?>
             </p>

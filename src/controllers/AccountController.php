@@ -20,12 +20,9 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
-use yii\data\ActiveDataProvider;
 use yongtiger\user\Module;
 use yongtiger\user\models\User;
 use yongtiger\user\models\Oauth;
-use yongtiger\user\helpers\SecurityHelper;
-use yongtiger\user\models\ActivationForm;
 
 /**
  * Account Controller
@@ -42,10 +39,9 @@ class AccountController extends Controller
         $behaviors = [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'change', 'send-verification-email', 'verify-email'],  ///except capcha
                 'rules' => [
                     [
-                        'actions' => ['index', 'change', 'send-verification-email', 'verify-email'],
+                        'actions' => ['index', 'change'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -53,6 +49,16 @@ class AccountController extends Controller
             ],
         ];
 
+        ///[Yii2 uesr:verifycode]
+        if (Yii::$app->getModule('user')->enableAccountChangeWithCaptcha) {
+            $behaviors['access']['rules'][0]['actions'] = array_merge($behaviors['access']['rules'][0]['actions'], ['captcha']);
+        }
+
+        ///[Yii2 uesr:oauth]
+        if (Yii::$app->getModule('user')->enableOauth && Yii::$app->get("authClientCollection", false)) {
+            $behaviors['access']['rules'][0]['actions'] = array_merge($behaviors['access']['rules'][0]['actions'], ['auth']);
+        }
+        
         return $behaviors;
     }
 
@@ -65,7 +71,7 @@ class AccountController extends Controller
 
         ///[Yii2 uesr:verifycode]
         if (Yii::$app->getModule('user')->enableAccountChangeWithCaptcha) {
-            $actions = array_merge($actions, ['captcha' => Yii::$app->getModule('user')->captcha]);
+            $actions = array_merge($actions ,['captcha' => Yii::$app->getModule('user')->captcha]);
         }
 
         ///[Yii2 uesr:oauth]
@@ -110,9 +116,9 @@ class AccountController extends Controller
      */
     public function actionChange($item)
     {
-        ///@see http://www.yiiframework.com/doc-2.0/guide-security-best-practices.html
+        ///Filter input. @see http://www.yiiframework.com/doc-2.0/guide-security-best-practices.html
         if (!in_array($item, ['username', 'email', 'password'])) {
-            Yii::$app->session->addFlash('warning', Module::t('user', 'Invalid action!'));
+            Yii::$app->session->addFlash('error', Module::t('user', 'Invalid action!'));
             return $this->redirect(['account/index']);
         }
 
@@ -122,14 +128,9 @@ class AccountController extends Controller
         $load = $model->load(Yii::$app->request->post());
 
         ///[Yii2 uesr:Ajax validation]
-        if (Yii::$app->getModule('user')->enableAccountChangeAjaxValidation) {
-            ///Note: Should be handled as soon as possible ajax!
-            ///Note: CAPTCHA validation should not be used in AJAX validation mode.
-            ///@see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
-            if (Yii::$app->request->isAjax) {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-            }
+        if (Yii::$app->getModule('user')->enableAccountChangeAjaxValidation && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
         }
 
         $changeItem = 'change' . ucfirst($item);
@@ -138,53 +139,5 @@ class AccountController extends Controller
         }
 
         return $this->render('change', ['item' => $item, 'model' => $model]);
-    }
-
-    ///[Yii2 uesr:account verify email]
-    /**
-     * Sends verification email.
-     *
-     * @return mixed
-     */
-    public function actionSendVerificationEmail()
-    {
-        $user = Yii::$app->user->identity;
-        $user->activation_key = SecurityHelper::generateExpiringRandomKey(Yii::$app->getModule('user')->signupWithEmailActivationExpire);
-
-        if ($user->save(false)) {
-
-            Yii::$app
-                ->mailer
-                ->compose(
-                    ['html' => Yii::$app->getModule('user')->accountVerificationEmailComposeHtml, 'text' => Yii::$app->getModule('user')->accountVerificationEmailComposeText],
-                    ['user' => $user]
-                )
-                ->setFrom(Yii::$app->getModule('user')->accountVerificationEmailSetFrom)
-                ->setTo($user->email)
-                ->setSubject(Module::t('user', 'Verification mail from ') . Yii::$app->name)
-                ->send();
-
-            Yii::$app->session->addFlash('warning', Module::t('user', 'Please check your email [{youremail}] to verify your email.', ['youremail' => $user->email]));
-
-        }
-
-        return $this->redirect(['account/index']);
-    }
-
-    ///[Yii2 uesr:account verify email]
-    /**
-     * Verifies user account email.
-     *
-     * @param string $key Activation key.
-     */
-    public function actionVerifyEmail($key)
-    {
-        $model = new ActivationForm(['activation_key' => $key]);
-
-        if ($model->activate()) {
-            return $this->redirect(['account/index']);
-        }
-
-        return $this->goHome();
     }
 }

@@ -41,6 +41,7 @@ class Module extends \yii\base\Module
     public $controllerNamespace = 'yongtiger\user\controllers';
 
     ///Signup
+
     /**
      * @var bool Enable signup
      */
@@ -59,6 +60,11 @@ class Module extends \yii\base\Module
     public $enableSignupWithUsername = true;
 
     /**
+     * @var bool Enable signup with re-password
+     */
+    public $enableSignupWithRepassword = true;
+
+    /**
      * @var bool Enable signup with email
      * You have to enable `$enableSignupWithUsername` and/or `$enableSignupWithEmail` at least one.
      * If neither, effect is equivalent to `$enableSignup` being `false`.
@@ -68,7 +74,6 @@ class Module extends \yii\base\Module
     /**
      * @var bool Enable activation while signup with email
      * It will be invalid when `$enableSignupWithEmail` is `false`.
-     * Note: It does not affect `activate` and `resend`, that means user still can resend an activation email or activate account!
      */
     public $enableSignupWithEmailActivation = true;
 
@@ -76,27 +81,22 @@ class Module extends \yii\base\Module
      * @var int The time before an activation key becomes invalid
      * It will be invalid when either `$enableSignupWithEmail` or `$enableSignupWithEmailActivation` is `false`.
      */
-    public $signupWithEmailActivationExpire = 86400; // 24 hours, if `0` means never expired.
+    public $signupWithEmailActivationExpire = 600; // 10 minutess, if `0` means never expired.
 
     /**
-     * @var string Html email body file of activation while signup with username
+     * @var string Html email body file of activation while signup with email
      */
-    public $signupWithEmailActivationComposeHtml = '@yongtiger/user/mail/activationKey-html';
+    public $signupWithEmailActivationComposeHtml = '@yongtiger/user/mail/activate-status-html';
 
     /**
-     * @var string Text email body file of activation while signup with username
+     * @var string Text email body file of activation while signup with email
      */
-    public $signupWithEmailActivationComposeText = '@yongtiger/user/mail/activationKey-text';
+    public $signupWithEmailActivationComposeText = '@yongtiger/user/mail/activate-status-text';
 
     /**
-     * @var string|array Sender email address of activation while signup with username
+     * @var string|array Sender email address of activation while signup with email
      */
     public $signupWithEmailActivationSetFrom; ///init later
-
-    /**
-     * @var bool Enable signup with re-password
-     */
-    public $enableSignupWithRepassword = true;
 
     /**
      * @var bool Enable signup `AjaxValidation`
@@ -119,11 +119,12 @@ class Module extends \yii\base\Module
     public $enableSignupValidateOnSubmit = true;
 
     /**
-     * @var bool Enable signup with Captcha
+     * @var bool Enable signup with `Captcha`
      */
     public $enableSignupWithCaptcha = true;
 
     ///Login
+
     /**
      * @var bool Enable login
      */
@@ -136,17 +137,17 @@ class Module extends \yii\base\Module
 
     /**
      * @var bool Enable login with username
-     * You have to enable `$enableLoginWithUsername` and/or `$enableSignupWithEmail` and/or `$enableOauth` at least one.
+     * In order to login, you have to enable `$enableLoginWithUsername` and/or `$enableSignupWithEmail` and/or `$enableOauth` at least one.
      * If neither, effect is equivalent to `$enableLogin` being `false`.
      */
     public $enableLoginWithUsername = true; ///UsernamePassword and/or EmailPassword and/or Oauth
 
     /**
      * @var bool Enable login with email
-     * You have to enable `$enableLoginWithUsername` and/or `$enableSignupWithEmail` and/or `$enableOauth` at least one.
+     * In order to login, you have to enable `$enableLoginWithUsername` and/or `$enableSignupWithEmail` and/or `$enableOauth` at least one.
      * If neither, effect is equivalent to `$enableLogin` being `false`.
      */
-    public $enableLoginWithEmail = false;
+    public $enableLoginWithEmail = true;
 
     /**
      * @var bool Enable login `AjaxValidation`
@@ -169,52 +170,127 @@ class Module extends \yii\base\Module
     public $enableLoginValidateOnSubmit = true;
 
     /**
-     * @var bool Enable login with Captcha
+     * @var bool Enable login with `Captcha`
      */
     public $enableLoginWithCaptcha = true;
 
-    ///RequestPasswordReset
-    /**
-     * @var bool Enable RequestPasswordReset `AjaxValidation`
-     */
-    public $enableRequestPasswordResetAjaxValidation = true;
+    ///[Yii2 uesr:recovery]
 
     /**
-     * @var bool Enable RequestPasswordReset `ClientValidation`
+     * @var int The time before a recovery password key becomes invalid
      */
-    public $enableRequestPasswordResetClientValidation = true;
+    public $recoveryPasswordExpire = 600; // 10 minutess, if `0` means never expired.
 
     /**
-     * @var bool Enable RequestPasswordReset `ValidateOnBlur`
+     * @var string Html email body file of recovery password
      */
-    public $enableRequestPasswordResetValidateOnBlur = true;
+    public $recoveryPasswordComposeHtml = '@yongtiger/user/mail/recover-password-html';
 
     /**
-     * @var bool Enable RequestPasswordReset `ValidateOnSubmit`
+     * @var string Text email body file of recovery password
      */
-    public $enableRequestPasswordResetValidateOnSubmit = true;
+    public $recoveryPasswordComposeText = '@yongtiger/user/mail/recover-password-text';
 
     /**
-     * @var bool Enable RequestPasswordReset with Captcha
+     * @var string|array Sender email address of recovery password
      */
-    public $enableRequestPasswordResetWithCaptcha = true;
+    public $recoveryPasswordSetFrom; ///init later
+
+    ///[Yii2 uesr:account]
 
     /**
-     * @var string Html email body file of RequestPasswordReset
+     * @var bool Enable account changing with password
      */
-    public $requestPasswordResetComposeHtml = '@yongtiger/user/mail/passwordResetToken-html';
+    public $enableAccountChangeWithPassword = true;
 
     /**
-     * @var string Text email body file of RequestPasswordReset
+     * @var bool Enable account changing password with re-password
      */
-    public $requestPasswordResetComposeText = '@yongtiger/user/mail/passwordResetToken-text';
+    public $enableAccountChangePasswordWithRepassword = true;
 
     /**
-     * @var bool Enable RequestPasswordReset with email
+     * @var int The time before an activation key becomes invalid
+     * It will be invalid when either `$enableSignupWithEmail` or `$enableSignupWithEmailActivation` is `false`.
      */
-    public $requestPasswordResetSetFrom; ///init later
+    public $accountVerificatonExpire = 600; // 10 minutess, if `0` means never expired.
 
-    ///Captcha
+    /**
+     * @var string Html email body file of account verification email
+     */
+    public $accountVerifyEmailComposeHtml = '@yongtiger/user/mail/verify-email-html';
+
+    /**
+     * @var string Text email body file of account verification email
+     */
+    public $accountVerifyEmailComposeText = '@yongtiger/user/mail/verify-email-text';
+
+    /**
+     * @var string|array Sender email address of account verification email
+     */
+    public $accountVerifyEmailSetFrom; ///init later
+
+    /**
+     * @var bool Enable account changing `AjaxValidation`
+     */
+    public $enableAccountChangeAjaxValidation = true;
+
+    /**
+     * @var bool Enable account changing `ClientValidation`
+     */
+    public $enableAccountChangeClientValidation = true;
+
+    /**
+     * @var bool Enable account changing `ValidateOnBlur`
+     */
+    public $enableAccountChangeValidateOnBlur = true;
+
+    /**
+     * @var bool Enable account changing `ValidateOnSubmit`
+     */
+    public $enableAccountChangeValidateOnSubmit = true;
+
+    /**
+     * @var bool Enable account changing with `Captcha`
+     */
+    public $enableAccountChangeWithCaptcha = true;
+
+    ///[Yii2 uesr:token]
+    /**
+     * @var bool Enable send token without load (only for logged-in user!)
+     */
+    public $enableSendTokenWithoutLoad = true;
+
+    /**
+     * @var bool Enable token `AjaxValidation`
+     */
+    public $enableSendTokenAjaxValidation = true;
+
+    /**
+     * @var bool Enable token `ClientValidation`
+     */
+    public $enableSendTokenClientValidation = true;
+
+    /**
+     * @var bool Enable token `ValidateOnBlur`
+     */
+    public $enableSendTokenValidateOnBlur = true;
+
+    /**
+     * @var bool Enable token `ValidateOnSubmit`
+     */
+    public $enableSendTokenValidateOnSubmit = true;
+    
+    /**
+     * Note: Should be handled as soon as possible ajax!
+     * Note: CAPTCHA validation should not be used in AJAX validation mode.
+     * @see http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html
+     *
+     * @var bool Enable token with `Captcha`
+     */
+    public $enableSendTokenWithCaptcha = true;
+
+    ///[Yii2 uesr:captcha]
+
     /**
      * @var array
      *
@@ -250,7 +326,8 @@ class Module extends \yii\base\Module
      */
     public $captchaActiveFieldWidget = [];    ///init later
 
-    ///Oauth
+    ///[Yii2 uesr:oauth]
+
     /**
      * @var bool Enable oauth
      * In order to login, you have to enable `$enableLoginWithUsername` and/or `$enableSignupWithEmail` and/or `$enableOauth` at least one.
@@ -313,56 +390,6 @@ class Module extends \yii\base\Module
     public $auth = [];  ///init later
 
     /**
-     * @var bool Enable account changing with password
-     */
-    public $enableAccountChangeWithPassword = true;
-
-    /**
-     * @var bool Enable account changing `AjaxValidation`
-     */
-    public $enableAccountChangeAjaxValidation = true;
-
-    /**
-     * @var bool Enable account changing `ClientValidation`
-     */
-    public $enableAccountChangeClientValidation = true;
-
-    /**
-     * @var bool Enable account changing `ValidateOnBlur`
-     */
-    public $enableAccountChangeValidateOnBlur = true;
-
-    /**
-     * @var bool Enable account changing `ValidateOnSubmit`
-     */
-    public $enableAccountChangeValidateOnSubmit = true;
-
-    /**
-     * @var bool Enable account changing with Captcha
-     */
-    public $enableAccountChangeWithCaptcha = true;
-
-    /**
-     * @var bool Enable account changing password with repassword
-     */
-    public $enableAccountChangePasswordWithRepassword = true;
-
-    /**
-     * @var string Html email body file of RequestPasswordReset
-     */
-    public $accountVerificationEmailComposeHtml = '@yongtiger/user/mail/account-verification-email-html';
-
-    /**
-     * @var string Text email body file of RequestPasswordReset
-     */
-    public $accountVerificationEmailComposeText = '@yongtiger/user/mail/account-verification-email-text';
-
-    /**
-     * @var bool Enable RequestPasswordReset with email
-     */
-    public $accountVerificationEmailSetFrom; ///init later
-
-    /**
      * @inheritdoc
      */
     public function init()
@@ -382,15 +409,15 @@ class Module extends \yii\base\Module
             $this->signupWithEmailActivationSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
         }
 
-        if (!isset($this->requestPasswordResetSetFrom)) {
-            $this->requestPasswordResetSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
+        if (!isset($this->recoveryPasswordSetFrom)) {
+            $this->recoveryPasswordSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
         }
 
-        if (!isset($this->accountVerificationEmailSetFrom)) {
-            $this->accountVerificationEmailSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
+        if (!isset($this->accountVerifyEmailSetFrom)) {
+            $this->accountVerifyEmailSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
         }
 
-        if ($this->enableSignupWithCaptcha || $this->enableLoginWithCaptcha || $this->enableRequestPasswordResetWithCaptcha) {
+        if ($this->enableSignupWithCaptcha || $this->enableLoginWithCaptcha || $this->enableSendTokenWithCaptcha) {
             $this->captcha = ArrayHelper::merge([
                 'class' => 'yii\captcha\CaptchaAction',
                 'height' => 36,         ///The height of the generated CAPTCHA image. Defaults to 50. need to be adjusted according to the specific verification code bit

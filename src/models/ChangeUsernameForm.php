@@ -18,7 +18,7 @@ use yii\base\ModelEvent;
 use yongtiger\user\Module;
 
 /**
- * ChangeUsername Form Model
+ * Change Username Form Model
  *
  * @package yongtiger\user\models
  * @property string $username
@@ -40,7 +40,7 @@ class ChangeUsernameForm extends ChangeForm
         $rules = array_merge($rules, [
             ['username', 'required'],
             ['username', 'trim'],
-            ['username', 'filter', 'filter' => function ($value) {
+            ['username', 'filter', 'filter' => function ($value) {  ///@see http://www.yiiframework.com/doc-2.0/guide-tutorial-core-validators.html#filter
                 return preg_replace('/[^(\x{4E00}-\x{9FA5})\w]/iu', '', $value);
             }],
             ['username', 'string', 'min' => 2, 'max' => 32],

@@ -1,4 +1,4 @@
-# Yii2-user [v0.8.2] User Basic: typo
+# Yii2-user [v0.9.2] User Basic: change forms
 
 The most basic `user` module.
 
@@ -24,6 +24,8 @@ The most basic `user` module.
 * password and email verify
 * user account
 * user account oauth
+* token sender and handler
+* change forms (ChangeUsernameForm, ChangeEmailForm, ChangePasswordForm)
 
 ## Dependences
 

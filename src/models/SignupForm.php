@@ -15,9 +15,7 @@ namespace yongtiger\user\models;
 use Yii;
 use yii\base\Model;
 use yii\base\ModelEvent;
-use yongtiger\user\models\User;
 use yongtiger\user\Module;
-use yongtiger\user\helpers\SecurityHelper;
 
 /**
  * Signup Form Model
@@ -78,22 +76,26 @@ class SignupForm extends Model
     public function __construct($config = [])
     {
         ///[Yii2 uesr:oauth signup]
-        ///Note: `errors` property is read-only (without `setter`, instead of `addErrors`)
+        ///Note: Because `errors` property is read-only (without `setter`), we use `addErrors()`.
         if (!empty($config['errors'])) {
             $this->addErrors($config['errors']);
             unset($config['errors']);
         }
-        
+
         parent::__construct($config);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_DEFAULT] = ['username', 'password', 'repassword', 'email', 'verifyCode'];
-        $scenarios[self::SCENARIO_OAUTH] = ['username', 'email'];
+        $scenarios[static::SCENARIO_DEFAULT] = ['username', 'password', 'repassword', 'email', 'verifyCode'];
+        $scenarios[static::SCENARIO_OAUTH] = ['username', 'email'];
         return $scenarios;
     }
+
     /**
      * @inheritdoc
      */
@@ -110,7 +112,7 @@ class SignupForm extends Model
                 ['username', 'trim'],
 
                 ///[Yii2 uesr:oauth signup]
-                ['username', 'filter', 'filter' => function ($value) {
+                ['username', 'filter', 'filter' => function ($value) {  ///@see http://www.yiiframework.com/doc-2.0/guide-tutorial-core-validators.html#filter
                     return preg_replace('/[^(\x{4E00}-\x{9FA5})\w]/iu', '', $value);
                 }],
 
@@ -177,12 +179,14 @@ class SignupForm extends Model
             $attributeLabels['email'] = Module::t('user', 'Email');
         }
 
+        ///[Yii2 uesr:repassword]
         if (Yii::$app->getModule('user')->enableSignupWithRepassword) {
-            $attributeLabels['repassword'] = Module::t('user', 'Repeat Password');   ///[Yii2 uesr:repassword]
+            $attributeLabels['repassword'] = Module::t('user', 'Repeat Password');
         }
 
+        ///[Yii2 uesr:verifycode]
         if (Yii::$app->getModule('user')->enableSignupWithCaptcha) {
-            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');  ///[Yii2 uesr:verifycode]
+            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');
         }
 
         return $attributeLabels;
@@ -218,7 +222,7 @@ class SignupForm extends Model
     /**
      * Signs user up.
      *
-     * @param boolean $runValidation whether to perform validation (calling [[validate()]])
+     * @param bool $runValidation whether to perform validation (calling [[validate()]])
      * @return User|null|false the saved model or null if saving fails, false if validation fails
      */
     public function signup($runValidation = true)
@@ -270,7 +274,7 @@ class SignupForm extends Model
     protected function beforeSignup()
     {
         $event = new ModelEvent();
-        $this->trigger(self::EVENT_BEFORE_SIGNUP, $event);
+        $this->trigger(static::EVENT_BEFORE_SIGNUP, $event);
 
         if ($event->isValid) {
 
@@ -278,7 +282,7 @@ class SignupForm extends Model
             ///[Yii2 uesr:activation via email:signup]signup events
             if (Yii::$app->getModule('user')->enableSignupWithEmail && Yii::$app->getModule('user')->enableSignupWithEmailActivation) {
                 $this->getUser()->status = User::STATUS_INACTIVE;
-                $this->getUser()->activation_key = SecurityHelper::generateExpiringRandomKey(Yii::$app->getModule('user')->signupWithEmailActivationExpire);
+                $this->getUser()->token = TokenHandler::generateExpiringRandomKey(Yii::$app->getModule('user')->signupWithEmailActivationExpire);
             }
 
         }
@@ -311,25 +315,12 @@ class SignupForm extends Model
         Yii::$app->session->addFlash('success', Module::t('user', 'Successfully registered.'));
 
         ///[Yii2 uesr:activation via email:signup]send activation email
-        if (Yii::$app->getModule('user')->enableSignupWithEmail && Yii::$app->getModule('user')->enableSignupWithEmailActivation) {
-            Yii::$app
-                ->mailer
-                ->compose(
-                    ['html' => Yii::$app->getModule('user')->signupWithEmailActivationComposeHtml, 'text' => Yii::$app->getModule('user')->signupWithEmailActivationComposeText],
-                    ['user' => $this->getUser()]
-                )
-                ->setFrom(Yii::$app->getModule('user')->signupWithEmailActivationSetFrom)
-                ->setTo($this->email)
-                ->setSubject(Module::t('user', 'Activation mail of the registration from ') . Yii::$app->name)
-                ->send();
-
-            Yii::$app->session->addFlash('warning', Module::t('user', 'Please check your email [{youremail}] to activate your account.', ['youremail' => $this->email]));
-        }
-
+        (new SendTokenForm(['scenario' => SendTokenForm::SCENARIO_ACTIVATION, 'user' => $this->getUser()]))->sendEmail();
+        
         ///[Yii2 uesr:verify]
         ///After signup, `password_verified_at` is set to now, that is verified password.
         ///When oauth signup, `password` is set to null, that is not verified password.
-        $this->getUser()->link('verify', new Verify(['password_verified_at' => $this->scenario == self::SCENARIO_OAUTH ? null : time()]));
+        $this->getUser()->link('verify', new Verify(['password_verified_at' => $this->scenario === static::SCENARIO_OAUTH ? null : time()]));
 
         $this->trigger(self::EVENT_AFTER_SIGNUP, new ModelEvent());
     }
