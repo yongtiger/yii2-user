@@ -1,4 +1,4 @@
-# Yii2-user [v0.9.2] User Basic: change forms
+# Yii2-user v0.9.3 (get rid of backend demo)
 
 The most basic `user` module.
 
@@ -71,40 +71,6 @@ to the require section of your composer.json.
 	    'useFileTransport' => true,
 	],
 	// ...
-]
-```
-
-
-### \backend\config\main.php
-```php
-'modules' => [
-    'admin' => [
-        'class' => 'yongtiger\user\Module',
-        'as access' => [
-            'class' => yii\filters\AccessControl::className(),
-            'rules' => [
-                [
-                    'controllers' => ['admin/security'],    ///only allow controllers ('admin/security', etc.)
-                    'allow' => true,
-                ],
-            ],
-        ],
-        'viewPath' => '@yongtiger/user/../demo/admin/views/',   ///use your own backend views (login)
-        'layout' => false,  ///remove out layout in backend login
-    ],
-    // ...
-],
-
-'components' => [
-
-    ///[Yii2 uesr]
-    'user' => [
-        'identityClass' => 'yongtiger\user\models\User',
-        'enableAutoLogin' => true,
-        'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
-        'loginUrl' => ['admin/security/login'],	///default is 'site/login'
-    ],
-    // ...
 ]
 ```
 
