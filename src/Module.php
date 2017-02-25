@@ -399,7 +399,7 @@ class Module extends \yii\base\Module
 
         if (!($this->enableSignup && ($this->enableSignupWithEmail || $this->enableSignupWithUsername))) {
             ///[v0.9.5 (fix:backend disableSignupMessage)]
-            if ($this->disableSignupMessage !== false) {
+            if ($this->disableSignupMessage === null) {
                 $this->disableSignupMessage = Module::t('user', 'This site has been closed registration.');
             }
         }
