@@ -153,7 +153,10 @@ class SecurityController extends Controller
                 return $this->render('login', ['model' => $model]);
             }
         } else {
-            Yii::$app->session->addFlash('info', Yii::$app->getModule('user')->disableLoginMessage);
+            ///[v0.9.6 (fix:backend disableLoginMessage)]
+            if (Yii::$app->getModule('user')->disableLoginMessage) {
+                Yii::$app->session->addFlash('info', Yii::$app->getModule('user')->disableLoginMessage);
+            }
             return $this->goHome();
         }
     }

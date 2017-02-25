@@ -1,4 +1,4 @@
-# Yii2-user v0.9.5 (fix:backend disableSignupMessage)
+# Yii2-user v0.9.6 (fix:backend disableLoginMessage)
 
 The most basic `user` module.
 

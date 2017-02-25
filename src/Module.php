@@ -405,7 +405,10 @@ class Module extends \yii\base\Module
         }
 
         if (!($this->enableLogin && ($this->enableLoginWithUsername || $this->enableLoginWithEmail || $this->enableOauth && Yii::$app->get("authClientCollection", false)))) {
-            $this->disableLoginMessage = Module::t('user', 'This site has been closed login.');
+            ///[v0.9.6 (fix:backend disableLoginMessage)]
+            if ($this->disableLoginMessage === null) {
+                $this->disableLoginMessage = Module::t('user', 'This site has been closed login.');
+            }
         }
 
         if (!isset($this->signupWithEmailActivationSetFrom)) {
