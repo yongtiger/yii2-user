@@ -1,5 +1,11 @@
 # Development roadmap
 
+## v0.9.4 (exception 'Indirect modification of overloaded property yongtiger\user\models\User::$verify has no effect')
+
+Features of this version:
+
+* Note: MUST has current user's record in table verify! or get a exception 'Indirect modification of overloaded property yongtiger\user\models\User::$verify has no effect'
+
 
 ## v0.9.3 (get rid of backend demo)
 

@@ -129,7 +129,7 @@ class TokenHandler extends Model
         if ($user = $this->getUser()) {
 
             ///[Yii2 uesr:verify]
-            $user->verify->email_verified_at = time();
+            $user->verify->email_verified_at = time();  ///Note: MUST has current user's record in table verify! or get a exception 'Indirect modification of overloaded property yongtiger\user\models\User::$verify has no effect'
             if (!$user->verify->save(false)) {
                 throw new IntegrityException();
             }

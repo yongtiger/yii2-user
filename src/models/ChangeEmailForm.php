@@ -93,7 +93,7 @@ class ChangeEmailForm extends ChangeForm
     {
         // ...custom code here...
         ///[Yii2 uesr:verify]
-        $this->getUser()->verify->email_verified_at = null;
+        $this->getUser()->verify->email_verified_at = null; ///Note: MUST has current user's record in table verify! or get a exception 'Indirect modification of overloaded property yongtiger\user\models\User::$verify has no effect'
         if (!$this->getUser()->verify->save(false)) {
             throw new IntegrityException();
         }

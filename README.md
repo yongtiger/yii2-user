@@ -1,4 +1,4 @@
-# Yii2-user v0.9.3 (get rid of backend demo)
+# Yii2-user v0.9.4 (exception 'Indirect modification of overloaded property yongtiger\user\models\User::$verify has no effect')
 
 The most basic `user` module.
 

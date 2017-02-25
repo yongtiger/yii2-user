@@ -108,7 +108,7 @@ class ChangePasswordForm extends ChangeForm
     {
         // ...custom code here...
         ///[Yii2 uesr:verify]
-        $this->getUser()->verify->password_verified_at = time();
+        $this->getUser()->verify->password_verified_at = time();    ///Note: MUST has current user's record in table verify! or get a exception 'Indirect modification of overloaded property yongtiger\user\models\User::$verify has no effect'
         if (!$this->getUser()->verify->save(false)) {
             throw new IntegrityException();
         }
