@@ -65,9 +65,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php if (Yii::$app->getModule('user')->enableLoginWithUsername || Yii::$app->getModule('user')->enableLoginWithEmail): ?>
                     <?= $form->field($model, 'password')->passwordInput() ?>
 
-                    <div style="color:#999;margin:1em 0">
-                        <?= Module::t('user', 'If you forgot your password you can [{reset it}].', ['reset it' => Html::a(Module::t('user', 'reset it'), ['token/send-token', 'type' => TokenHandler::SCENARIO_RECOVERY])]) ?>
-                    </div>
+                    <!--///[v0.9.7 (backend:enableRecoveryPassword)]-->
+                    <?php if (Yii::$app->getModule('user')->enableRecoveryPassword): ?>
+                        <div style="color:#999;margin:1em 0">
+                            <?= Module::t('user', 'If you forgot your password you can [{reset it}].', ['reset it' => Html::a(Module::t('user', 'reset it'), ['token/send-token', 'type' => TokenHandler::SCENARIO_RECOVERY])]) ?>
+                        </div>
+                    <?php endif; ?>
 
                     <!--///[Yii2 uesr:verifycode]-->
                     <?php if (Yii::$app->getModule('user')->enableLoginWithCaptcha): ?>

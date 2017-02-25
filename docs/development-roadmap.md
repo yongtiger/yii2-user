@@ -1,5 +1,9 @@
 # Development roadmap
 
+
+## v0.9.7 (backend:enableRecoveryPassword)
+
+
 ## v0.9.6 (fix:backend disableLoginMessage)
 
 

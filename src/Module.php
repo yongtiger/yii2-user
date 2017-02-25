@@ -177,6 +177,11 @@ class Module extends \yii\base\Module
     ///[Yii2 uesr:recovery]
 
     /**
+     * @var bool Enable recovery password
+     */
+    public $enableRecoveryPassword = true;  ///[v0.9.7 (backend:enableRecoveryPassword)]
+
+    /**
      * @var int The time before a recovery password key becomes invalid
      */
     public $recoveryPasswordExpire = 600; // 10 minutess, if `0` means never expired.

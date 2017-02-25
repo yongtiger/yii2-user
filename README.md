@@ -1,4 +1,4 @@
-# Yii2-user v0.9.6 (fix:backend disableLoginMessage)
+# Yii2-user v0.9.7 (backend:enableRecoveryPassword)
 
 The most basic `user` module.
 
@@ -54,6 +54,7 @@ to the require section of your composer.json.
 ## Configuration
 
 ### \common\config\main.php
+
 ```php
 'components' => [
 	'mailer' => [
@@ -75,9 +76,38 @@ to the require section of your composer.json.
 ```
 
 
-### \frontend\config\main.php
+### \backend\config\main.php
+
 ```php
-///[Yii2 uesr]
+'modules' => [
+    'user' => [
+        'class' => 'yongtiger\user\Module',
+
+        ///Signup
+        'enableSignup' => false,
+        'disableSignupMessage' => false,    ///[v0.9.5 (backend disableSignupMessage)]
+        'enableRecoveryPassword' => false,  ///[v0.9.7 (backend:enableRecoveryPassword)]
+
+    // ...
+],
+
+'components' => [
+
+    ///[Yii2 uesr]
+    'user' => [
+        'identityClass' => 'yongtiger\user\models\User',
+        'enableAutoLogin' => true,
+        'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+        'loginUrl' => ['user/security/login'], ///default is 'site/login'
+    ],
+    // ...
+]
+```
+
+
+### \frontend\config\main.php
+
+```php
 'modules' => [
     'user' => [
         'class' => 'yongtiger\user\Module',
@@ -118,6 +148,7 @@ to the require section of your composer.json.
         'enableLoginWithCaptcha' => false,
 
         ///[Yii2 uesr:recovery]
+        'enableRecoveryPassword' => true,  ///[v0.9.7 (backend:enableRecoveryPassword)]
         'recoveryPasswordExpire' => 0,
         'recoveryPasswordComposeHtml' => '@yongtiger/user/mail/recover-password-html',
         'recoveryPasswordComposeText' => '@yongtiger/user/mail/recover-password-text',
@@ -353,6 +384,7 @@ All text and messages introduced in this extension are translatable under catego
 And the default basePath is '@vendor/yongtiger/yii2-user/src/messages'.
 
 If you want to custumize your own translations, using following application configuration:
+
 ```php
 return [
     'components' => [
@@ -379,6 +411,7 @@ return [
 ## Usage in frontend
 
 - guest:
+
 ```
 /user
 /user/security
@@ -390,6 +423,7 @@ return [
 ```
 
 - after logged in:
+
 ```
 /user/account/index
 /user/account/change&item=username

@@ -60,7 +60,7 @@ class TokenController extends Controller
             case SendTokenForm::SCENARIO_ACTIVATION:
                 return Yii::$app->user->isGuest && Yii::$app->getModule('user')->enableSignupWithEmailActivation;
             case SendTokenForm::SCENARIO_RECOVERY:
-                return Yii::$app->user->isGuest;
+                return Yii::$app->user->isGuest && Yii::$app->getModule('user')->enableRecoveryPassword;    ///[v0.9.7 (backend:enableRecoveryPassword)]
             case SendTokenForm::SCENARIO_VERIFICATION:
                 return !Yii::$app->user->isGuest;
             default:
