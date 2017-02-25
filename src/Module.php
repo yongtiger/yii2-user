@@ -398,7 +398,10 @@ class Module extends \yii\base\Module
         $this->registerTranslations();
 
         if (!($this->enableSignup && ($this->enableSignupWithEmail || $this->enableSignupWithUsername))) {
-            $this->disableSignupMessage = Module::t('user', 'This site has been closed registration.');
+            ///[v0.9.5 (fix:backend disableSignupMessage)]
+            if ($this->disableSignupMessage !== false) {
+                $this->disableSignupMessage = Module::t('user', 'This site has been closed registration.');
+            }
         }
 
         if (!($this->enableLogin && ($this->enableLoginWithUsername || $this->enableLoginWithEmail || $this->enableOauth && Yii::$app->get("authClientCollection", false)))) {

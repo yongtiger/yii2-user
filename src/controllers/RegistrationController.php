@@ -124,7 +124,10 @@ class RegistrationController extends Controller
             return $this->render('signup', ['model' => $model]);
 
         } else {
-            Yii::$app->session->addFlash('info', Yii::$app->getModule('user')->disableSignupMessage);
+            ///[v0.9.5 (fix:backend disableSignupMessage)]
+            if (Yii::$app->getModule('user')->disableSignupMessage) {
+                Yii::$app->session->addFlash('info', Yii::$app->getModule('user')->disableSignupMessage);
+            }
             return $this->goHome();
         }
     }
