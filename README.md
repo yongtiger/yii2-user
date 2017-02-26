@@ -1,4 +1,4 @@
-# Yii2-user v0.9.8 (fix:views \Yii::)
+# Yii2-user v0.9.9 (fix:views/login class="site-login")
 
 The most basic `user` module.
 

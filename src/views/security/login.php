@@ -15,13 +15,13 @@ $this->title = Module::t('user', 'Login');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="security-login">
+<div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p><?= Module::t('user', 'Please fill out the following fields:') ?></p>
 
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-12">
             <?php $form = ActiveForm::begin(['id' => 'login-form',
 
                 ///[Yii2 uesr:Ajax validation]
