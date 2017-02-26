@@ -24,6 +24,8 @@
 
         "yongtiger/yii2-authclient": "*",
         "yongtiger/yii2-cropper-avatar": "*",
+        
+        "yiisoft/yii2-jui": "~2.0.0",
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-date-range": "*"
     },

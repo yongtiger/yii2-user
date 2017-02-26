@@ -25,7 +25,7 @@ use kartik\widgets\ActiveForm;
 
     <?= $form->field($model, 'password_hash') ?>
 
-    <?= $form->field($model, 'password_reset_token') ?>
+    <?= $form->field($model, 'token') ?>
     ///[http://www.brainbook.cc]-->
     <?php echo $form->field($model, 'email') ?>
 
