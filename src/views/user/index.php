@@ -1,5 +1,5 @@
 <?php
-///[yii2-adminlte-asset_v0.1.0_f0.0.0_left]
+
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -39,7 +39,6 @@ $this->registerJs('
 
     });
 ');
-///[http://www.brainbook.cc]
 
 ?>
 <div class="user-index">
@@ -64,13 +63,6 @@ $this->registerJs('
 
             'id',
             'username',
-
-            ///[yii2-admin-boot_v0.5.0_f0.4.6_user_fix_rbac]
-            ///'auth_key',
-            ///'password_hash',
-            ///'password_reset_token',
-            ///[http://www.brainbook.cc]
-
             'email:email',
 
             ///[yii2-admin-boot_v0.5.14_f0.5.13_user_dropdownlist_role]
@@ -88,13 +80,6 @@ $this->registerJs('
                 'filter' => [User::STATUS_INACTIVE => 'STATUS_INACTIVE', User::STATUS_ACTIVE => 'STATUS_ACTIVE'],
                 ///'filter' => Html::activeDropDownList($searchModel, 'status', [User::STATUS_INACTIVE => 'STATUS_INACTIVE', User::STATUS_ACTIVE => 'STATUS_ACTIVE'], ['prompt' => '', 'class' => 'form-control']),    ///与上面相同！
             ],
-            ///[http://www.brainbook.cc]
-
-            ///[yii2-admin-boot_v0.4.3_f0.4.2_user_datetime]
-            ///'created_at:datetime',
-            ///'updated_at:datetime',
-            ///['attribute' => 'created_at', 'value' => date("Y-m-d H:i:s")],
-            ///['attribute' => 'updated_at', 'value' => date("Y-m-d H:i:s")],
             ///[http://www.brainbook.cc]
 
             ///[yii2-admin-boot_v0.5.15_f0.5.14_user_datepicker]
@@ -134,4 +119,3 @@ $this->registerJs('
         ],
     ]); ?>
 </div>
-<!--///[http://www.brainbook.cc]-->

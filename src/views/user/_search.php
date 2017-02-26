@@ -1,5 +1,5 @@
 <?php
-///[yii2-adminlte-asset_v0.1.0_f0.0.0_left]
+
 use yii\helpers\Html;
 use yongtiger\user\models\User;
 use kartik\daterange\DateRangePicker;
@@ -84,4 +84,3 @@ use kartik\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
-<!--///[http://www.brainbook.cc]-->

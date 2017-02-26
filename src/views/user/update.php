@@ -1,5 +1,4 @@
 <?php
-///[yii2-adminlte-asset_v0.1.0_f0.0.0_left]
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -19,4 +18,3 @@ $this->params['breadcrumbs'][] = 'Update';
     ]) ?>
 
 </div>
-<!--///[http://www.brainbook.cc]-->

@@ -1,5 +1,5 @@
 <?php
-///[yii2-adminlte-asset_v0.1.0_f0.0.0_left]
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yongtiger\user\models\User;
@@ -19,7 +19,7 @@ use yongtiger\user\models\User;
     ///[http://www.brainbook.cc]-->
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => 20])->hint('留空表示保留原密码不更新') ?><!--///[yii2-admin-boot_v0.5.17_f0.5.16_user_password]-->
     <!--///[yii2-admin-boot_v0.5.0_f0.4.6_user_fix_rbac]
-    <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'token')->textInput(['maxlength' => true]) ?>
     ///[http://www.brainbook.cc]-->
     <?= $form->field($model, 'email')->input('email') ?>
     
@@ -52,4 +52,3 @@ use yongtiger\user\models\User;
     <?php ActiveForm::end(); ?>
 
 </div>
-<!--///[http://www.brainbook.cc]-->

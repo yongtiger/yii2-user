@@ -34,15 +34,14 @@ class UserController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
-                    'deleteIn' => ['POST'], ///[yii2-admin-boot_v0.4.2_f0.4.1_user_deleteIn]
+                    'deleteIn' => ['POST'], ///[yii2-admin:user_deleteIn]
                 ],
             ],
 
-            ///[yii2-admin-boot_v0.5.3_f0.5.2_user_access_control]
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
                 'only' => ['update','delete',
-                            'delete-in' ///[BUG]批量删除仍然能删除自己
+                            'delete-in' ///[yii2-admin:user_deleteIn][BUG]批量删除仍然能删除自己
                         ],
                 'rules' => [
                     [
@@ -93,7 +92,7 @@ class UserController extends Controller
                         }
                     ],
 
-                    ////[BUG]批量删除仍然能删除自己
+                    ///[yii2-admin:user_deleteIn][BUG]批量删除仍然能删除自己
                     [
                         'allow' => true,
                         'actions' => ['delete-in'],
@@ -107,7 +106,6 @@ class UserController extends Controller
 
                 ],
             ],
-            ///[http://www.brainbook.cc]
 
         ];
     }
@@ -148,7 +146,7 @@ class UserController extends Controller
     {
         $model = new User();
 
-        $model->scenario = 'create';    ///[yii2-admin-boot_v0.5.17_f0.5.16_user_password]
+        $model->scenario = 'create';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', '创建成功'); ///[yii2-admin-boot_v0.5.7_f0.5.6_move_out_yii2-flash]
@@ -201,7 +199,7 @@ class UserController extends Controller
         return $this->redirect(['index']);
     }
 
-    ///[yii2-admin-boot_v0.4.2_f0.4.1_user_deleteIn]
+    ///[yii2-admin:user_deleteIn]
     /**
      * Deletes selected in post.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -211,7 +209,7 @@ class UserController extends Controller
     {
         $selected = Yii::$app->request->post('selected' , []);
 
-        ////[BUG]批量删除仍然能删除自己
+        ///[yii2-admin:user_deleteIn][BUG]批量删除仍然能删除自己
         $arrSelected = explode(',', $selected);
 
         $me = Yii::$app->user->identity;
@@ -256,4 +254,3 @@ class UserController extends Controller
         }
     }
 }
-///[http://www.brainbook.cc]

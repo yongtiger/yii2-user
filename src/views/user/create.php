@@ -1,5 +1,5 @@
 <?php
-///[yii2-adminlte-asset_v0.1.0_f0.0.0_left]
+
 use yii\helpers\Html;
 
 
@@ -19,4 +19,3 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
-<!--///[http://www.brainbook.cc]-->

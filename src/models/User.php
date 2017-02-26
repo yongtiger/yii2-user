@@ -49,6 +49,8 @@ class User extends ActiveRecord implements IdentityInterface
     const ROLES_BACKEND = [self::ROLE_ADMIN, self::ROLE_SUPER_MODERATOR, self::ROLE_MODERATOR];   ///[yii2-admin-boot_v0.5.5_f0.5.4_user_BUG#2_user_error_403]允许登陆后台的所有role
     ///[http://www.brainbook.cc]
 
+    public $password;
+    
     /**
      * @inheritdoc
      */
