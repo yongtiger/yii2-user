@@ -204,6 +204,11 @@ class Module extends \yii\base\Module
     ///[Yii2 uesr:account]
 
     /**
+     * @var bool Enable account
+     */
+    public $enableAccount = true;
+
+    /**
      * @var bool Enable account changing with password
      */
     public $enableAccountChangeWithPassword = true;
@@ -260,6 +265,11 @@ class Module extends \yii\base\Module
     public $enableAccountChangeWithCaptcha = true;
 
     ///[Yii2 uesr:token]
+    /**
+     * @var bool Enable send token
+     */
+    public $enableSendToken = true;
+
     /**
      * @var bool Enable send token without load (only for logged-in user!)
      */
@@ -416,19 +426,19 @@ class Module extends \yii\base\Module
             }
         }
 
-        if (!isset($this->signupWithEmailActivationSetFrom)) {
+        if ($this->enableSignup && !isset($this->signupWithEmailActivationSetFrom)) {
             $this->signupWithEmailActivationSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
         }
 
-        if (!isset($this->recoveryPasswordSetFrom)) {
+        if ($this->enableRecoveryPassword && !isset($this->recoveryPasswordSetFrom)) {
             $this->recoveryPasswordSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
         }
 
-        if (!isset($this->accountVerifyEmailSetFrom)) {
+        if ($this->enableAccount && !isset($this->accountVerifyEmailSetFrom)) {
             $this->accountVerifyEmailSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
         }
 
-        if ($this->enableSignupWithCaptcha || $this->enableLoginWithCaptcha || $this->enableSendTokenWithCaptcha) {
+        if ($this->enableSignup && $this->enableSignupWithCaptcha || $this->enableLogin && $this->enableLoginWithCaptcha || $this->enableSendToken && $this->enableSendTokenWithCaptcha) {
             $this->captcha = ArrayHelper::merge([
                 'class' => 'yii\captcha\CaptchaAction',
                 'height' => 36,         ///The height of the generated CAPTCHA image. Defaults to 50. need to be adjusted according to the specific verification code bit
