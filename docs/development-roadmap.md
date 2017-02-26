@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.10.0 (user crud)
+
+
 ## v0.9.10 (fix:user module)
 
 

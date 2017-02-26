@@ -23,7 +23,9 @@
         "yiisoft/yii2-bootstrap": "*",
 
         "yongtiger/yii2-authclient": "*",
-        "yongtiger/yii2-cropper-avatar": "*"
+        "yongtiger/yii2-cropper-avatar": "*",
+        "kartik-v/yii2-widgets": "*",
+        "kartik-v/yii2-date-range": "*"
     },
     "autoload": {
         "psr-4": {

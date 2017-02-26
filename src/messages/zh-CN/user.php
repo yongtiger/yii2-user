@@ -30,6 +30,7 @@ return [
 	'Verification Code' => '验证码',
 	'Click to change another verification code.' => '点击切换验证码',
 
+
 	/**
 	 * Controllers
 	 */
@@ -47,7 +48,6 @@ return [
 	'Invalid action!' => '无效操作！',
 	
 	
-
 	/**
 	 * Models
 	 */
@@ -107,6 +107,7 @@ return [
 	'Your email has been successfully verified.' => '您的邮箱被成功验证。',
 	'Your email has not been verified! Please try again.' => '您的邮箱验证失败！请重新试一试。',
 	
+
 	/**
 	 * Views
 	 */
