@@ -1,5 +1,7 @@
 # Development roadmap
 
+## v0.9.8 (fix:views \Yii::)
+
 
 ## v0.9.7 (backend:enableRecoveryPassword)
 

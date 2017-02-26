@@ -1,23 +1,12 @@
 <?php ///[Yii2 uesr:account]
 
 /**
- * Yii2 User
- *
- * @link        http://www.brainbook.cc
- * @see         https://github.com/yongtiger/yii2-user
- * @author      Tiger Yong <tigeryang.brainbook@outlook.com>
- * @copyright   Copyright (c) 2016 BrainBook.CC
- * @license     http://opensource.org/licenses/MIT
- */
-
-/**
  * @var $this yii\base\View
  * @var $form yii\widgets\ActiveForm
  * @var $item string
  * @var $model yongtiger\user\models\ChangeUsernameForm, ChangeEmailForm or ChangePasswordForm
  */
 
-use Yii;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
@@ -37,18 +26,18 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = ActiveForm::begin(['id' => 'change-form',
 
                 ///[Yii2 uesr:Ajax validation]
-                'enableClientValidation' => Yii::$app->getModule('user')->enableAccountChangeClientValidation,
-                'enableAjaxValidation' => Yii::$app->getModule('user')->enableAccountChangeAjaxValidation,
-                'validateOnBlur' => Yii::$app->getModule('user')->enableAccountChangeValidateOnBlur,
+                'enableClientValidation' => \Yii::$app->getModule('user')->enableAccountChangeClientValidation,
+                'enableAjaxValidation' => \Yii::$app->getModule('user')->enableAccountChangeAjaxValidation,
+                'validateOnBlur' => \Yii::$app->getModule('user')->enableAccountChangeValidateOnBlur,
                 ///disable validate on submit while using captcha & ajax!!!
                 'validateOnSubmit' => !(
-                    Yii::$app->getModule('user')->enableAccountChangeAjaxValidation &&
-                    Yii::$app->getModule('user')->enableAccountChangeWithCaptcha
-                ) && Yii::$app->getModule('user')->enableAccountChangeValidateOnSubmit,
+                    \Yii::$app->getModule('user')->enableAccountChangeAjaxValidation &&
+                    \Yii::$app->getModule('user')->enableAccountChangeWithCaptcha
+                ) && \Yii::$app->getModule('user')->enableAccountChangeValidateOnSubmit,
 
             ]); ?>
                 
-                <?php if (isset(Yii::$app->user->identity->verify->password_verified_at) && Yii::$app->getModule('user')->enableAccountChangeWithPassword): ?><!--///[Yii2 uesr:verify]-->
+                <?php if (isset(\Yii::$app->user->identity->verify->password_verified_at) && \Yii::$app->getModule('user')->enableAccountChangeWithPassword): ?><!--///[Yii2 uesr:verify]-->
                     <?= $form->field($model, 'password')->passwordInput(['autofocus' => true])->label(Module::t('user', 'You must provide your account password when changing')) ?>
                 <?php endif; ?>
 
@@ -59,13 +48,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php elseif ($item === 'password'): ?>
                     <?= $form->field($model,'newpassword')->passwordInput(['autofocus' => true]) ?>
                     <!--///[Yii2 uesr:repassword]-->
-                    <?php if (Yii::$app->getModule('user')->enableAccountChangePasswordWithRepassword): ?>
+                    <?php if (\Yii::$app->getModule('user')->enableAccountChangePasswordWithRepassword): ?>
                         <?= $form->field($model,'repassword')->passwordInput() ?>
                     <?php endif; ?>
                 <?php endif; ?>
 
                 <!--///[Yii2 uesr:verifycode]-->
-                <?php if (Yii::$app->getModule('user')->enableAccountChangeWithCaptcha): ?>
+                <?php if (\Yii::$app->getModule('user')->enableAccountChangeWithCaptcha): ?>
                      <?= $form->field($model, 'verifyCode', [
 
                         'enableClientValidation' => false,  ///always disable client validation in captcha! Otherwise 'testLimit' of captcha will be invalid, and thus lead to attack. Also 'validateOnBlur' will be set false.
@@ -73,10 +62,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         ///also need to disable validate on ActiveForm submit while using captcha & ajax!!!
 
-                    ])->widget(Yii::$app->getModule('user')->captchaActiveFieldWidget['class'], array_merge(Yii::$app->getModule('user')->captchaActiveFieldWidget, [
+                    ])->widget(\Yii::$app->getModule('user')->captchaActiveFieldWidget['class'], array_merge(\Yii::$app->getModule('user')->captchaActiveFieldWidget, [
 
                         ///captcha in module, e.g. `/user/account/captcha`
-                        'captchaAction' => '/' . Yii::$app->controller->module->id . '/account/captcha',  ///default is 'site/captcha'
+                        'captchaAction' => '/' . \Yii::$app->controller->module->id . '/account/captcha',  ///default is 'site/captcha'
 
                     ])) ?>
                 <?php endif; ?>

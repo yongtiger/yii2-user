@@ -1,4 +1,4 @@
-# Yii2-user v0.9.7 (backend:enableRecoveryPassword)
+# Yii2-user v0.9.8 (fix:views \Yii::)
 
 The most basic `user` module.
 

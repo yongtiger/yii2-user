@@ -1,23 +1,12 @@
 <?php ///[Yii2 uesr:token]
 
 /**
- * Yii2 User
- *
- * @link        http://www.brainbook.cc
- * @see         https://github.com/yongtiger/yii2-user
- * @author      Tiger Yong <tigeryang.brainbook@outlook.com>
- * @copyright   Copyright (c) 2016 BrainBook.CC
- * @license     http://opensource.org/licenses/MIT
- */
-
-/**
  * @var $this yii\web\View
  * @var $form yii\bootstrap\ActiveForm
  * @var $model yongtiger\user\models\PasswordResetRequestForm 
  * @var $type string
  */
 
-use Yii;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yongtiger\user\Module;
@@ -55,21 +44,21 @@ switch ($type) {
             <?php $form = ActiveForm::begin(['id' => $type . '-form',
 
                 ///[Yii2 uesr:Ajax validation]
-                'enableClientValidation' => Yii::$app->getModule('user')->enableSendTokenClientValidation,
-                'enableAjaxValidation' => Yii::$app->getModule('user')->enableSendTokenAjaxValidation,
-                'validateOnBlur' => Yii::$app->getModule('user')->enableSendTokenValidateOnBlur,
+                'enableClientValidation' => \Yii::$app->getModule('user')->enableSendTokenClientValidation,
+                'enableAjaxValidation' => \Yii::$app->getModule('user')->enableSendTokenAjaxValidation,
+                'validateOnBlur' => \Yii::$app->getModule('user')->enableSendTokenValidateOnBlur,
                 ///disable validate on submit while using captcha & ajax!!!
                 'validateOnSubmit' => !(
-                    Yii::$app->getModule('user')->enableSendTokenAjaxValidation && 
-                    Yii::$app->getModule('user')->enableSendTokenWithCaptcha
-                ) && Yii::$app->getModule('user')->enableSendTokenValidateOnSubmit,
+                    \Yii::$app->getModule('user')->enableSendTokenAjaxValidation && 
+                    \Yii::$app->getModule('user')->enableSendTokenWithCaptcha
+                ) && \Yii::$app->getModule('user')->enableSendTokenValidateOnSubmit,
 
             ]); ?>
 
                 <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
                 <!--///[Yii2 uesr:verifycode]-->
-                <?php if (Yii::$app->getModule('user')->enableSendTokenWithCaptcha): ?>
+                <?php if (\Yii::$app->getModule('user')->enableSendTokenWithCaptcha): ?>
                     <?= $form->field($model, 'verifyCode', [
 
                         'enableClientValidation' => false,  ///always disable client validation in captcha! Otherwise 'testLimit' of captcha will be invalid, and thus lead to attack. Also 'validateOnBlur' will be set false.
@@ -77,10 +66,10 @@ switch ($type) {
                         
                         ///also need to disable validate on ActiveForm submit while using captcha & ajax!!!
                         
-                    ])->widget(Yii::$app->getModule('user')->captchaActiveFieldWidget['class'], array_merge(Yii::$app->getModule('user')->captchaActiveFieldWidget, [
+                    ])->widget(\Yii::$app->getModule('user')->captchaActiveFieldWidget['class'], array_merge(\Yii::$app->getModule('user')->captchaActiveFieldWidget, [
 
                         ///captcha in module, e.g. `/user/token/captcha`
-                        'captchaAction' => '/' . Yii::$app->controller->module->id . '/token/captcha',  ///default is 'site/captcha'
+                        'captchaAction' => '/' . \Yii::$app->controller->module->id . '/token/captcha',  ///default is 'site/captcha'
 
                     ])) ?>
                 <?php endif; ?>
