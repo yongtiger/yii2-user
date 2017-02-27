@@ -1,4 +1,4 @@
-# Yii2-user v0.11.2 (fix:GridView options 'style'=>'overflow:auto')
+# Yii2-user v0.11.3 (GridView columns headerOptions)
 
 The most basic `user` module.
 

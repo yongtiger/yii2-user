@@ -61,7 +61,11 @@ $this->registerJs('
             // ['class' => 'yii\grid\SerialColumn'],
             ['class' => 'yii\grid\CheckboxColumn', 'name' => 'id'], ///[yii2-user:deleteIn]
 
-            'id',
+            [
+                'attribute' => 'id',
+                'headerOptions' => ['width' => '60']    ///[yii2-user v0.11.3 (GridView columns headerOptions)]
+            ],
+
             'username',
             'email:email',
 
@@ -79,7 +83,7 @@ $this->registerJs('
                 'value' => function($model) {   ///[yii2-user v0.11.1 (GridView value)]
                     $arrStatus = [User::STATUS_INACTIVE => 'inactive', User::STATUS_ACTIVE => 'active'];
                     return Module::t('user', $arrStatus[$model->status]);
-                }
+                },
             ],
 
             ///[yii2-user:datepicker]

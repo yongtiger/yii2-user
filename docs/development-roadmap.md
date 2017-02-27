@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.11.3 (GridView columns headerOptions)
+
+
 ## v0.11.2 (fix:GridView options 'style'=>'overflow:auto')
 
 
