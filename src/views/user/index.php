@@ -55,7 +55,8 @@ $this->registerJs('
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
 
-        'options' => ['class' => 'grid-view','style'=>'overflow:auto', 'id' => 'grid'], ///[yii2-user:deleteIn]
+        'options' => ['class' => 'grid-view','style'=>'overflow:auto', 'id' => 'grid'], ///[yii2-user]@see http://stackoverflow.com/questions/29837479/yii2-add-horizontal-scrollbar-in-gridview
+        
         'columns' => [
             // ['class' => 'yii\grid\SerialColumn'],
             ['class' => 'yii\grid\CheckboxColumn', 'name' => 'id'], ///[yii2-user:deleteIn]

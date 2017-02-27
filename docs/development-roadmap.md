@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.11.2 (fix:GridView options 'style'=>'overflow:auto')
+
+
 ## v0.11.1 (GridView value)
 
 
