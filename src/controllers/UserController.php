@@ -232,16 +232,14 @@ class UserController extends Controller
 
             $idsRoleAdmin, ///remove `ROLE_ADMIN` from array `$arrSelected`
 
-            ///$idsRoleSuperModerator  ///remove ROLE_SUPER_MODERATOR from array `$arrSelected`, even if `me` is `ROLE_ADMIN` is not allowed to remove ROLE_SUPER_MODERATOR
-
-            ($me->role == User::ROLE_ADMIN) ? [] : $idsRoleSuperModerator  ///if `me` is `ROLE_ADMIN`, is not allowed to remove ROLE_SUPER_MODERATOR
+            ($me->role == User::ROLE_ADMIN) ? [] : $idsRoleSuperModerator  ///if `me` is not `ROLE_ADMIN`, is not allowed to remove `ROLE_SUPER_MODERATOR`
 
         ));
         ///[http://www.brainbook.cc]
 
         $ret = User::deleteAll(['id' => $arrSelected]);
 
-        $str = $ret > 0 ? ' (IDs = [' . implode(', ', $arrSelected) . '])' : '';
+        $str = $ret > 0 ? ' (IDs [' . implode(', ', $arrSelected) . '])' : '';
         Yii::$app->session->setFlash('info', Module::t('user', 'Deleted {0} users.', $ret) . $str);
 
         return $this->redirect(['index']);

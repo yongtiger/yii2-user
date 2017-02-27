@@ -1,4 +1,4 @@
-# Yii2-user v0.11.3 (GridView columns headerOptions)
+# Yii2-user v0.11.4 (Fix#password in Firefox)
 
 The most basic `user` module.
 

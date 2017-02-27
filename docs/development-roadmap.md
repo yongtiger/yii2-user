@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.11.4 (Fix#password in Firefox)
+
+
 ## v0.11.3 (GridView columns headerOptions)
 
 

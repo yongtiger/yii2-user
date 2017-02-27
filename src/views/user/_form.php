@@ -32,7 +32,7 @@ if ($me['role'] === User::ROLE_SUPER_MODERATOR) {
 
     ]); ?>
     <?= $form->field($model, 'username')->textInput(['autofocus' => true]); ?>
-
+    <input type="password" style="display:none;" /><!--[Fix#password in Firefox] @see http://www.xuebuyuan.com/1836687.html-->
     <?= $form->field($model, 'password')->passwordInput()->hint(Module::t('user', 'The password only contains letters ...')); ?>
 
     <?= $form->field($model, 'email')->input('email'); ?>

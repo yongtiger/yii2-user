@@ -182,7 +182,7 @@ class User extends ActiveRecord implements IdentityInterface
             $item = $manager->getRole(static::ROLE_USER);
             $manager->assign($item, $this->id);
         } else {
-
+            ///??????修改role?
         }
 
     }
