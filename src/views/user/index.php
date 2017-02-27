@@ -15,44 +15,40 @@ $this->title = Module::t('user', 'User List');
 $this->params['breadcrumbs'][] = $this->title;
 
 ///[yii2-user:deleteIn]
-$this->registerJs(
-<<<JS
-$(".gridview").on("click", function () {
-    //Note: `$("#grid")` must match the `options id` of our first step!
-    var keys = $("#grid").yiiGridView("getSelectedRows");
-    console.log(keys);
+$this->registerJs('
+    $(".gridview").on("click", function () {
+        //Note: `$("#grid")` must match the `options id` of our first step!
+        var keys = $("#grid").yiiGridView("getSelectedRows");
+        console.log(keys);
 
-    ///[yii2-admin-boot_v0.5.9_f0.5.7_user_login_popup]     ///??????
-    ///if(confirm("Are you sure you want to delete? This is a non-recoverable operation!")){
-    ///    $.post("'.Url::to(['delete-in']).'","selected="+keys).error(function(xhr,errorText,errorType){  ///Add Ajax error handling, solve batch delete error without any display!
-    ///        if(xhr.status!=302) ///ignore #302 page jump error
-    ///            alert(xhr.responseText)
-    ///    });
-    ///}
+        ///[yii2-admin-boot_v0.5.9_f0.5.7_user_login_popup]     ///??????
+        ///if(confirm("' . Module::t('user', 'Are you sure you want to delete? This is a non-recoverable operation!') . '")){
+        ///    $.post("' . Url::to(['delete-in']) . '","selected="+keys).error(function(xhr,errorText,errorType){  ///Add Ajax error handling, solve batch delete error without any display!
+        ///        if(xhr.status!=302) ///ignore #302 page jump error
+        ///            alert(xhr.responseText)
+        ///    });
+        ///}
 
-    yii.confirm("Are you sure you want to delete? This is a non-recoverable operation!",    ///??????i18n
-        function () {
-            $.post("'.Url::to(['delete-in']).'","selected="+keys).error(function(xhr,errorText,errorType){  ///Add Ajax error handling, solve batch delete error without any display!
-                if(xhr.status!=302) ///ignore #302 page jump error
-                    alert(xhr.responseText)
-            });
-        }
-    );
+        yii.confirm("' . Module::t('user', 'Are you sure you want to delete? This is a non-recoverable operation!') . '",
+            function () {
+                $.post("' . Url::to(['delete-in']) . '","selected="+keys).error(function(xhr,errorText,errorType){  ///Add Ajax error handling, solve batch delete error without any display!
+                    if(xhr.status!=302) ///ignore #302 page jump error
+                        alert(xhr.responseText)
+                });
+            }
+        );
 
-});
-JS
-);
+    });
+');
 
 ?>
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
         <?= Html::a(Module::t('user', 'Create User'), ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Module::t('user', 'Batch Delete'), "javascript:void(0);", ['class' => 'btn btn-success gridview']) ?><!--///[yii2-user:deleteIn]-->
+        <?= Html::a(Module::t('user', 'Batch Delete'), "javascript:void(0);", ['class' => 'btn btn-danger gridview']) ?><!--///[yii2-user:deleteIn]-->
     </p>
 
     <?= GridView::widget([
@@ -61,7 +57,7 @@ JS
 
         'options' => ['class' => 'grid-view','style'=>'overflow:auto', 'id' => 'grid'], ///[yii2-user:deleteIn]
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            // ['class' => 'yii\grid\SerialColumn'],
             ['class' => 'yii\grid\CheckboxColumn', 'name' => 'id'], ///[yii2-user:deleteIn]
 
             'id',
@@ -113,4 +109,9 @@ JS
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+
+    <hr style="height:10px">
+
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+
 </div>

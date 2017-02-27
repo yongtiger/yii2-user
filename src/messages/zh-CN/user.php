@@ -47,6 +47,12 @@ return [
 	//////[Yii2 uesr:account]
 	'Invalid action!' => '无效操作！',
 	
+	///\vendor\yongtiger\yii2-user\src\controllers\UserController.php
+	'Successfully created.' => '创建用户成功。',
+	'Successfully updated.' => '更新用户成功。',
+	'Successfully deleted.' => '删除用户成功。',
+	'Failed to delete!' => '删除用户失败！',
+	'user', 'Deleted {0} users.' => '共删除了 {0} 个用户。',
 	
 	/**
 	 * Models
@@ -178,6 +184,7 @@ return [
 
 	///\vendor\yongtiger\yii2-user\src\views\user\indexphp
 	'Batch Delete' => '批量删除',
+	'Are you sure you want to delete? This is a non-recoverable operation!' => '您确定要删除吗？此操作不可恢复！',
 
 	///\vendor\yongtiger\yii2-user\src\views\user\_form.php
 	'Create' => '创建',
@@ -204,4 +211,5 @@ return [
 
 	///\vendor\yongtiger\yii2-user\src\views\user\view.php
 	'Are you sure you want to delete this item?' => '您确定要删除此项吗？',
+	'Delete' => '删除',
 ];
