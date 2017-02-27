@@ -33,12 +33,7 @@ class UserSearch extends User
     {
         return
         [
-            [
-                [
-                    'id',
-                    'status',
-                ], 'integer'
-            ],
+            [['id', 'status'], 'integer'],
 
             [
                 [
@@ -48,8 +43,8 @@ class UserSearch extends User
                 ], 'safe'
             ],
 
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE]],
-            ['role', 'in', 'range' => [self::ROLE_ADMIN, self::ROLE_SUPER_MODERATOR, self::ROLE_MODERATOR, self::ROLE_USER]],
+            ['status', 'in', 'range' => [static::STATUS_ACTIVE, static::STATUS_INACTIVE]],
+            ['role', 'in', 'range' => [static::ROLE_ADMIN, static::ROLE_SUPER_MODERATOR, static::ROLE_MODERATOR, static::ROLE_USER]],
 
             [['created_at', 'updated_at'], 'default', 'value' => null], ///[yii2-user:datepicker] @see http://www.yiiframework.com/doc-2.0/yii-jui-datepicker.html
             [['created_at', 'updated_at'], 'date', 'format' => 'yyyy-MM-dd']  ///[yii2-user:datepicker]

@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.11.1 (GridView value)
+
+
 ## v0.11.0 (a lot of fixes)
 
 

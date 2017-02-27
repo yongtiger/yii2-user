@@ -1,4 +1,4 @@
-# Yii2-user v0.11.0 (a lot of fixes)
+# Yii2-user v0.11.1 (GridView value)
 
 The most basic `user` module.
 
