@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.11.0 (a lot of fixes)
+
+
 ## v0.10.0 (user crud)
 
 

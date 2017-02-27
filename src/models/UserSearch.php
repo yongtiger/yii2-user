@@ -22,7 +22,7 @@ use yii\data\ActiveDataProvider;
  */
 class UserSearch extends User
 {
-
+    ///[yii2-user daterangepicker]
     public $created_date_range;
     public $updated_date_range;
 
@@ -44,15 +44,15 @@ class UserSearch extends User
                 [
                     'username',
                     'email',
-                    'created_date_range', 'updated_date_range'  ///[yii2-admin:user_daterangepicker]
+                    'created_date_range', 'updated_date_range'  ///[yii2-user:daterangepicker]
                 ], 'safe'
             ],
 
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE]],
             ['role', 'in', 'range' => [self::ROLE_ADMIN, self::ROLE_SUPER_MODERATOR, self::ROLE_MODERATOR, self::ROLE_USER]],
 
-            [['created_at', 'updated_at'], 'default', 'value' => null],///[yii2-admin-boot_v0.5.15_f0.5.14_user_datepicker] @see http://www.yiiframework.com/doc-2.0/yii-jui-datepicker.html
-            [['created_at', 'updated_at'], 'date', 'format' => 'yyyy-MM-dd']  ///[yii2-admin-boot_v0.5.15_f0.5.14_user_datepicker]
+            [['created_at', 'updated_at'], 'default', 'value' => null], ///[yii2-user:datepicker] @see http://www.yiiframework.com/doc-2.0/yii-jui-datepicker.html
+            [['created_at', 'updated_at'], 'date', 'format' => 'yyyy-MM-dd']  ///[yii2-user:datepicker]
         ];
     }
 
@@ -95,16 +95,15 @@ class UserSearch extends User
             'id' => $this->id,
             'role' => $this->role,
             'status' => $this->status,
-            'DATE(FROM_UNIXTIME(created_at))' => $this->created_at, ///[yii2-admin:user_daterangepicker]
-            'DATE(FROM_UNIXTIME(updated_at))' => $this->updated_at, ///[yii2-admin:user_daterangepicker]
+            'DATE(FROM_UNIXTIME(created_at))' => $this->created_at, ///[yii2-user:daterangepicker]
+            'DATE(FROM_UNIXTIME(updated_at))' => $this->updated_at, ///[yii2-user:daterangepicker]
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email]);
 
-        ///[yii2-admin:user_daterangepicker]
-        ///[BUG#1]当在搜索栏输入日期范围进行搜索后，再过滤器选择created_at、update_at，则报错！
-        ///urlencode()将空格编码为加号“+”，所以用urldecode()转换“+”为空格
+        ///[yii2-user:daterangepicker]
+        ///`urlencode()` encodes the space as a plus sign “+”, so we use `urldecode()` convert “+” into space
         $this->created_date_range = urldecode($this->created_date_range);
         $this->updated_date_range = urldecode($this->updated_date_range);
 

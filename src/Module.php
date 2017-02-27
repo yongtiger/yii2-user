@@ -13,8 +13,8 @@
 namespace yongtiger\user;
 
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use yongtiger\user\models\User;
 
 /**

@@ -1,88 +1,84 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 use yii\helpers\Url;
+use yii\grid\GridView;
 use yii\jui\DatePicker;
 use yongtiger\user\models\User;
+use yongtiger\user\Module;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\UserSearch */
+/* @var $searchModel yongtiger\user\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = Module::t('user', 'User List');
 $this->params['breadcrumbs'][] = $this->title;
 
-///[yii2-admin-boot_v0.4.2_f0.4.1_user_deleteIn]
-$this->registerJs('
-    $(".gridview").on("click", function () {
-        //注意这里的$("#grid")，要跟我们第一步设定的options id一致
-        var keys = $("#grid").yiiGridView("getSelectedRows");
-        console.log(keys);
+///[yii2-user:deleteIn]
+$this->registerJs(
+<<<JS
+$(".gridview").on("click", function () {
+    //Note: `$("#grid")` must match the `options id` of our first step!
+    var keys = $("#grid").yiiGridView("getSelectedRows");
+    console.log(keys);
 
-        ///[yii2-admin-boot_v0.5.9_f0.5.7_user_login_popup]
-        ///if(confirm("您确定要删除 ,这是不可恢复操作")){
-        ///    $.post("'.Url::to(['delete-in']).'","selected="+keys).error(function(xhr,errorText,errorType){  ///添加Ajax错误处理，解决批量删除出错时无任何显示！
-        ///        if(xhr.status!=302) ///忽略302页面跳转错误！
-        ///            alert(xhr.responseText)
-        ///    });
-        ///}
+    ///[yii2-admin-boot_v0.5.9_f0.5.7_user_login_popup]     ///??????
+    ///if(confirm("Are you sure you want to delete? This is a non-recoverable operation!")){
+    ///    $.post("'.Url::to(['delete-in']).'","selected="+keys).error(function(xhr,errorText,errorType){  ///Add Ajax error handling, solve batch delete error without any display!
+    ///        if(xhr.status!=302) ///ignore #302 page jump error
+    ///            alert(xhr.responseText)
+    ///    });
+    ///}
 
-        yii.confirm("您确定要删除 ,这是不可恢复操作",
-            function () {
-                $.post("'.Url::to(['delete-in']).'","selected="+keys).error(function(xhr,errorText,errorType){  ///添加Ajax错误处理，解决批量删除出错时无任何显示！
-                    if(xhr.status!=302) ///忽略302页面跳转错误！
-                        alert(xhr.responseText)
-                });
-            }
-        );
+    yii.confirm("Are you sure you want to delete? This is a non-recoverable operation!",    ///??????i18n
+        function () {
+            $.post("'.Url::to(['delete-in']).'","selected="+keys).error(function(xhr,errorText,errorType){  ///Add Ajax error handling, solve batch delete error without any display!
+                if(xhr.status!=302) ///ignore #302 page jump error
+                    alert(xhr.responseText)
+            });
+        }
+    );
 
-    });
-');
+});
+JS
+);
 
 ?>
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php
-    ///[yii2-admin-boot_v0.5.0_f0.4.6_user_fix_rbac]
-    echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('批量删除', "javascript:void(0);", ['class' => 'btn btn-success gridview']) ?><!--///[yii2-admin-boot_v0.4.2_f0.4.1_user_deleteIn]-->
+        <?= Html::a(Module::t('user', 'Create User'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Module::t('user', 'Batch Delete'), "javascript:void(0);", ['class' => 'btn btn-success gridview']) ?><!--///[yii2-user:deleteIn]-->
     </p>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
 
-        'options' => ['class' => 'grid-view','style'=>'overflow:auto', 'id' => 'grid'], ///[yii2-admin-boot_v0.4.2_f0.4.1_user_deleteIn]
+        'options' => ['class' => 'grid-view','style'=>'overflow:auto', 'id' => 'grid'], ///[yii2-user:deleteIn]
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            ['class' => 'yii\grid\CheckboxColumn', 'name' => 'id'], ///[yii2-admin-boot_v0.4.2_f0.4.1_user_deleteIn]
+            ['class' => 'yii\grid\CheckboxColumn', 'name' => 'id'], ///[yii2-user:deleteIn]
 
             'id',
             'username',
             'email:email',
 
-            ///[yii2-admin-boot_v0.5.14_f0.5.13_user_dropdownlist_role]
-            ///'role', ///[yii2-admin-boot_v0.5.1_f0.5.0_user_add_role_field]
             [
                 'attribute' => 'role',
-                'filter' => [User::ROLE_ADMIN => 'ROLE_ADMIN', User::ROLE_SUPER_MODERATOR => 'ROLE_SUPER_MODERATOR', User::ROLE_MODERATOR => 'ROLE_ADMIN', User::ROLE_USER => 'ROLE_USER'],
-                ///'filter' => Html::activeDropDownList($searchModel, 'role', [User::ROLE_ADMIN => 'ROLE_ADMIN', User::ROLE_SUPER_MODERATOR => 'ROLE_SUPER_MODERATOR', User::ROLE_MODERATOR => 'ROLE_ADMIN', User::ROLE_USER => 'ROLE_USER'], ['prompt' => '', 'class' => 'form-control']),    ///与上面相同！
+                'filter' => [User::ROLE_ADMIN => Module::t('user', 'role_admin'), User::ROLE_SUPER_MODERATOR => Module::t('user', 'role_super_moderator'), User::ROLE_MODERATOR => Module::t('user', 'role_moderator'), User::ROLE_USER => Module::t('user', 'role_user')],
             ],
-            ///[http://www.brainbook.cc]
 
-            ///[yii2-admin-boot_v0.5.13_f0.5.12_user_dropdownlist_status]
             [
                 'attribute' => 'status',
-                'filter' => [User::STATUS_INACTIVE => 'STATUS_INACTIVE', User::STATUS_ACTIVE => 'STATUS_ACTIVE'],
-                ///'filter' => Html::activeDropDownList($searchModel, 'status', [User::STATUS_INACTIVE => 'STATUS_INACTIVE', User::STATUS_ACTIVE => 'STATUS_ACTIVE'], ['prompt' => '', 'class' => 'form-control']),    ///与上面相同！
+                'filter' => [User::STATUS_INACTIVE => Module::t('user', 'inactive'), User::STATUS_ACTIVE => Module::t('user', 'active')],
             ],
-            ///[http://www.brainbook.cc]
 
-            ///[yii2-admin-boot_v0.5.15_f0.5.14_user_datepicker]
+            ///[yii2-user:datepicker]
             ['attribute' => 'created_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
                 'filter' => DatePicker::widget(
                     [
@@ -90,14 +86,13 @@ $this->registerJs('
                         'attribute' => 'created_at', 
                         'dateFormat' => 'yyyy-MM-dd', 
                         'options' => [
-                            'id' => 'datepicker_created_at',    ///注意：没有id，出不来DatePicker！！！
+                            'id' => 'datepicker_created_at',    ///Note: if no `id`, `DatePicker` dosen't work!
                             'style' => 'text-align: center', 
-                            'class' => 'form-control'   ///样式与表单统一
+                            'class' => 'form-control'   ///The style is consistent with the form
                         ]
                     ]
                 )
             ],
-
 
             ['attribute' => 'updated_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
                 'filter' => DatePicker::widget(
@@ -106,9 +101,9 @@ $this->registerJs('
                         'attribute' => 'updated_at', 
                         'dateFormat' => 'yyyy-MM-dd', 
                         'options' => [
-                            'id' => 'datepicker_updated_at',    ///注意：没有id，出不来DatePicker！！！
+                            'id' => 'datepicker_updated_at',    ///Note: if no `id`, `DatePicker` dosen't work!
                             'style' => 'text-align: center', 
-                            'class' => 'form-control'   ///样式与表单统一
+                            'class' => 'form-control'   ///The style is consistent with the form
                         ]
                     ]
                 )

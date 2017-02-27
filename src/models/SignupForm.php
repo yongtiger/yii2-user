@@ -102,8 +102,12 @@ class SignupForm extends Model
     public function rules()
     {
         $rules =  [
-            [['password'], 'required'],
-            [['password'], 'string', 'min' => 6],
+            ['password', 'required'],
+            ['password', 'string', 'min' => 6],
+
+            ///[Yii2 uesr:password]
+            ['password', 'match', 'pattern' => '/^[a-zA-Z0-9_\-\~\!\@\#\$\%\^\&\*\+\=\?\|\{\}\[\]\(\)]{6,20}$/', 'message' => Module::t('user', 'The password only contains letters ...')],
+
         ];
 
         if (Yii::$app->getModule('user')->enableSignupWithUsername) {
@@ -116,7 +120,7 @@ class SignupForm extends Model
                     return preg_replace('/[^(\x{4E00}-\x{9FA5})\w]/iu', '', $value);
                 }],
 
-                ['username', 'string', 'min' => 2, 'max' => 255],
+                ['username', 'string', 'min' => 2, 'max' => 20],
 
                 ///[Yii2 uesr:username]User name verification
                 //The unicode range of Chinese characters is: 0x4E00~0x9FA5. This range also includes Chinese, Japanese and Korean characters
@@ -145,8 +149,8 @@ class SignupForm extends Model
         ///[Yii2 uesr:repassword]
         if (Yii::$app->getModule('user')->enableSignupWithRepassword) {
             $rules = array_merge($rules, [
-                [['repassword'], 'required'],
-                [['repassword'], 'string', 'min' => 6],
+                ['repassword', 'required'],
+                ['repassword', 'string', 'min' => 6],
                 ['repassword', 'compare', 'compareAttribute' => 'password', 'message' => Module::t('user', 'The two passwords do not match.')],
             ]);
         }

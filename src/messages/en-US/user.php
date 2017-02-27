@@ -21,7 +21,10 @@
 return [
 
 	///\vendor\yongtiger\yii2-user\src\models\SignupForm.php
-	'The username only contains letters ...' => 'The username only contains letters, Chinese characters, Numbers, underscores, and cannot begin with Numbers and underscore.',	///[Yii2 uesr:username]
+	'The username only contains letters ...' => 'The username can only contain letters, Chinese characters, Numbers, underscores, and cannot begin with Numbers and underscore.',	///[Yii2 uesr:username]
+
+	///\vendor\yongtiger\yii2-user\src\models\SignupForm.php
+	'The password only contains letters ...' => 'The password can only contain 6-20 digits, uppercase or lowercase letters, "-", "_" or other special characters.',	///[Yii2 uesr:password]
 
 	///\vendor\yongtiger\yii2-user\src\models\TokenHandler.php
 	'Your account has been successfully activated ...' => 'Your account has been successfully activated. You can now log in using the username and password you chose during the registration.',	///[Yii2 uesr:activation via email:activation]

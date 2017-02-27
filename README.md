@@ -1,4 +1,4 @@
-# Yii2-user v0.10.0 (user crud)
+# Yii2-user v0.11.0 (a lot of fixes)
 
 The most basic `user` module.
 

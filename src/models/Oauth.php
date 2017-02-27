@@ -47,7 +47,6 @@ class Oauth extends ActiveRecord
 
     /**
      * @inheritdoc
-     * @return array mixed
      */
     public function behaviors()
     {

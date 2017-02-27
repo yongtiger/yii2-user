@@ -6,7 +6,7 @@
  * @link        http://www.brainbook.cc
  * @see         https://github.com/yongtiger/yii2-user
  * @author      Tiger Yong <tigeryang.brainbook@outlook.com>
- * @copyright   Copyright (c) 2016 BrainBook.CC
+ * @copyright   Copyright (c) 2017 BrainBook.CC
  * @license     http://opensource.org/licenses/MIT
  */
 
@@ -14,6 +14,8 @@ namespace yongtiger\user\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yongtiger\user\models\User;
@@ -34,34 +36,31 @@ class UserController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
-                    'deleteIn' => ['POST'], ///[yii2-admin:user_deleteIn]
+                    'deleteIn' => ['POST'], ///[yii2-user:deleteIn]
                 ],
             ],
 
+            ///[yii2-user:role]
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['update','delete',
-                            'delete-in' ///[yii2-admin:user_deleteIn][BUG]批量删除仍然能删除自己
-                        ],
+                'only' => ['update', 'delete', 'create', 'delete-in'],  ///[yii2-user:deleteIn]
                 'rules' => [
                     [
                         'allow' => true,
                         'actions' => ['update'],
                         'matchCallback' => function ($rule, $action) {
                             $me = Yii::$app->user->identity;
-                            ///$useId = Yii::$app->getRequest()->queryParams['id'];///Request请求中的id即为用户ID
                             $useId = Yii::$app->request->get('id');
-                            ///$user = User::findOne(['id' => $useId]);///获取被操作的User对象
-                            $user = $this->findModel($useId);
+                            $user = $this->findModel($useId);   ///gets the manipulated User object
 
                             return
-                                $me['id'] == $user['id']  ///如果当前用户是自己，则允许更新操作
+                                $me['id'] == $user['id']  ///if the manipulated user is `me`, `update` is allowed
                                 ||
-                                $me['role'] == User::ROLE_ADMIN ///如果当前用户是站长，则允许更新操作
+                                $me['role'] == User::ROLE_ADMIN ///if `me` is `ROLE_ADMIN`, `update` is allowed
                                 ||
                                 $me['role'] == User::ROLE_SUPER_MODERATOR &&
-                                    ($user['role'] != User::ROLE_ADMIN && $user['role'] != User::ROLE_SUPER_MODERATOR) ///如果当前用户是超版，被操作用户不为站长或超版，则允许更新操作
-                                ///|| ... 还可以继续增加规则
+                                    ($user['role'] != User::ROLE_ADMIN && $user['role'] != User::ROLE_SUPER_MODERATOR) ///if `me` is `ROLE_SUPER_MODERATOR` and the manipulated user is not `ROLE_ADMIN` or `ROLE_SUPER_MODERATOR`, `update` is allowed
+                                // || ... more rules as you customize
                             ;
                         }
                     ],
@@ -71,41 +70,39 @@ class UserController extends Controller
                         'actions' => ['delete'],
                         'matchCallback' => function ($rule, $action) {
                             $me = Yii::$app->user->identity;
-                            ///$useId = Yii::$app->getRequest()->queryParams['id'];///Request请求中的id即为用户ID
                             $useId = Yii::$app->request->get('id');
-                            ///$user = User::findOne(['id' => $useId]);///获取被操作的User对象
-                            $user = $this->findModel($useId);
+                            $user = $this->findModel($useId);   ///gets the manipulated User object
 
                             return
-                                !( ///为方便理解逻辑，先用“或关系”列出不允许删除操作的条件，最后再取反
-                                    $me['id'] == $user['id']      ///如果当前用户是自己，则不允许删除操作
+                                !( ///to facilitate understanding of logic, first use `OR` lists the conditions that do not allow the deletion of the operation, and finally to reverse by `NOT`
+                                    $me['id'] == $user['id']      ///if the manipulated user is `me`, `delete` is not allowed
                                     ||
                                     $me['role'] == User::ROLE_SUPER_MODERATOR &&
-                                        ($user['role'] == User::ROLE_ADMIN || $user['role'] == User::ROLE_SUPER_MODERATOR)  ///如果当前用户是超版，被操作用户是站长或超版，则不允许删除操作
+                                        ($user['role'] == User::ROLE_ADMIN || $user['role'] == User::ROLE_SUPER_MODERATOR)  ///if `me` is `ROLE_SUPER_MODERATOR` and the manipulated user is not `ROLE_ADMIN` or `ROLE_SUPER_MODERATOR`, `delete` is not allowed
                                     ||
-                                    $me['role'] == User::ROLE_MODERATOR  ///如果当前用户是版主，则不允许删除操作
+                                    $me['role'] == User::ROLE_MODERATOR  ///if `me` is `ROLE_MODERATOR`, `delete` is not allowed
                                     ||
-                                    $me['role'] == User::ROLE_USER  ///如果当前用户是普通用户，则不允许删除操作
-                                    ///|| ...还可以继续增加规则
+                                    $me['role'] == User::ROLE_USER  ///if `me` is `ROLE_USER`, `delete` is not allowed
+                                    // || ... more rules as you customize
                                 )
                             ;
                         }
                     ],
 
-                    ///[yii2-admin:user_deleteIn][BUG]批量删除仍然能删除自己
                     [
                         'allow' => true,
-                        'actions' => ['delete-in'],
+                        'actions' => ['create', 'delete-in'], ///[yii2-user:deleteIn]
                         'matchCallback' => function ($rule, $action) {
                             $me = Yii::$app->user->identity;
-                            ///只允许站长、超级版主批量删除用户。在后面运行的actionDeleteIn()中继续判断批量删除的用户列表$selected
+                            ///Only allows `ROLE_ADMIN` or `ROLE_SUPER_MODERATOR` to batch delete users.
+                            ///In the subsequent operation of the `actionDeleteIn()` continue to determine the batch delete the user list `$selected`
                             return $me['role'] == User::ROLE_ADMIN || $me['role'] == User::ROLE_SUPER_MODERATOR;
                         }
                     ],
-                    ///[http://www.brainbook.cc]
 
                 ],
             ],
+            ///[http://www.brainbook.cc]
 
         ];
     }
@@ -117,7 +114,7 @@ class UserController extends Controller
     public function actionIndex()
     {
         $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->getRequest()->getQueryParams());
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -146,10 +143,18 @@ class UserController extends Controller
     {
         $model = new User();
 
-        $model->scenario = 'create';
+        $model->scenario = 'create';    ///[yii2-user:password]password must be required to verify at `create`, and has not to be verified at `update`
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', '创建成功'); ///[yii2-admin-boot_v0.5.7_f0.5.6_move_out_yii2-flash]
+        $load = $model->load(Yii::$app->request->post());
+
+        ///[yii2-uesr:Ajax validation]
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+
+        if ($load && $user = $model->save()) {
+            Yii::$app->session->setFlash('success', 'Successfully created.');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -168,8 +173,16 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', '更新成功'); ///[yii2-admin-boot_v0.5.7_f0.5.6_move_out_yii2-flash]
+        $load = $model->load(Yii::$app->request->post());
+
+        ///[yii2-uesr:Ajax validation]
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+
+        if ($load && $user = $model->save()) {
+            Yii::$app->session->setFlash('success', 'Successfully updated.');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -186,20 +199,18 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        ///[yii2-admin-boot_v0.4.1_f0.4.0_yii2-flash]
         $ret = $this->findModel($id)->delete();
         if($ret === false)
         {
-            Yii::$app->session->setFlash('danger', '<b>Alert!</b> 删除失败(id='.$id.')'); ///[yii2-admin-boot_v0.5.7_f0.5.6_move_out_yii2-flash]
+            Yii::$app->session->setFlash('error', 'Failed to delete! (ID = '.$id.')');
         }else{
-            Yii::$app->session->setFlash('danger', '删除成功(id='.$id.')'); ///[yii2-admin-boot_v0.5.7_f0.5.6_move_out_yii2-flash]
+            Yii::$app->session->setFlash('success', 'Successfully deleted. (ID = '.$id.')');
         }
-        ///[http://www.brainbook.cc]
 
         return $this->redirect(['index']);
     }
 
-    ///[yii2-admin:user_deleteIn]
+    ///[yii2-user:deleteIn]
     /**
      * Deletes selected in post.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -208,31 +219,31 @@ class UserController extends Controller
     public function actionDeleteIn()
     {
         $selected = Yii::$app->request->post('selected' , []);
-
-        ///[yii2-admin:user_deleteIn][BUG]批量删除仍然能删除自己
         $arrSelected = explode(',', $selected);
 
+        ///[yii2-user:role]
         $me = Yii::$app->user->identity;
         $manager = Yii::$app->getAuthManager();
         $idsRoleAdmin = $manager->getUserIdsByRole(User::ROLE_ADMIN);
         $idsRoleSuperModerator = $manager->getUserIdsByRole(User::ROLE_SUPER_MODERATOR);
         
-        $arrSelected = array_merge(array_diff($arrSelected, ///PHP技巧：从数组中删除元素
+        $arrSelected = array_merge(array_diff($arrSelected, ///PHP tips: remove the element from the array
 
-            [$me->id], ///删掉自己
+            [$me->id], ///remove `me` from array `$arrSelected`
 
-            $idsRoleAdmin, ///删掉ROLE_ADMIN的所有用户id
+            $idsRoleAdmin, ///remove `ROLE_ADMIN` from array `$arrSelected`
 
-            ///$idsRoleSuperModerator  ////删掉ROLE_SUPER_MODERATOR的所有用户id（即使当前用户是站长也不允许删除超版！）
-            ($me->role == User::ROLE_ADMIN) ? [] : $idsRoleSuperModerator  ///如果当前用户是站长，则不去掉所有超版id
+            ///$idsRoleSuperModerator  ///remove ROLE_SUPER_MODERATOR from array `$arrSelected`, even if `me` is `ROLE_ADMIN` is not allowed to remove ROLE_SUPER_MODERATOR
 
-            )
-        );
+            ($me->role == User::ROLE_ADMIN) ? [] : $idsRoleSuperModerator  ///if `me` is `ROLE_ADMIN`, is not allowed to remove ROLE_SUPER_MODERATOR
 
-        $ret = User::deleteAll(['id' => $arrSelected]);
+        ));
         ///[http://www.brainbook.cc]
 
-        Yii::$app->session->setFlash('danger', '批量删除'.$ret.'条记录'); ///[yii2-admin-boot_v0.5.7_f0.5.6_move_out_yii2-flash]
+        $ret = User::deleteAll(['id' => $arrSelected]);
+
+        $str = $ret > 0 ? ' (IDs = [' . implode(', ', $arrSelected) . '])' : '';
+        Yii::$app->session->setFlash('info', 'Deleted ' . $ret . ' records.' . $str);
 
         return $this->redirect(['index']);
     }

@@ -91,6 +91,7 @@ class ChangePasswordForm extends ChangeForm
 
             // ...custom code here...
             $this->getUser()->setPassword($this->newpassword);
+            $this->getUser()->generateAuthKey();
             if ($this->getUser()->save(false)) {
                 $this->afterChange();
                 return true;

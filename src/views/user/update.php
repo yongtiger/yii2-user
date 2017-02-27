@@ -1,13 +1,15 @@
 <?php
+
 use yii\helpers\Html;
+use yongtiger\user\Module;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\User */
+/* @var $model yongtiger\user\models\User */
 
-$this->title = 'Update User: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = Module::t('user', 'Update User') . ': ID ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => Module::t('user', 'User List'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('user', 'User') . 'ID ' . $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = Module::t('user', 'Update');
 ?>
 <div class="user-update">
 

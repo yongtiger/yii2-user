@@ -53,6 +53,12 @@ return [
 	 */
 	///\vendor\yongtiger\yii2-user\src\models\User.php
 	'"findIdentityByAccessToken" is not implemented.' => '"findIdentityByAccessToken"没有实现。',
+	'Role' => '用户组',
+	'Status' => '用户状态',
+	'Created At' => '创建时间',
+	'Updated At' => '更新时间',
+	'Created Date Range' => '创建日期范围',
+	'Updated Date Range' => '更新日期范围',
 
 	///\vendor\yongtiger\yii2-user\src\models\SignupForm.php
 	'Username' => '用户名',
@@ -61,6 +67,7 @@ return [
 	'This username has already been taken.' => '用户名已经被占用。',
 	'This email address has already been taken.' => '邮箱已经被占用。',
 	'The username only contains letters ...' => '用户名由字母、汉字、数字及下划线组成，且不能以数字和下划线开头。',	///[Yii2 uesr:username]
+	'The password only contains letters ...' => '密码只能含6-20位数字、大小写字母和“-”、“_”等特殊字符。',	///[Yii2 uesr:password]
 	//////[Yii2 uesr:repassword]
 	'Repeat Password' => '再次输入密码',
 	'The two passwords do not match.' => '两次输入的密码不一致。',
@@ -169,4 +176,32 @@ return [
 	'Please fill out your registration email. A link to verify email will be sent there.' => '请填写您注册时的邮箱，系统将发送邮箱验证的邮件。',
 	'Send' => '发送',
 
+	///\vendor\yongtiger\yii2-user\src\views\user\indexphp
+	'Batch Delete' => '批量删除',
+
+	///\vendor\yongtiger\yii2-user\src\views\user\_form.php
+	'Create' => '创建',
+	'Update' => '更新',
+	'(Please select ...)' => '(请选择 ...)',
+	'role_admin' => '站长',
+	'role_super_moderator' => '超级版主',
+	'role_moderator' => '版主',
+	'role_user' => '普通用户',
+	'inactive'  => '未激活',
+	'active'  => '已激活',
+
+	///\vendor\yongtiger\yii2-user\src\views\user\create.php
+	'Create User' => '创建用户',
+	'User List' => '用户列表',
+
+	///\vendor\yongtiger\yii2-user\src\views\user\update.php
+	'Update User' => '更新用户',
+	'User' => '用户',
+
+	///\vendor\yongtiger\yii2-user\src\views\user\_search.php
+	'Search' => '搜索',
+	'Reset' => '重置',
+
+	///\vendor\yongtiger\yii2-user\src\views\user\view.php
+	'Are you sure you want to delete this item?' => '您确定要删除此项吗？',
 ];

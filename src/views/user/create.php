@@ -1,13 +1,13 @@
 <?php
 
 use yii\helpers\Html;
-
+use yongtiger\user\Module;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\User */
+/* @var $model yongtiger\user\models\User */
 
-$this->title = 'Create User';
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+$this->title = Module::t('user', 'Create User');
+$this->params['breadcrumbs'][] = ['label' => Module::t('user', 'User List'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-create">

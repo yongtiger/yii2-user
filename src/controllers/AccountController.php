@@ -21,8 +21,6 @@ use yii\helpers\ArrayHelper;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yongtiger\user\Module;
-use yongtiger\user\models\User;
-use yongtiger\user\models\Oauth;
 
 /**
  * Account Controller

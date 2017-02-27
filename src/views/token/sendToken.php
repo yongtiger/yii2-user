@@ -8,9 +8,9 @@
  */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use yongtiger\user\Module;
-use yii\helpers\Url;
 
 switch ($type) {
     case 'activation':

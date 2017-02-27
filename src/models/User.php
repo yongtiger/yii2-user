@@ -33,22 +33,27 @@ use yongtiger\user\models\Oauth;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
- * @property string $password write-only password
+ * @property string $password
  */
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = -1;  ///[Yii2 uesr:activation via email:INACTIVE]
+    const STATUS_INACTIVE = -1;  ///[yii2-uesr:activation via email:INACTIVE]
 
-    ///[yii2-admin-boot_v0.5.1_f0.5.0_user_add_role_field]
+    ///[yii2-user:role]
     const ROLE_ADMIN = 'role_admin';
     const ROLE_SUPER_MODERATOR = 'role_super_moderator';
     const ROLE_MODERATOR = 'role_moderator';
     const ROLE_USER = 'role_user';
-    const ROLES_BACKEND = [self::ROLE_ADMIN, self::ROLE_SUPER_MODERATOR, self::ROLE_MODERATOR];   ///[yii2-admin-boot_v0.5.5_f0.5.4_user_BUG#2_user_error_403]允许登陆后台的所有role
-    ///[http://www.brainbook.cc]
 
+    ///[yii2-user:password]password must be required to verify at `create`, and has not to be verified at `update`
+    const SCENARIO_DEFAULT = 'default';
+    const SCENARIO_CREATE = 'create';
+
+    /**
+     * @var string password
+     */
     public $password;
     
     /**
@@ -65,18 +70,24 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                // 'value' => new \yii\db\Expression('NOW()'), ///if you're using datetime instead of UNIX timestamp
+            ],
         ];
     }
 
-    ///[yii2-admin-boot_v0.5.17_f0.5.16_user_password]以便在更新时，不验证密码password，只在创建时必须要求password
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['create'] = ['username', 'password', 'email', 'role', 'status']; ///create的scenarios虽然与缺省的scenarios相同值，但规则中password在create时才是必须的！而update时不是必须。
+        $scenarios[static::SCENARIO_CREATE] = ['username', 'password', 'email', 'role', 'status']; ///[yii2-user:password]password must be required to verify at `create`, and has not to be verified at `update`
         return $scenarios;
     }
-    ///[http://www.brainbook.cc]
 
     /**
      * @inheritdoc
@@ -84,69 +95,41 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => static::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [static::STATUS_ACTIVE, static::STATUS_DELETED, static::STATUS_INACTIVE]],    ///[Yii2 uesr:activation via email:INACTIVE]
 
-            ///[yii2-admin-boot_v0.5.1_f0.5.0_user_add_role_field]
-            ['role', 'default', 'value' => self::ROLE_USER],    ///[yii2-admin-boot_v0.5.2_f0.5.1_user_create_default_role]
+            ///[Yii2 uesr:username]User name verification
+            ['username', 'required'],
+            ['username', 'trim'],
+            ['username', 'string', 'min' => 2, 'max' => 20],
+            //The unicode range of Chinese characters is: 0x4E00~0x9FA5. This range also includes Chinese, Japanese and Korean characters
+            //  i   Indicates to match both uppercase and lowercase
+            //  u   Indicates to match by unicode (utf-8), mainly for multi-byte characters such as Chinese characters
+            //  w   Indicates to match alphabetic, numeric, or underscore characters
+            //  \x  Ignore whitespace
+            //[(\x{4E00}-\x{9FA5})a-zA-Z]+  The character starts with a Chinese character or letter and appears 1 to n times
+            //[(\x{4E00}-\x{9FA5})\w]*      Chinese characters underlined alphabet, there 0-n times
+            ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-z]+[(\x{4E00}-\x{9FA5})\w]*$/iu', 'message' => Module::t('user', 'The username only contains letters ...')],
+            ['username', 'unique'],
+
+            ///[yii2-uesr:password]
+            ['password', 'required', 'on' => 'create'],   ///[yii2-user:password]password must be required to verify at `create`, and has not to be verified at `update`
+            ['password', 'string', 'min' => 6],
+            ['password', 'match', 'pattern' => '/^[a-zA-Z0-9_\-\~\!\@\#\$\%\^\&\*\+\=\?\|\{\}\[\]\(\)]{6,20}$/', 'message' => Module::t('user', 'The password only contains letters ...')],  ///skipOnEmpty缺省为true，所以当没有输入密码时，忽略该项验证规则
+
+            ['email', 'required'],
+            ['email', 'trim'],
+            ['email', 'string', 'max' => 255],
+            ['email', 'email'],
+            ['email', 'unique'],
+
+            ///[yii2-user:role]
+            ['role', 'default', 'value' => static::ROLE_USER],    ///[yii2-user:role]default_role
             ['role', 'string', 'max' => 32],
-            ['role', 'in', 'range' => [self::ROLE_ADMIN, self::ROLE_SUPER_MODERATOR, self::ROLE_MODERATOR, self::ROLE_USER]],
-            ///[http://www.brainbook.cc]
+            ['role', 'in', 'range' => [static::ROLE_ADMIN, static::ROLE_SUPER_MODERATOR, static::ROLE_MODERATOR, static::ROLE_USER]],
 
-            ///['auth_key', 'default', 'value' => strval(rand())],  ///[yii2-admin-boot_v0.5.17_f0.5.16_user_password]
+            ///[yii2-uesr:activation via email:INACTIVE]
+            ['status', 'default', 'value' => static::STATUS_ACTIVE],
+            ['status', 'in', 'range' => [static::STATUS_ACTIVE, static::STATUS_DELETED, static::STATUS_INACTIVE]],
 
-            [
-                [
-                    'username',
-                    ///'auth_key', ///因为_form表单中没有该字段，不做required验证！所以注释不注释掉都一样
-                    ///'password_hash', ///[yii2-admin-boot_v0.5.17_f0.5.16_user_password]
-                    'email',
-                    ///'status', ///因为_form表单中没有status，如果提交表单时不填写则通不过验证，另外，上面的default并不真正设置值，所以必须注释掉！
-                    ///'created_at', 'updated_at', ///因为_form表单中没有该字段，不做required验证！所以注释不注释掉都一样
-                ], 'required',
-            ],
-
-            ///[yii2-admin-boot_v0.5.17_f0.5.16_user_password]以便在更新时，不验证密码password，只在创建时必须要求password
-            [
-                [
-                    'password',
-                ], 'required', 'on' => 'create'
-            ],
-            ///[http://www.brainbook.cc]
-
-            [
-                [
-                    'status',
-                    ///'created_at', 'updated_at'  ///因为_form表单中没有该字段，不做required验证！所以注释不注释掉都一样
-                ], 'integer'
-            ],
-
-            ///[yii2-admin-boot_v0.5.17_f0.5.16_user_password]
-            [
-                [
-                    'username',
-                ], 'string', 'max' => 20
-            ],
-                    ///'password_hash', ///[yii2-admin-boot_v0.5.17_f0.5.16_user_password]
-                    ///'password_reset_token', ///因为_form表单中没有该字段，不做required验证！所以注释不注释掉都一样
-
-            [
-                [
-                    'email'
-                ], 'string', 'max' => 255
-            ],
-            // [
-            //     [
-            //         'password',///////////////////
-            //     ], 'string', 'min' => 6, 'max' => 20
-            // ],
-            [['password'],'match','pattern'=>'/^[a-zA-Z0-9_\-\~\!\@\#\$\%\^\&\*\+\=\?\|\{\}\[\]\(\)]{6,20}$/','message'=>'只能含6-20位数字、大小写字母和“-”、“_”等特殊字符'],  ///skipOnEmpty缺省为true，所以当没有输入密码时，忽略该项验证规则
-            ///[http://www.brainbook.cc]
-
-            ///[['auth_key'], 'string', 'max' => 32],  ///因为_form表单中没有该字段，不做required验证！所以注释不注释掉都一样
-            [['username'], 'unique'],
-            [['email'], 'unique'],
-            ///[['password_reset_token'], 'unique'],   ///因为_form表单中没有该字段，不做required验证！所以注释不注释掉都一样
         ];
     }
 
@@ -156,40 +139,30 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            ///[yii2-admin-boot_v0.5.0_f0.4.6_user_fix_rbac]还原代码！无需注释掉'created_at', 'updated_at'
             'id' => 'ID',
-            'username' => 'Username',
-            //////[yii2-admin-boot_v0.5.17_f0.5.16_user_password]
-            ///'auth_key' => 'Auth Key',
-            ///'password_hash' => 'Password Hash',
-            'password' => 'Password',   ///[yii2-admin-boot_v0.5.17_f0.5.16_user_password]
-            ///'password_reset_token' => 'Password Reset Token',
-            //////[http://www.brainbook.cc]
-            'email' => 'Email',
-            'role' => 'Role',   ///[yii2-admin-boot_v0.5.1_f0.5.0_user_add_role_field]
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            ///[http://www.brainbook.cc]
+            'username' => Module::t('user', 'Username'),
+            'password' => Module::t('user', 'Password'),
+            'email' => Module::t('user', 'Email'),
+            'role' => Module::t('user', 'Role'),   ///[yii2-user:role]
+            'status' => Module::t('user', 'Status'),
+            'created_at' => Module::t('user', 'Created At'),
+            'updated_at' => Module::t('user', 'Updated At'),
+            'created_date_range' => Module::t('user', 'Created Date Range'),
+            'updated_date_range' => Module::t('user', 'Updated Date Range'),
         ];
     }
 
-    ///[yii2-admin-boot_v0.4.3_f0.4.2_user_datetime]
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
-        if(parent::beforeSave($insert))
-        {
-            $time = time();
-            if($this->isNewRecord)
-            {
-                $this->created_at = $time;
-            }
-            $this->updated_at = $time;
+        if (parent::beforeSave($insert)) {
 
-            ///[yii2-admin-boot_v0.5.17_f0.5.16_user_password]
+            ///[yii2-user:password]password must be required to verify at `create`, and has not to be verified at `update`
             if($this->password){
-                $this->password_hash = Yii::$app->security->generatePasswordHash($this->password);
-                $this->auth_key = Yii::$app->security->generateRandomString();
+                $this->setPassword($this->password);
+                $this->generateAuthKey();
             }
             ///[http://www.brainbook.cc]
 
@@ -197,24 +170,22 @@ class User extends ActiveRecord implements IdentityInterface
         }
         return false;
     }
-    ///[http://www.brainbook.cc]
 
-    ///[yii2-admin-boot_v0.5.2_f0.5.1_user_create_default_role]
+    /**
+     * @inheritdoc
+     */
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
         if($insert) {
-            //这里是新增数据
             $manager = Yii::$app->getAuthManager();
-            $item = $manager->getRole(self::ROLE_USER);
+            $item = $manager->getRole(static::ROLE_USER);
             $manager->assign($item, $this->id);
-
         } else {
-            //这里是更新数据
+
         }
 
     }
-    ///[http://www.brainbook.cc]
 
     /**
      * @inheritdoc
@@ -285,7 +256,7 @@ class User extends ActiveRecord implements IdentityInterface
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 
-    ///[Yii2 uesr:oauth]
+    ///[yii2-uesr:oauth]
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -294,7 +265,7 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(Oauth::className(), ['user_id' => 'id']);
     }
 
-    ///[Yii2 uesr:verify]
+    ///[yii2-uesr:verify]
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -303,7 +274,7 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(Verify::className(), ['user_id' => 'id']);
     }
 
-    ///[Yii2 uesr:oauth]
+    ///[yii2-uesr:oauth]
     /**
      * Finds user by Oauth provider and openid.
      *

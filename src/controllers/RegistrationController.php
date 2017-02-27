@@ -18,9 +18,7 @@ use yii\filters\AccessControl;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yongtiger\user\Module;
-use yongtiger\user\models\User;
 use yongtiger\user\models\SignupForm;
-use yongtiger\user\models\SendTokenForm;
 use yongtiger\user\models\Oauth;
 use yongtiger\user\traits\OauthTrait;
 
