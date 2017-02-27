@@ -70,14 +70,6 @@ $this->registerJs('
             'email:email',
 
             [
-                'attribute' => 'role',
-                'filter' => [User::ROLE_ADMIN => Module::t('user', 'role_admin'), User::ROLE_SUPER_MODERATOR => Module::t('user', 'role_super_moderator'), User::ROLE_MODERATOR => Module::t('user', 'role_moderator'), User::ROLE_USER => Module::t('user', 'role_user')],
-                'value' => function($model) {   ///[yii2-user v0.11.1 (GridView value)]
-                    return Module::t('user', $model->role);
-                }
-            ],
-
-            [
                 'attribute' => 'status',
                 'filter' => [User::STATUS_INACTIVE => Module::t('user', 'inactive'), User::STATUS_ACTIVE => Module::t('user', 'active')],
                 'value' => function($model) {   ///[yii2-user v0.11.1 (GridView value)]

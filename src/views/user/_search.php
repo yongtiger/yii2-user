@@ -24,12 +24,6 @@ use kartik\daterange\DateRangePicker;   ///??????
 
     <?php echo $form->field($model, 'email') ?>
 
-    <?php echo $form->field($model, 'role')->dropDownList(
-            [User::ROLE_ADMIN => Module::t('user', 'role_admin'), User::ROLE_SUPER_MODERATOR => Module::t('user', 'role_super_moderator'), User::ROLE_MODERATOR => Module::t('user', 'role_moderator'), User::ROLE_USER => Module::t('user', 'role_user')],
-            ['prompt'=>Module::t('user', '(Please select ...)')]
-        );
-    ?>
-
     <?php echo $form->field($model, 'status')->dropDownList(
             [User::STATUS_INACTIVE => Module::t('user', 'inactive'), User::STATUS_ACTIVE => Module::t('user', 'active')], 
             ['prompt'=>Module::t('user', '(Please select ...)')]

@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.12.0 (add role methods to user model)
+
+
 ## v0.11.4 (Fix#password in Firefox)
 
 

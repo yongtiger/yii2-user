@@ -1,4 +1,4 @@
-# Yii2-user v0.11.4 (Fix#password in Firefox)
+# Yii2-user v0.12.0 (add role methods to user model)
 
 The most basic `user` module.
 

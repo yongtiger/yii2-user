@@ -44,7 +44,6 @@ class UserSearch extends User
             ],
 
             ['status', 'in', 'range' => [static::STATUS_ACTIVE, static::STATUS_INACTIVE]],
-            ['role', 'in', 'range' => [static::ROLE_ADMIN, static::ROLE_SUPER_MODERATOR, static::ROLE_MODERATOR, static::ROLE_USER]],
 
             [['created_at', 'updated_at'], 'default', 'value' => null], ///[yii2-user:datepicker] @see http://www.yiiframework.com/doc-2.0/yii-jui-datepicker.html
             [['created_at', 'updated_at'], 'date', 'format' => 'yyyy-MM-dd']  ///[yii2-user:datepicker]
@@ -88,7 +87,6 @@ class UserSearch extends User
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'role' => $this->role,
             'status' => $this->status,
             'DATE(FROM_UNIXTIME(created_at))' => $this->created_at, ///[yii2-user:daterangepicker]
             'DATE(FROM_UNIXTIME(updated_at))' => $this->updated_at, ///[yii2-user:daterangepicker]

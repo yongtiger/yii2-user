@@ -9,15 +9,6 @@ use yongtiger\user\Module;
 /* @var $model yongtiger\user\models\User */
 /* @var $form yii\widgets\ActiveForm */
 
-$dropDownListRoles = [User::ROLE_USER => Module::t('user', 'role_user')];
-$me = Yii::$app->user->identity;
-if ($me['role'] === User::ROLE_SUPER_MODERATOR) {
-    $dropDownListRoles += [User::ROLE_MODERATOR => Module::t('user', 'role_moderator')];
-} else if ($me['role'] === User::ROLE_ADMIN) {
-    $dropDownListRoles += [User::ROLE_MODERATOR => Module::t('user', 'role_moderator')];
-    $dropDownListRoles += [User::ROLE_SUPER_MODERATOR => Module::t('user', 'role_super_moderator')];
-}
-
 ?>
 
 <div class="user-form">
@@ -36,8 +27,6 @@ if ($me['role'] === User::ROLE_SUPER_MODERATOR) {
     <?= $form->field($model, 'password')->passwordInput()->hint(Module::t('user', 'The password only contains letters ...')); ?>
 
     <?= $form->field($model, 'email')->input('email'); ?>
-
-    <?= $form->field($model, 'role')->dropDownList($dropDownListRoles, ['prompt' => Module::t('user', '(Please select ...)')]); ?>
 
     <?= $form->field($model, 'status')->dropDownList([User::STATUS_INACTIVE => Module::t('user', 'inactive'), User::STATUS_ACTIVE => Module::t('user', 'active')], ['prompt' => Module::t('user', '(Please select ...)')]); ?>
 

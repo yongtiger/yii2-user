@@ -45,7 +45,6 @@ class User extends ActiveRecord implements IdentityInterface
     const ROLE_ADMIN = 'role_admin';
     const ROLE_SUPER_MODERATOR = 'role_super_moderator';
     const ROLE_MODERATOR = 'role_moderator';
-    const ROLE_USER = 'role_user';
 
     ///[yii2-user:password]password must be required to verify at `create`, and has not to be verified at `update`
     const SCENARIO_DEFAULT = 'default';
@@ -55,6 +54,12 @@ class User extends ActiveRecord implements IdentityInterface
      * @var string password
      */
     public $password;
+
+    /**
+     * Memory cache of user roles
+     * @var array
+     */
+    private $_roles;
     
     /**
      * @inheritdoc
@@ -85,7 +90,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[static::SCENARIO_CREATE] = ['username', 'password', 'email', 'role', 'status']; ///[yii2-user:password]password must be required to verify at `create`, and has not to be verified at `update`
+        $scenarios[static::SCENARIO_CREATE] = ['username', 'password', 'email', 'status']; ///[yii2-user:password]password must be required to verify at `create`, and has not to be verified at `update`
         return $scenarios;
     }
 
@@ -121,11 +126,6 @@ class User extends ActiveRecord implements IdentityInterface
             ['email', 'email'],
             ['email', 'unique'],
 
-            ///[yii2-user:role]
-            ['role', 'default', 'value' => static::ROLE_USER],    ///[yii2-user:role]default_role
-            ['role', 'string', 'max' => 32],
-            ['role', 'in', 'range' => [static::ROLE_ADMIN, static::ROLE_SUPER_MODERATOR, static::ROLE_MODERATOR, static::ROLE_USER]],
-
             ///[yii2-uesr:activation via email:INACTIVE]
             ['status', 'default', 'value' => static::STATUS_ACTIVE],
             ['status', 'in', 'range' => [static::STATUS_ACTIVE, static::STATUS_DELETED, static::STATUS_INACTIVE]],
@@ -143,7 +143,6 @@ class User extends ActiveRecord implements IdentityInterface
             'username' => Module::t('user', 'Username'),
             'password' => Module::t('user', 'Password'),
             'email' => Module::t('user', 'Email'),
-            'role' => Module::t('user', 'Role'),   ///[yii2-user:role]
             'status' => Module::t('user', 'Status'),
             'created_at' => Module::t('user', 'Created At'),
             'updated_at' => Module::t('user', 'Updated At'),
@@ -178,15 +177,78 @@ class User extends ActiveRecord implements IdentityInterface
     {
         parent::afterSave($insert, $changedAttributes);
         if($insert) {
-            $manager = Yii::$app->getAuthManager();
-            $item = $manager->getRole(static::ROLE_USER);
-            $manager->assign($item, $this->id);
+            // ...
         } else {
-            ///??????修改role?
+            // ...
         }
 
     }
 
+    ///[yii2-user v0.12.0 (add role methods to user model)]
+    /**
+     * Gets user roles.
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        if ($this->_roles === null) {
+            $manager = Yii::$app->getAuthManager();
+            $this->_roles = array_keys($manager->getAssignments($this->id));
+        }
+        return $this->_roles;
+    }
+
+    /**
+     * Set user roles.
+     *
+     * @param array $roles
+     * @return Assignments|false the role assignment information.
+     */
+    public function setRoles($roles)
+    {
+        $manager = Yii::$app->getAuthManager();
+        if ($manager->revokeAll($this->id)) {   ///??????array_diff
+            $ret = [];
+            foreach ($roles as $role) {
+                $ret[] = $manager->assignRole($role);
+            }
+            return $ret;
+        }
+        return false;
+    }
+
+    /**
+     * Assigns a role to a this model.
+     *
+     * @param Role $role
+     * @return Assignment the role assignment information.
+     * @throws \Exception if the role has already been assigned to the user
+     */
+    public function assignRole($role)
+    {
+        $manager = Yii::$app->getAuthManager();
+        try {
+            $ret = $manager->assign($role, $this->id);
+        } catch (\Exception $exc) {
+            // Yii::error($exc->getMessage(), __METHOD__);  ///ignore exceptions
+        }
+        return $ret;
+    }
+
+    /**
+     * Revokes a role from this model.
+     * @param Role $role
+     * @return bool whether the revoking is successful
+     */
+    public function revokeRole($role)
+    {
+        $manager = Yii::$app->getAuthManager();
+        return $manager->revoke($role, $this->id);
+    }
+    ///[http://www.brainbook.cc]
+
+    ///[yii2-user:IdentityInterface]
     /**
      * @inheritdoc
      */
@@ -234,6 +296,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->getAuthKey() === $authKey;
     }
+    ///[http://www.brainbook.cc]
 
     /**
      * Generates password hash from password and sets it to the model.

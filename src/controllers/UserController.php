@@ -55,12 +55,12 @@ class UserController extends Controller
                             $user = $this->findModel($useId);   ///gets the manipulated User object
 
                             return
-                                $me['id'] == $user['id']  ///if the manipulated user is `me`, update is allowed
+                                $me->id == $user->id  ///if the manipulated user is `me`, update is allowed
                                 ||
-                                $me['role'] == User::ROLE_ADMIN ///if `me` is `ROLE_ADMIN`, update is allowed
+                                in_array(User::ROLE_ADMIN, $me->roles)  ///if `me` is `ROLE_ADMIN`, update is allowed
                                 ||
-                                $me['role'] == User::ROLE_SUPER_MODERATOR &&
-                                    ($user['role'] != User::ROLE_ADMIN && $user['role'] != User::ROLE_SUPER_MODERATOR) ///if `me` is `ROLE_SUPER_MODERATOR` and the manipulated user is not `ROLE_ADMIN` or `ROLE_SUPER_MODERATOR`, update is allowed
+                                in_array(User::ROLE_SUPER_MODERATOR, $me->roles) &&
+                                    (!in_array(User::ROLE_ADMIN, $user->roles) && !in_array(User::ROLE_SUPER_MODERATOR, $user->roles)) ///if `me` is `ROLE_SUPER_MODERATOR` and the manipulated user is not `ROLE_ADMIN` nor `ROLE_SUPER_MODERATOR`, update is allowed
                                 // || ... more rules as you customize
                             ;
                         }
@@ -76,12 +76,12 @@ class UserController extends Controller
 
                             return
                                 !( ///to facilitate understanding of logic, first use `OR` lists the conditions that do not allow the deletion of the operation, and finally to reverse by `NOT`
-                                    $me['id'] == $user['id']      ///if the manipulated user is `me`, delete is not allowed
+                                    $me->id == $user->id      ///if the manipulated user is `me`, delete is not allowed
                                     ||
-                                    $me['role'] == User::ROLE_SUPER_MODERATOR &&
-                                        ($user['role'] == User::ROLE_ADMIN || $user['role'] == User::ROLE_SUPER_MODERATOR)  ///if `me` is `ROLE_SUPER_MODERATOR` and the manipulated user is `ROLE_ADMIN` or `ROLE_SUPER_MODERATOR`, delete is not allowed
+                                    in_array(User::ROLE_SUPER_MODERATOR, $me->roles) &&
+                                        (in_array(User::ROLE_ADMIN, $user->roles) || in_array(User::ROLE_SUPER_MODERATOR, $user->roles))  ///if `me` is `ROLE_SUPER_MODERATOR` and the manipulated user is `ROLE_ADMIN` or `ROLE_SUPER_MODERATOR`, delete is not allowed
                                     ||
-                                    $me['role'] != User::ROLE_ADMIN && $me['role'] != User::ROLE_SUPER_MODERATOR  ///if `me` is not `ROLE_ADMIN` nor `ROLE_SUPER_MODERATOR`, delete is not allowed
+                                    !in_array(User::ROLE_ADMIN, $me->roles) && !in_array(User::ROLE_SUPER_MODERATOR, $me->roles)  ///if `me` is not `ROLE_ADMIN` nor `ROLE_SUPER_MODERATOR`, delete is not allowed
                                     // || ... more rules as you customize
                                 )
                             ;
@@ -95,7 +95,7 @@ class UserController extends Controller
                             $me = Yii::$app->user->identity;
                             ///Only allows `ROLE_ADMIN` or `ROLE_SUPER_MODERATOR` to batch delete users.
                             ///In the subsequent operation of the `actionDeleteIn()` continue to determine the batch delete the user list `$selected`
-                            return $me['role'] == User::ROLE_ADMIN || $me['role'] == User::ROLE_SUPER_MODERATOR;
+                            return in_array(User::ROLE_ADMIN, $me->roles) || in_array(User::ROLE_SUPER_MODERATOR, $me->roles);
                         }
                     ],
 
@@ -232,7 +232,7 @@ class UserController extends Controller
 
             $idsRoleAdmin, ///remove `ROLE_ADMIN` from array `$arrSelected`
 
-            ($me->role == User::ROLE_ADMIN) ? [] : $idsRoleSuperModerator  ///if `me` is not `ROLE_ADMIN`, is not allowed to remove `ROLE_SUPER_MODERATOR`
+            in_array(User::ROLE_ADMIN, $me->roles) ? [] : $idsRoleSuperModerator  ///if `me` is not `ROLE_ADMIN`, is not allowed to remove `ROLE_SUPER_MODERATOR`
 
         ));
         ///[http://www.brainbook.cc]
