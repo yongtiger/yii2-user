@@ -21,6 +21,10 @@ use yii\data\ActiveDataProvider;
  */
 class ProfileSearch extends Profile
 {
+    ///[yii2-user daterangepicker]
+    public $created_date_range;
+    public $updated_date_range;
+
     /**
      * @inheritdoc
      */
@@ -28,7 +32,11 @@ class ProfileSearch extends Profile
     {
         return [
             [['user_id', 'gender', 'birthyear', 'birthmonth', 'birthday', 'created_at', 'updated_at'], 'integer'],
-            [['fullname', 'firstname', 'lastname', 'language', 'avatar', 'link', 'country', 'province', 'city', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'safe'],
+            [['fullname', 'firstname', 'lastname', 'language', 'avatar', 'link', 'country', 'province', 'city', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue', 'created_date_range', 'updated_date_range'], 'safe'],  ///[yii2-user:daterangepicker]
+
+
+            [['created_at', 'updated_at'], 'default', 'value' => null], ///[yii2-user:datepicker] @see http://www.yiiframework.com/doc-2.0/yii-jui-datepicker.html
+            [['created_at', 'updated_at'], 'date', 'format' => 'yyyy-MM-dd']  ///[yii2-user:datepicker]
         ];
     }
 
@@ -73,8 +81,8 @@ class ProfileSearch extends Profile
             'birthyear' => $this->birthyear,
             'birthmonth' => $this->birthmonth,
             'birthday' => $this->birthday,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'DATE(FROM_UNIXTIME(created_at))' => $this->created_at, ///[yii2-user:daterangepicker]
+            'DATE(FROM_UNIXTIME(updated_at))' => $this->updated_at, ///[yii2-user:daterangepicker]
         ]);
 
         $query->andFilterWhere(['like', 'fullname', $this->fullname])
@@ -94,6 +102,22 @@ class ProfileSearch extends Profile
             ->andFilterWhere(['like', 'company', $this->company])
             ->andFilterWhere(['like', 'position', $this->position])
             ->andFilterWhere(['like', 'revenue', $this->revenue]);
+
+        ///[yii2-user:daterangepicker]
+        ///`urlencode()` encodes the space as a plus sign “+”, so we use `urldecode()` convert “+” into space
+        $this->created_date_range = urldecode($this->created_date_range);
+        $this->updated_date_range = urldecode($this->updated_date_range);
+
+        if($this->created_date_range) {
+            list($created_from_date, $created_to_date) = explode(' - ', $this->created_date_range);
+            $query->andFilterWhere(['between', 'created_at', strtotime($created_from_date), strtotime($created_to_date)]);
+        }
+
+        if($this->updated_date_range) {
+            list($updated_from_date, $updated_to_date) = explode(' - ', $this->updated_date_range);
+            $query->andFilterWhere(['between', 'updated_at', strtotime($updated_from_date), strtotime($updated_to_date)]);
+        }
+        ///[http://www.brainbook.cc]
 
         return $dataProvider;
     }

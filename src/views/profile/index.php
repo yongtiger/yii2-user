@@ -52,4 +52,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+
+    <hr style="height:10px">
+
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+
 </div>
