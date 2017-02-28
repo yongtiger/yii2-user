@@ -18,8 +18,6 @@ use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use yii\base\NotSupportedException;
 use yongtiger\user\Module;
-use yongtiger\user\models\Oauth;
-use yongtiger\user\models\Profile;
 
 /**
  * This is the model class for table "{{%user}}".

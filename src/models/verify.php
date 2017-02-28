@@ -54,6 +54,20 @@ class Verify extends ActiveRecord
     /**
      * @inheritdoc
      */
+    public function attributeLabels()
+    {
+        return [
+            'user_id' => 'User ID',
+            'password_verified_at' => 'Password Verified At',
+            'email_verified_at' => 'Email Verified At',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [

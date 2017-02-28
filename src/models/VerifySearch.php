@@ -1,4 +1,4 @@
-<?php ///[Yii2 uesr:profile]
+<?php ///[Yii2 uesr:verify]
 
 /**
  * Yii2 User
@@ -17,9 +17,9 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * ProfileSearch represents the model behind the search form about `yongtiger\user\models\Profile`.
+ * VerifySearch represents the model behind the search form about `app\models\Verify`.
  */
-class ProfileSearch extends Profile
+class VerifySearch extends Verify
 {
     ///[yii2-user daterangepicker]
     public $created_date_range;
@@ -31,8 +31,7 @@ class ProfileSearch extends Profile
     public function rules()
     {
         return [
-            [['user_id', 'gender', 'birthyear', 'birthmonth', 'birthday', 'created_at', 'updated_at'], 'integer'],
-            [['fullname', 'firstname', 'lastname', 'language', 'avatar', 'link', 'country', 'province', 'city', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue', 'created_date_range', 'updated_date_range'], 'safe'],  ///[yii2-user:daterangepicker]
+            [['user_id', 'password_verified_at', 'email_verified_at', 'created_at', 'updated_at'], 'integer'],
 
             [['created_at', 'updated_at'], 'default', 'value' => null], ///[yii2-user:datepicker] @see http://www.yiiframework.com/doc-2.0/yii-jui-datepicker.html
             [['created_at', 'updated_at'], 'date', 'format' => 'yyyy-MM-dd']  ///[yii2-user:datepicker]
@@ -57,7 +56,7 @@ class ProfileSearch extends Profile
      */
     public function search($params)
     {
-        $query = Profile::find();
+        $query = Verify::find();
 
         // add conditions that should always apply here
 
@@ -76,31 +75,11 @@ class ProfileSearch extends Profile
         // grid filtering conditions
         $query->andFilterWhere([
             'user_id' => $this->user_id,
-            'gender' => $this->gender,
-            'birthyear' => $this->birthyear,
-            'birthmonth' => $this->birthmonth,
-            'birthday' => $this->birthday,
+            'password_verified_at' => $this->password_verified_at,
+            'email_verified_at' => $this->email_verified_at,
             'DATE(FROM_UNIXTIME(created_at))' => $this->created_at, ///[yii2-user:daterangepicker]
             'DATE(FROM_UNIXTIME(updated_at))' => $this->updated_at, ///[yii2-user:daterangepicker]
         ]);
-
-        $query->andFilterWhere(['like', 'fullname', $this->fullname])
-            ->andFilterWhere(['like', 'firstname', $this->firstname])
-            ->andFilterWhere(['like', 'lastname', $this->lastname])
-            ->andFilterWhere(['like', 'language', $this->language])
-            ->andFilterWhere(['like', 'avatar', $this->avatar])
-            ->andFilterWhere(['like', 'link', $this->link])
-            ->andFilterWhere(['like', 'country', $this->country])
-            ->andFilterWhere(['like', 'province', $this->province])
-            ->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'telephone', $this->telephone])
-            ->andFilterWhere(['like', 'mobile', $this->mobile])
-            ->andFilterWhere(['like', 'graduate', $this->graduate])
-            ->andFilterWhere(['like', 'education', $this->education])
-            ->andFilterWhere(['like', 'company', $this->company])
-            ->andFilterWhere(['like', 'position', $this->position])
-            ->andFilterWhere(['like', 'revenue', $this->revenue]);
 
         ///[yii2-user:daterangepicker]
         ///`urlencode()` encodes the space as a plus sign “+”, so we use `urldecode()` convert “+” into space

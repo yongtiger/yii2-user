@@ -1,4 +1,4 @@
-# Yii2-user ## v0.14.1 (search:kartik\daterange\DateRangePicker)
+# Yii2-user v0.15.0 (verify CRUD)
 
 The most basic `user` module.
 
