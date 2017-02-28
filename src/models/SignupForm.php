@@ -132,7 +132,7 @@ class SignupForm extends Model
                 //[(\x{4E00}-\x{9FA5})\w]*      Chinese characters underlined alphabet, there 0-n times
                 ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-z]+[(\x{4E00}-\x{9FA5})\w]*$/iu', 'message' => Module::t('user', 'The username only contains letters ...')],
 
-                ['username', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This username has already been taken.')],
+                ['username', 'unique', 'targetClass' => 'yongtiger\user\models\User', 'message' => Module::t('user', 'This username has already been taken.')],
             ]);
         }
 
@@ -142,7 +142,7 @@ class SignupForm extends Model
                 ['email', 'required'],
                 ['email', 'string', 'max' => 255],
                 ['email', 'email'],
-                ['email', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This email address has already been taken.')],
+                ['email', 'unique', 'targetClass' => 'yongtiger\user\models\User', 'message' => Module::t('user', 'This email address has already been taken.')],
             ]);
         }
 

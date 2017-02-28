@@ -178,6 +178,11 @@ class User extends ActiveRecord implements IdentityInterface
         parent::afterSave($insert, $changedAttributes);
         if($insert) {
             // ...
+            ///[Yii2 uesr:verify]
+            ///After signup, `password_verified_at` is set to now, that is verified password.
+            ///When oauth signup, `password` is set to null, that is not verified password.
+            $this->link('verify', new Verify(['password_verified_at' => time()]));
+
         } else {
             // ...
         }

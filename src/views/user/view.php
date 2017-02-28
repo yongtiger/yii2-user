@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yongtiger\user\models\User;
 use yongtiger\user\Module;
 
 /* @var $this yii\web\View */
@@ -31,7 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             'email:email',
-            'status',
+            [
+                'attribute' => 'status', 
+                'value' => function($model) {   ///[yii2-user v0.12.1 (DetailView value)]
+                    $arrStatus = [User::STATUS_INACTIVE => 'inactive', User::STATUS_ACTIVE => 'active'];
+                    return Module::t('user', $arrStatus[$model->status]);
+                },
+            ],
             ['attribute' => 'created_at', 'format' => ['datetime', 'php:Y-m-d H:i:s']],
             ['attribute' => 'updated_at', 'format' => ['datetime', 'php:Y-m-d H:i:s']],
         ],

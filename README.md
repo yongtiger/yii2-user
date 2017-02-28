@@ -1,4 +1,4 @@
-# Yii2-user v0.12.0 (add role methods to user model)
+# Yii2-user v0.12.1 (DetailView value)
 
 The most basic `user` module.
 

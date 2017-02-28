@@ -43,7 +43,7 @@ class ChangeEmailForm extends ChangeForm
             ['email', 'required'],
             ['email', 'string', 'max' => 255],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => '\yongtiger\user\models\User', 'message' => Module::t('user', 'This email address has already been taken.')],
+            ['email', 'unique', 'targetClass' => 'yongtiger\user\models\User', 'message' => Module::t('user', 'This email address has already been taken.')],
         ]);
 
         return $rules;
