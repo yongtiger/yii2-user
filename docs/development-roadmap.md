@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.15.2 (a lot of fixes)
+
+
 ## v0.15.1 (user index:ActionColumn)
 
 
