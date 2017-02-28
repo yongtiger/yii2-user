@@ -1,4 +1,4 @@
-# Yii2-user v0.13.2 (fix# 'skipOnError' => true, 'targetClass' => User::className())
+# Yii2-user v0.13.3 (fix# 'roles' => ['@'])
 
 The most basic `user` module.
 

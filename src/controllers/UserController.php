@@ -49,6 +49,7 @@ class UserController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['update'],
+                        'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             $me = Yii::$app->user->identity;
                             $useId = Yii::$app->request->get('id');
@@ -69,6 +70,7 @@ class UserController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['delete'],
+                        'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             $me = Yii::$app->user->identity;
                             $useId = Yii::$app->request->get('id');
@@ -91,6 +93,7 @@ class UserController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['create', 'delete-in'], ///[yii2-user:deleteIn]
+                        'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             $me = Yii::$app->user->identity;
                             ///Only allows `ROLE_ADMIN` or `ROLE_SUPER_MODERATOR` to batch delete users.
