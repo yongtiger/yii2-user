@@ -1,4 +1,4 @@
-# Yii2-user v0.12.1 (DetailView value)
+# Yii2-user v0.12.2 (verify)
 
 The most basic `user` module.
 

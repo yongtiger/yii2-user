@@ -1,6 +1,6 @@
 # Development roadmap
 
-## v0.12.1 (DetailView value)
+## v0.12.2 (verify)
 
 
 ## v0.12.0 (add role methods to user model)
