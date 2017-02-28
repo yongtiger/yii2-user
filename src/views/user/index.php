@@ -2,10 +2,12 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\View;
 use yii\grid\GridView;
 use yii\jui\DatePicker;
 use yongtiger\user\models\User;
 use yongtiger\user\Module;
+use yongtiger\user\UserAsset;
 
 /* @var $this yii\web\View */
 /* @var $searchModel yongtiger\user\models\UserSearch */
@@ -16,38 +18,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ///[yii2-user:deleteIn]
 $this->registerJs('
-    $(".gridview").on("click", function () {
-        //Note: `$("#grid")` must match the `options id` of our first step!
-        var keys = $("#grid").yiiGridView("getSelectedRows");
-        console.log(keys);
-
-        ///[yii2-admin-boot_v0.5.9_f0.5.7_user_login_popup]     ///??????
-        ///if(confirm("' . Module::t('user', 'Are you sure you want to delete? This is a non-recoverable operation!') . '")){
-        ///    $.post("' . Url::to(['delete-in']) . '","selected="+keys).error(function(xhr,errorText,errorType){  ///Add Ajax error handling, solve batch delete error without any display!
-        ///        if(xhr.status!=302) ///ignore #302 page jump error
-        ///            alert(xhr.responseText)
-        ///    });
-        ///}
-
-        yii.confirm("' . Module::t('user', 'Are you sure you want to delete? This is a non-recoverable operation!') . '",
-            function () {
-                $.post("' . Url::to(['delete-in']) . '","selected="+keys).error(function(xhr,errorText,errorType){  ///Add Ajax error handling, solve batch delete error without any display!
-                    if(xhr.status!=302) ///ignore #302 page jump error
-                        alert(xhr.responseText)
-                });
-            }
-        );
-
-    });
-');
+var delete_in_url = "' . Url::to(['delete-in']) . '";
+var delete_in_msg = "' . Module::t('user', 'Are you sure you want to delete? This is a non-recoverable operation!') . '";
+', View::POS_HEAD);
+UserAsset::register($this);
 
 ?>
+
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Module::t('user', 'Create User'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Module::t('user', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Module::t('user', 'Batch Delete'), "javascript:void(0);", ['class' => 'btn btn-danger gridview']) ?><!--///[yii2-user:deleteIn]-->
     </p>
 

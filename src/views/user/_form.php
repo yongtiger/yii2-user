@@ -22,6 +22,7 @@ use yongtiger\user\Module;
         'validateOnSubmit' => true
 
     ]); ?>
+    
     <?= $form->field($model, 'username')->textInput(['autofocus' => true]); ?>
     <input type="password" style="display:none;" /><!--[Fix#password in Firefox] @see http://www.xuebuyuan.com/1836687.html-->
     <?= $form->field($model, 'password')->passwordInput()->hint(Module::t('user', 'The password only contains letters ...')); ?>

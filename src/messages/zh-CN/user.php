@@ -59,10 +59,11 @@ return [
 	 */
 	///\vendor\yongtiger\yii2-user\src\models\User.php
 	'"findIdentityByAccessToken" is not implemented.' => '"findIdentityByAccessToken"没有实现。',
-	'Role' => '用户组',
 	'Status' => '用户状态',
 	'Created At' => '创建时间',
 	'Updated At' => '更新时间',
+
+	///\vendor\yongtiger\yii2-user\src\models\UserSearch.php
 	'Created Date Range' => '创建日期范围',
 	'Updated Date Range' => '更新日期范围',
 
@@ -120,6 +121,43 @@ return [
 	'Your email has been successfully verified.' => '您的邮箱被成功验证。',
 	'Your email has not been verified! Please try again.' => '您的邮箱验证失败！请重新试一试。',
 	
+	///\vendor\yongtiger\yii2-user\src\models\Verify.php
+	'User ID' => '用户ID',
+	'Password Verified At' => '密码验证时间',
+	'Email Verified At' => '邮箱验证时间',
+
+	///\vendor\yongtiger\yii2-user\src\models\VerifySearch.php
+	'Password Verified Date Range' => '创建日期范围',
+	'Email Verified Date Range' => '更新日期范围',
+
+	///\vendor\yongtiger\yii2-user\src\models\Profile.php
+	'User ID' => '用户ID',
+	'Fullname' => '姓名',
+	'Firstname' => '姓氏',
+	'Lastname' => '名字',
+	'Gender' => '性别',
+	'Language' => '语言',
+	'Avatar' => '头像',
+	'Link' => '网站',
+	'Birthyear' => '出生年份',
+	'Birthmonth' => '出生月份',
+	'Birthday' => '出生日期',
+	'Country' => '国家',
+	'Province' => '省份',
+	'City' => '城市',
+	'Address' => '地址',
+	'Telephone' => '电话',
+	'Mobile' => '手机',
+	'Graduate' => '毕业学校',
+	'Education' => '教育程度',
+	'Company' => '公司',
+	'Position' => '职位',
+	'Revenue' => '年薪',
+
+	///\vendor\yongtiger\yii2-user\src\models\ProfileSearch.php
+	'Created Date Range' => '创建日期范围',
+	'Updated Date Range' => '更新日期范围',
+
 
 	/**
 	 * Views
@@ -182,24 +220,20 @@ return [
 	'Please fill out your registration email. A link to verify email will be sent there.' => '请填写您注册时的邮箱，系统将发送邮箱验证的邮件。',
 	'Send' => '发送',
 
-	///\vendor\yongtiger\yii2-user\src\views\user\indexphp
+	///\vendor\yongtiger\yii2-user\src\views\user\index.php
+	'Create' => '创建',
+	'Update' => '更新',
 	'Batch Delete' => '批量删除',
 	'Are you sure you want to delete? This is a non-recoverable operation!' => '您确定要删除吗？此操作不可恢复！',
-	'profile' => '用户信息',
-	'Profile' => '用户信息',
+	'User List' => '用户列表',
+	'profile' => '用户资料',
+	'Profile' => '用户资料',
 	'verify' => '用户验证',
 	'Verify' => '用户验证',
 
-	///\vendor\yongtiger\yii2-user\src\views\user\_form.php
-	'Create' => '创建',
-	'Update' => '更新',
-	'(Please select ...)' => '(请选择 ...)',
-	'role_admin' => '站长',
-	'role_super_moderator' => '超级版主',
-	'role_moderator' => '版主',
-	'role_user' => '普通用户',
-	'inactive'  => '未激活',
-	'active'  => '已激活',
+	///\vendor\yongtiger\yii2-user\src\views\user\_search.php
+	'Search' => '搜索',
+	'Reset' => '重置',
 
 	///\vendor\yongtiger\yii2-user\src\views\user\create.php
 	'Create User' => '创建用户',
@@ -207,13 +241,39 @@ return [
 
 	///\vendor\yongtiger\yii2-user\src\views\user\update.php
 	'Update User' => '更新用户',
-	'User' => '用户',
 
-	///\vendor\yongtiger\yii2-user\src\views\user\_search.php
-	'Search' => '搜索',
-	'Reset' => '重置',
+	///\vendor\yongtiger\yii2-user\src\views\user\_form.php
+	'(Please select ...)' => '(请选择 ...)',
+	'role_admin' => '站长',
+	'role_super_moderator' => '超级版主',
+	'role_moderator' => '版主',
+	'role_user' => '普通用户',
+	'inactive'  => '未激活',
+	'active' => '已激活',
 
 	///\vendor\yongtiger\yii2-user\src\views\user\view.php
+	'View User' => '查看用户',
 	'Are you sure you want to delete this item?' => '您确定要删除此项吗？',
 	'Delete' => '删除',
+
+	///\vendor\yongtiger\yii2-user\src\views\profile\index.php
+	'User Profile List' => '用户资料列表',
+
+	///\vendor\yongtiger\yii2-user\src\views\profile\update.php
+	'Update User Profile' => '更新用户资料',
+
+	///\vendor\yongtiger\yii2-user\src\views\profile\view.php
+	'View User Profile' => '查看用户资料',
+	'User Profile' => '用户资料',
+	
+	///\vendor\yongtiger\yii2-user\src\views\verify\index.php
+	'User Verify List' => '用户验证列表',
+
+	///\vendor\yongtiger\yii2-user\src\views\verify\update.php
+	'Update User Verify' => '更新用户验证',
+
+	///\vendor\yongtiger\yii2-user\src\views\verify\view.php
+	'View User Verify' => '查看用户验证',
+	'User Verify' => '用户验证',
+
 ];

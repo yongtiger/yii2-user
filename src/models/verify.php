@@ -6,7 +6,7 @@
  * @link        http://www.brainbook.cc
  * @see         https://github.com/yongtiger/yii2-user
  * @author      Tiger Yong <tigeryang.brainbook@outlook.com>
- * @copyright   Copyright (c) 2016 BrainBook.CC
+ * @copyright   Copyright (c) 2017 BrainBook.CC
  * @license     http://opensource.org/licenses/MIT
  */
 
@@ -15,6 +15,7 @@ namespace yongtiger\user\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use yongtiger\user\Module;
 
 /**
  * This is the model class for table "{{%verify}}".
@@ -54,20 +55,6 @@ class Verify extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
-        return [
-            'user_id' => 'User ID',
-            'password_verified_at' => 'Password Verified At',
-            'email_verified_at' => 'Email Verified At',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -75,6 +62,20 @@ class Verify extends ActiveRecord
             [['user_id', 'password_verified_at', 'email_verified_at', 'created_at', 'updated_at'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],    ///@see http://www.yiiframework.com/doc-2.0/guide-tutorial-core-validators.html#exist
             ['password_verified_at', 'default', 'value' => time()],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'user_id' => Module::t('user', 'User ID'),
+            'password_verified_at' => Module::t('user', 'Password Verified At'),
+            'email_verified_at' => Module::t('user', 'Email Verified At'),
+            'created_at' => Module::t('user', 'Created At'),
+            'updated_at' => Module::t('user', 'Updated At'),
         ];
     }
 

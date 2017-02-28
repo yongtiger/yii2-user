@@ -2,19 +2,26 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yongtiger\user\Module;
 
 /* @var $this yii\web\View */
-/* @var $model frontend\models\Profile */
+/* @var $model yongtiger\user\models\Profile */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="profile-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'profile-form',
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
+        ///[yii2-uesr:Ajax validation]
+        'enableClientValidation' => true,
+        'enableAjaxValidation' => true,
+        'validateOnBlur' => true,
+        'validateOnSubmit' => true
 
-    <?= $form->field($model, 'fullname')->textInput(['maxlength' => true]) ?>
+    ]); ?>
+    
+    <?= $form->field($model, 'fullname')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
 
     <?= $form->field($model, 'firstname')->textInput(['maxlength' => true]) ?>
 
@@ -57,7 +64,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'revenue')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton(Module::t('user', 'Update'), ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

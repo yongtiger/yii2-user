@@ -145,8 +145,6 @@ class User extends ActiveRecord implements IdentityInterface
             'status' => Module::t('user', 'Status'),
             'created_at' => Module::t('user', 'Created At'),
             'updated_at' => Module::t('user', 'Updated At'),
-            'created_date_range' => Module::t('user', 'Created Date Range'),
-            'updated_date_range' => Module::t('user', 'Updated Date Range'),
         ];
     }
 

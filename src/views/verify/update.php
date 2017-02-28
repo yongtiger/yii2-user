@@ -1,14 +1,15 @@
 <?php
 
 use yii\helpers\Html;
+use yongtiger\user\Module;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Verify */
+/* @var $model yongtiger\user\models\Verify */
 
-$this->title = 'Update Verify: ' . $model->user_id;
-$this->params['breadcrumbs'][] = ['label' => 'Verifies', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->user_id, 'url' => ['view', 'id' => $model->user_id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = Module::t('user', 'Update User Verify') . ': ID ' . $model->user_id;
+$this->params['breadcrumbs'][] = ['label' => Module::t('user', 'User Verify List'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'ID ' . $model->user_id, 'url' => ['view', 'id' => $model->user_id]];
+$this->params['breadcrumbs'][] = Module::t('user', 'Update');
 ?>
 <div class="verify-update">
 

@@ -6,31 +6,63 @@ use yii\jui\DatePicker;
 use yongtiger\user\Module;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\VerifySearch */
+/* @var $searchModel yongtiger\user\models\VerifySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Verifies';
+$this->title = Module::t('user', 'User Verify List');
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
+
 <div class="verify-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Verify', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
-            'user_id',
-            'password_verified_at:datetime',
-            'email_verified_at:datetime',
+        'options' => ['class' => 'grid-view','style'=>'overflow:auto', 'id' => 'grid'], ///[yii2-user]@see http://stackoverflow.com/questions/29837479/yii2-add-horizontal-scrollbar-in-gridview
+
+        'columns' => [
+            // ['class' => 'yii\grid\SerialColumn'],
+
+            [
+                'attribute' => 'user_id',
+                'headerOptions' => ['width' => '60']    ///[yii2-user v0.11.3 (GridView columns headerOptions)]
+            ],
 
             ///[yii2-user:datepicker]
+            ['attribute' => 'password_verified_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
+                'filter' => DatePicker::widget(
+                    [
+                        'model' => $searchModel, 
+                        'attribute' => 'password_verified_at', 
+                        'dateFormat' => 'yyyy-MM-dd', 
+                        'options' => [
+                            'id' => 'datepicker_password_verified_at',    ///Note: if no `id`, `DatePicker` dosen't work!
+                            'style' => 'text-align: center', 
+                            'class' => 'form-control'   ///The style is consistent with the form
+                        ]
+                    ]
+                )
+            ],
+
+            ['attribute' => 'email_verified_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
+                'filter' => DatePicker::widget(
+                    [
+                        'model' => $searchModel, 
+                        'attribute' => 'email_verified_at', 
+                        'dateFormat' => 'yyyy-MM-dd', 
+                        'options' => [
+                            'id' => 'datepicker_email_verified_at',    ///Note: if no `id`, `DatePicker` dosen't work!
+                            'style' => 'text-align: center', 
+                            'class' => 'form-control'   ///The style is consistent with the form
+                        ]
+                    ]
+                )
+            ],
+
             ['attribute' => 'created_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
                 'filter' => DatePicker::widget(
                     [
@@ -62,8 +94,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             ///[http://www.brainbook.cc]
 
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update}',
+            ],
         ],
     ]); ?>
 

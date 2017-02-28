@@ -16,6 +16,8 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 use yongtiger\user\models\Profile;
 use yongtiger\user\models\ProfileSearch;
 
@@ -67,24 +69,6 @@ class ProfileController extends Controller
     }
 
     /**
-     * Creates a new Profile model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Profile();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->user_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
      * Updates an existing Profile model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -94,7 +78,15 @@ class ProfileController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $load = $model->load(Yii::$app->request->post());
+
+        ///[yii2-uesr:Ajax validation]
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+
+        if ($load && $user = $model->save()) {
             return $this->redirect(['view', 'id' => $model->user_id]);
         } else {
             return $this->render('update', [
@@ -111,7 +103,13 @@ class ProfileController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $ret = $this->findModel($id)->delete();
+        if($ret === false)
+        {
+            Yii::$app->session->setFlash('error', Module::t('user', 'Failed to delete!') . ' (ID = '.$id.')');
+        }else{
+            Yii::$app->session->setFlash('success', Module::t('user', 'Successfully deleted.') . ' (ID = '.$id.')');
+        }
 
         return $this->redirect(['index']);
     }

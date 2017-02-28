@@ -6,7 +6,7 @@ use kartik\widgets\ActiveForm;  ///??????
 use kartik\daterange\DateRangePicker;   ///??????
 
 /* @var $this yii\web\View */
-/* @var $model app\models\VerifySearch */
+/* @var $model yongtiger\user\models\VerifySearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -19,9 +19,31 @@ use kartik\daterange\DateRangePicker;   ///??????
 
     <?= $form->field($model, 'user_id') ?>
 
-    <?= $form->field($model, 'password_verified_at') ?>
+    <?= $form->field($model, 'password_verified_date_range', [
+        'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],
+        'options' => ['class' => 'drp-container form-group']
+    ])->widget(DateRangePicker::classname(), [
+        'useWithAddon' => true,
+        'convertFormat' => true,
+        'pluginOptions' => [
+            'locale' => [
+                'format' => 'Y-m-d'
+            ]
+        ]
+    ]) ?>
 
-    <?= $form->field($model, 'email_verified_at') ?>
+    <?= $form->field($model, 'email_verified_date_range', [
+        'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],
+        'options' => ['class' => 'drp-container form-group']
+    ])->widget(DateRangePicker::classname(), [
+        'useWithAddon' => true,
+        'convertFormat' => true,
+        'pluginOptions' => [
+            'locale' => [
+                'format' => 'Y-m-d'
+            ]
+        ]
+    ]) ?>
 
     <?= $form->field($model, 'created_date_range', [
         'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],

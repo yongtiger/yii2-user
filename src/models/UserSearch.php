@@ -15,6 +15,7 @@ namespace yongtiger\user\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yongtiger\user\Module;
 
 /**
  * UserSearch represents the model behind the search form about `yongtiger\user\models\User`.
@@ -56,6 +57,19 @@ class UserSearch extends User
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        $attributeLabels = parent::attributeLabels();
+        
+        $attributeLabels['created_date_range'] = Module::t('user', 'Created Date Range');
+        $attributeLabels['updated_date_range'] = Module::t('user', 'Updated Date Range');
+
+        return $attributeLabels;
     }
 
     /**

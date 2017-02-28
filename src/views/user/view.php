@@ -7,7 +7,7 @@ use yongtiger\user\Module;
 /* @var $this yii\web\View */
 /* @var $model yongtiger\user\models\User */
 
-$this->title = 'ID ' . $model->id;
+$this->title = Module::t('user', 'View User') . ': ID ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => Module::t('user', 'User List'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'username',
             'email:email',
             [

@@ -15,6 +15,7 @@ namespace yongtiger\user\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yongtiger\user\Module;
 
 /**
  * ProfileSearch represents the model behind the search form about `yongtiger\user\models\Profile`.
@@ -49,6 +50,19 @@ class ProfileSearch extends Profile
     }
 
     /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        $attributeLabels = parent::attributeLabels();
+        
+        $attributeLabels['created_date_range'] = Module::t('user', 'Created Date Range');
+        $attributeLabels['updated_date_range'] = Module::t('user', 'Updated Date Range');
+
+        return $attributeLabels;
+    }
+
+    /**
      * Creates data provider instance with search query applied
      *
      * @param array $params
@@ -73,6 +87,7 @@ class ProfileSearch extends Profile
             return $dataProvider;
         }
 
+        ///?????
         // grid filtering conditions
         $query->andFilterWhere([
             'user_id' => $this->user_id,
@@ -84,6 +99,7 @@ class ProfileSearch extends Profile
             'DATE(FROM_UNIXTIME(updated_at))' => $this->updated_at, ///[yii2-user:daterangepicker]
         ]);
 
+        ///?????
         $query->andFilterWhere(['like', 'fullname', $this->fullname])
             ->andFilterWhere(['like', 'firstname', $this->firstname])
             ->andFilterWhere(['like', 'lastname', $this->lastname])

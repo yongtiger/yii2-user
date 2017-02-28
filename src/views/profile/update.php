@@ -1,14 +1,15 @@
 <?php
 
 use yii\helpers\Html;
+use yongtiger\user\Module;
 
 /* @var $this yii\web\View */
-/* @var $model frontend\models\Profile */
+/* @var $model yongtiger\user\models\Profile */
 
-$this->title = 'Update Profile: ' . $model->user_id;
-$this->params['breadcrumbs'][] = ['label' => 'Profiles', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->user_id, 'url' => ['view', 'id' => $model->user_id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = Module::t('user', 'Update User Profile') . ': ID ' . $model->user_id;
+$this->params['breadcrumbs'][] = ['label' => Module::t('user', 'User Profile List'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'ID ' . $model->user_id, 'url' => ['view', 'id' => $model->user_id]];
+$this->params['breadcrumbs'][] = Module::t('user', 'Update');
 ?>
 <div class="profile-update">
 

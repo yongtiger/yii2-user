@@ -6,7 +6,7 @@ use kartik\widgets\ActiveForm;  ///??????
 use kartik\daterange\DateRangePicker;   ///??????
 
 /* @var $this yii\web\View */
-/* @var $model frontend\models\ProfileSearch */
+/* @var $model yongtiger\user\models\ProfileSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -27,39 +27,39 @@ use kartik\daterange\DateRangePicker;   ///??????
 
     <?= $form->field($model, 'gender') ?>
 
-    <?php // echo $form->field($model, 'language') ?>
+    <?= $form->field($model, 'language') ?>
 
-    <?php // echo $form->field($model, 'avatar') ?>
+    <?= $form->field($model, 'avatar') ?>
 
-    <?php // echo $form->field($model, 'link') ?>
+    <?= $form->field($model, 'link') ?>
 
-    <?php // echo $form->field($model, 'birthyear') ?>
+    <?= $form->field($model, 'birthyear') ?>
 
-    <?php // echo $form->field($model, 'birthmonth') ?>
+    <?= $form->field($model, 'birthmonth') ?>
 
-    <?php // echo $form->field($model, 'birthday') ?>
+    <?= $form->field($model, 'birthday') ?>
 
-    <?php // echo $form->field($model, 'country') ?>
+    <?= $form->field($model, 'country') ?>
 
-    <?php // echo $form->field($model, 'province') ?>
+    <?= $form->field($model, 'province') ?>
 
-    <?php // echo $form->field($model, 'city') ?>
+    <?= $form->field($model, 'city') ?>
 
-    <?php // echo $form->field($model, 'address') ?>
+    <?= $form->field($model, 'address') ?>
 
-    <?php // echo $form->field($model, 'telephone') ?>
+    <?= $form->field($model, 'telephone') ?>
 
-    <?php // echo $form->field($model, 'mobile') ?>
+    <?= $form->field($model, 'mobile') ?>
 
-    <?php // echo $form->field($model, 'graduate') ?>
+    <?= $form->field($model, 'graduate') ?>
 
-    <?php // echo $form->field($model, 'education') ?>
+    <?= $form->field($model, 'education') ?>
 
-    <?php // echo $form->field($model, 'company') ?>
+    <?= $form->field($model, 'company') ?>
 
-    <?php // echo $form->field($model, 'position') ?>
+    <?= $form->field($model, 'position') ?>
 
-    <?php // echo $form->field($model, 'revenue') ?>
+    <?= $form->field($model, 'revenue') ?>
 
     <?= $form->field($model, 'created_date_range', [
         'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],

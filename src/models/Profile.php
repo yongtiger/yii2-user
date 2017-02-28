@@ -14,6 +14,7 @@ namespace yongtiger\user\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yongtiger\user\Module;
 
 /**
  * This is the model class for table "{{%profile}}".
@@ -73,7 +74,7 @@ class Profile extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules() ///?????
     {
         return [
             [['user_id', 'created_at', 'updated_at'], 'required'],
@@ -86,33 +87,33 @@ class Profile extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels()   ///?????
     {
         return [
-            'user_id' => 'User ID',
-            'fullname' => 'Fullname',
-            'firstname' => 'Firstname',
-            'lastname' => 'Lastname',
-            'gender' => 'Gender',
-            'language' => 'Language',
-            'avatar' => 'Avatar',
-            'link' => 'Link',
-            'birthyear' => 'Birthyear',
-            'birthmonth' => 'Birthmonth',
-            'birthday' => 'Birthday',
-            'country' => 'Country',
-            'province' => 'Province',
-            'city' => 'City',
-            'address' => 'Address',
-            'telephone' => 'Telephone',
-            'mobile' => 'Mobile',
-            'graduate' => 'Graduate',
-            'education' => 'Education',
-            'company' => 'Company',
-            'position' => 'Position',
-            'revenue' => 'Revenue',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'user_id' => Module::t('user', 'User ID'),
+            'fullname' => Module::t('user', 'Fullname'),
+            'firstname' => Module::t('user', 'Firstname'),
+            'lastname' => Module::t('user', 'Lastname'),
+            'gender' => Module::t('user', 'Gender'),
+            'language' => Module::t('user', 'Language'),
+            'avatar' => Module::t('user', 'Avatar'),
+            'link' => Module::t('user', 'Link'),
+            'birthyear' => Module::t('user', 'Birthyear'),
+            'birthmonth' => Module::t('user', 'Birthmonth'),
+            'birthday' => Module::t('user', 'Birthday'),
+            'country' => Module::t('user', 'Country'),
+            'province' => Module::t('user', 'Province'),
+            'city' => Module::t('user', 'City'),
+            'address' => Module::t('user', 'Address'),
+            'telephone' => Module::t('user', 'Telephone'),
+            'mobile' => Module::t('user', 'Mobile'),
+            'graduate' => Module::t('user', 'Graduate'),
+            'education' => Module::t('user', 'Education'),
+            'company' => Module::t('user', 'Company'),
+            'position' => Module::t('user', 'Position'),
+            'revenue' => Module::t('user', 'Revenue'),
+            'created_at' => Module::t('user', 'Created At'),
+            'updated_at' => Module::t('user', 'Updated At'),
         ];
     }
 
