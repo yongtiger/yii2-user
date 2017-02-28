@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.13.0 (profile CRUD)
+
+
 ## v0.12.2 (verify)
 
 
@@ -21,7 +24,7 @@
 ## v0.11.0 (a lot of fixes)
 
 
-## v0.10.0 (user crud)
+## v0.10.0 (user CRUD)
 
 
 ## v0.9.10 (fix:user module)
