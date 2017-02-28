@@ -1,8 +1,12 @@
 # Development roadmap
 
+## v0.13.2 (fix# 'skipOnError' => true, 'targetClass' => User::className())
+
+
 ## v0.13.1 (user link profile)
 
 * fix# Integrity constraint violation: 1062 Duplicate entry for key 'PRIMARY'
+
 
 ## v0.13.0 (profile CRUD)
 

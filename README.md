@@ -1,4 +1,4 @@
-# Yii2-user v0.13.1 (user link profile)
+# Yii2-user v0.13.2 (fix# 'skipOnError' => true, 'targetClass' => User::className())
 
 The most basic `user` module.
 

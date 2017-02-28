@@ -53,7 +53,7 @@ class ChangeUsernameForm extends ChangeForm
             //[(\x{4E00}-\x{9FA5})\w]*      Chinese characters underlined alphabet, there 0-n times
             ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-zA-Z]+[(\x{4E00}-\x{9FA5})\w]*$/u', 'message' => Module::t('user', 'The username only contains letters ...')],
 
-            ['username', 'unique', 'targetClass' => 'yongtiger\user\models\User', 'message' => Module::t('user', 'This username has already been taken.')],
+            ['username', 'unique', 'skipOnError' => true, 'targetClass' => User::className(), 'message' => Module::t('user', 'This username has already been taken.')],
         ]);
 
         return $rules;

@@ -80,7 +80,8 @@ class SendTokenForm extends Model
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
             ['email', 'exist',  ///@see http://www.yiiframework.com/doc-2.0/guide-tutorial-core-validators.html#exist
-                'targetClass' => 'yongtiger\user\models\User',
+                'skipOnError' => true,
+                'targetClass' => User::className()
                 'filter' => ['status' => $this->scenario == static::SCENARIO_ACTIVATION ? User::STATUS_INACTIVE : User::STATUS_ACTIVE],
                 'message' => Module::t('user', 'There is no user with such email.')
             ],

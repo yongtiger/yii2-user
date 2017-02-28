@@ -62,6 +62,7 @@ class TokenHandler extends Model
             [
                 'token',
                 'exist',    ///@see http://www.yiiframework.com/doc-2.0/guide-tutorial-core-validators.html#exist
+                'skipOnError' => true,
                 'targetClass' => User::className(),
                 'filter' => ['status' => $this->scenario === static::SCENARIO_ACTIVATION ? User::STATUS_INACTIVE : User::STATUS_ACTIVE],
             ],
