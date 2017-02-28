@@ -44,8 +44,14 @@ class UserController extends Controller
             ///[yii2-user:role]
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['update', 'delete', 'create', 'delete-in'],  ///[yii2-user:deleteIn]
+                'only' => ['index', 'view', 'update', 'delete', 'create', 'delete-in'],  ///[yii2-user:deleteIn]
                 'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view'],
+                        'roles' => ['@'],
+                    ],
+
                     [
                         'allow' => true,
                         'actions' => ['update'],

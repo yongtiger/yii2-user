@@ -185,6 +185,8 @@ return [
 	///\vendor\yongtiger\yii2-user\src\views\user\indexphp
 	'Batch Delete' => '批量删除',
 	'Are you sure you want to delete? This is a non-recoverable operation!' => '您确定要删除吗？此操作不可恢复！',
+	'profile' => '用户信息',
+	'Profile' => '用户信息',
 
 	///\vendor\yongtiger\yii2-user\src\views\user\_form.php
 	'Create' => '创建',

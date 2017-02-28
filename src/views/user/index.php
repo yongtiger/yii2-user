@@ -110,7 +110,28 @@ $this->registerJs('
             ],
             ///[http://www.brainbook.cc]
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ///[yii2-user v0.14.0 (user index:ActionColumn)]@see http://www.yiiframework.com/forum/index.php/topic/49595-how-to-change-buttons-in-actioncolumn/
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {delete} {profile}',
+                'buttons' => [
+                    'profile' => function ($url, $model) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-info-sign"></span>',
+                            $url,
+                            ['title' => Module::t('user', 'profile')]
+                        );
+                    }
+                ],
+                'urlCreator' => function ($action, $model, $key, $index) {
+                    if ($action === 'profile') {
+                        $url = ['profile/update', 'id' => $key];
+                        return $url;
+                    } else {    ///@see http://stackoverflow.com/questions/29642962/actioncolumns-button-with-custom-url
+                        return [$action, 'id' => $model->id];
+                    }
+                }
+            ],
         ],
     ]); ?>
 

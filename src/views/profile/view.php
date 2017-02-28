@@ -50,8 +50,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'company',
             'position',
             'revenue',
-            'created_at',
-            'updated_at',
+            ['attribute' => 'created_at', 'format' => ['datetime', 'php:Y-m-d H:i:s']],
+            ['attribute' => 'updated_at', 'format' => ['datetime', 'php:Y-m-d H:i:s']],
         ],
     ]) ?>
 
