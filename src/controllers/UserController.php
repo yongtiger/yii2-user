@@ -18,6 +18,7 @@ use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use yongtiger\user\models\User;
 use yongtiger\user\models\UserSearch;
 use yongtiger\user\Module;
@@ -33,17 +34,9 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                    'deleteIn' => ['POST'], ///[yii2-user:deleteIn]
-                ],
-            ],
-
             ///[yii2-user:role]
             'access' => [
-                'class' => \yii\filters\AccessControl::className(),
+                'class' => AccessControl::className(),
                 'only' => ['index', 'view', 'update', 'delete', 'create', 'delete-in'],  ///[yii2-user:deleteIn]
                 'rules' => [
                     [
@@ -111,7 +104,14 @@ class UserController extends Controller
                 ],
             ],
             ///[http://www.brainbook.cc]
-
+            
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                    'deleteIn' => ['POST'], ///[yii2-user:deleteIn]
+                ],
+            ],
         ];
     }
 

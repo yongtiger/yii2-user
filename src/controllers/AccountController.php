@@ -20,6 +20,7 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use yii\authclient\AuthAction;
 use yongtiger\user\Module;
 
 /**
@@ -70,18 +71,6 @@ class AccountController extends Controller
         ///[Yii2 uesr:verifycode]
         if (Yii::$app->getModule('user')->enableAccountChangeWithCaptcha) {
             $actions = array_merge($actions ,['captcha' => Yii::$app->getModule('user')->captcha]);
-        }
-
-        ///[Yii2 uesr:oauth]
-        if (Yii::$app->getModule('user')->enableOauth && Yii::$app->get("authClientCollection", false)) {
-            $auth = [
-                'class' => 'yii\authclient\AuthAction',
-                'successUrl' => ['user/account/index'],
-                'cancelUrl' => ['user/account/index'],
-                'successCallback' => [$this, 'connect'],
-            ];
-
-            $actions = array_merge($actions, ['auth' => ArrayHelper::merge(Yii::$app->getModule('user')->auth, $auth)]);
         }
 
         return $actions;

@@ -29,11 +29,17 @@ trait OauthTrait
     /**
      * Inserts a new record to the oauth ActiveRecord.
      *
+     * If any row with `$clientInfos['provider']` exists, simply replace `user_id` with `$userId` at the row.
      * @throws IntegrityException if fails to save.
      */
     private function insertOauth($userId, $clientInfos)
     {
-        $auth = new Oauth(['user_id' => $userId]);
+        if (!$auth = Oauth::findOne(['provider' => $clientInfos['provider']])) {
+            $auth = new Oauth(['user_id' => $userId]);
+        } else {
+            $auth->user_id = $userId;
+        }
+        
         $auth->attributes = $clientInfos;   ///massive assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
         if (!$auth->save(false)) {
             throw new IntegrityException();

@@ -405,6 +405,13 @@ class Module extends \yii\base\Module
     public $auth = [];  ///init later
 
     /**
+     * @var string
+     */
+    public $authActionClassName = 'yii\authclient\AuthAction';
+    public $captchaClassName = 'yii\captcha\Captcha';
+    public $captchaActionClassName = 'yii\captcha\CaptchaAction';
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -440,7 +447,7 @@ class Module extends \yii\base\Module
 
         if ($this->enableSignup && $this->enableSignupWithCaptcha || $this->enableLogin && $this->enableLoginWithCaptcha || $this->enableSendToken && $this->enableSendTokenWithCaptcha) {
             $this->captcha = ArrayHelper::merge([
-                'class' => 'yii\captcha\CaptchaAction',
+                'class' => $this->captchaActionClassName,
                 'height' => 36,         ///The height of the generated CAPTCHA image. Defaults to 50. need to be adjusted according to the specific verification code bit
                 'width' => 96,          ///The width of the generated CAPTCHA image. Defaults to 120.
                 'maxLength' =>6,        ///The maximum length for randomly generated word. Defaults to 7.
@@ -449,7 +456,7 @@ class Module extends \yii\base\Module
             ], $this->captcha);
 
             $this->captchaActiveFieldWidget = ArrayHelper::merge([
-                'class' => 'yii\captcha\Captcha',
+                'class' => $this->captchaClassName,
                 'imageOptions' => ['alt' => Module::t('user', 'Verification Code'), 'title' => Module::t('user', 'Click to change another verification code.')],
                 'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
             ], $this->captchaActiveFieldWidget);
@@ -461,7 +468,7 @@ class Module extends \yii\base\Module
             ], $this->authChoiceWidgetConfig);
 
             $this->auth = ArrayHelper::merge([
-                'class' => 'yii\authclient\AuthAction',
+                'class' => $this->authActionClassName,
                 'successUrl' => ['user/account/index'],
                 'cancelUrl' => ['user/account/index'],
             ], $this->auth);
