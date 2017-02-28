@@ -19,6 +19,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\base\NotSupportedException;
 use yongtiger\user\Module;
 use yongtiger\user\models\Oauth;
+use yongtiger\user\models\Profile;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -181,6 +182,9 @@ class User extends ActiveRecord implements IdentityInterface
             ///[yii2-uesr:verify]
             $this->link('verify', new Verify(['password_verified_at' => time()]));
 
+            ///[yii2-uesr v0.13.1 (user link profile)]
+            $this->link('profile', new Profile());
+
         } else {
             // ...
         }
@@ -338,6 +342,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function getVerify()
     {
         return $this->hasOne(Verify::className(), ['user_id' => 'id']);
+    }
+
+    ///[yii2-uesr v0.13.1 (user link profile)]
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfile()
+    {
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
 
     ///[yii2-uesr:oauth]

@@ -1,4 +1,4 @@
-# Yii2-user v0.13.0 (profile CRUD)
+# Yii2-user v0.13.1 (user link profile)
 
 The most basic `user` module.
 

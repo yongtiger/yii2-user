@@ -324,7 +324,9 @@ class SignupForm extends Model
         ///[Yii2 uesr:verify]
         ///After signup, `password_verified_at` is set to now, that is verified password.
         ///When oauth signup, `password` is set to null, that is not verified password.
-        $this->getUser()->link('verify', new Verify(['password_verified_at' => $this->scenario === static::SCENARIO_OAUTH ? null : time()]));
+        // $this->getUser()->link('verify', new Verify(['password_verified_at' => $this->scenario === static::SCENARIO_OAUTH ? null : time()]));    ///[v0.13.1 (user link profile) fix# Integrity constraint violation: 1062 Duplicate entry for key 'PRIMARY']
+        $this->getUser()->verify->password_verified_at = $this->scenario === static::SCENARIO_OAUTH ? null : time();
+        $this->getUser()->verify->save();
 
         $this->trigger(self::EVENT_AFTER_SIGNUP, new ModelEvent());
     }

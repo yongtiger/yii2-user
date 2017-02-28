@@ -13,6 +13,7 @@
 namespace yongtiger\user\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%profile}}".
@@ -52,6 +53,21 @@ class Profile extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return '{{%profile}}';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                // 'value' => new \yii\db\Expression('NOW()'), ///if you're using datetime instead of UNIX timestamp
+            ],
+        ];
     }
 
     /**
