@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\jui\DatePicker;
+use yongtiger\user\Module;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\VerifySearch */
@@ -25,10 +27,41 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'user_id',
-            'password_verified_at',
-            'email_verified_at:email',
-            'created_at',
-            'updated_at',
+            'password_verified_at:datetime',
+            'email_verified_at:datetime',
+
+            ///[yii2-user:datepicker]
+            ['attribute' => 'created_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
+                'filter' => DatePicker::widget(
+                    [
+                        'model' => $searchModel, 
+                        'attribute' => 'created_at', 
+                        'dateFormat' => 'yyyy-MM-dd', 
+                        'options' => [
+                            'id' => 'datepicker_created_at',    ///Note: if no `id`, `DatePicker` dosen't work!
+                            'style' => 'text-align: center', 
+                            'class' => 'form-control'   ///The style is consistent with the form
+                        ]
+                    ]
+                )
+            ],
+
+            ['attribute' => 'updated_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
+                'filter' => DatePicker::widget(
+                    [
+                        'model' => $searchModel, 
+                        'attribute' => 'updated_at', 
+                        'dateFormat' => 'yyyy-MM-dd', 
+                        'options' => [
+                            'id' => 'datepicker_updated_at',    ///Note: if no `id`, `DatePicker` dosen't work!
+                            'style' => 'text-align: center', 
+                            'class' => 'form-control'   ///The style is consistent with the form
+                        ]
+                    ]
+                )
+            ],
+            ///[http://www.brainbook.cc]
+
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
