@@ -30,10 +30,6 @@ use yongtiger\user\Module;
 
     <?= $form->field($model, 'status')->dropDownList([User::STATUS_INACTIVE => Module::t('user', 'inactive'), User::STATUS_ACTIVE => Module::t('user', 'active')], ['prompt' => Module::t('user', '(Please select ...)')]); ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Module::t('user', 'Create') : Module::t('user', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
