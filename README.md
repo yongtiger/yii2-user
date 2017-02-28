@@ -1,4 +1,4 @@
-# Yii2-user v0.15.0 (verify CRUD)
+# Yii2-user v0.15.1 (user index:ActionColumn)
 
 The most basic `user` module.
 

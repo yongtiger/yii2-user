@@ -113,7 +113,7 @@ $this->registerJs('
             ///[yii2-user v0.14.0 (user index:ActionColumn)]@see http://www.yiiframework.com/forum/index.php/topic/49595-how-to-change-buttons-in-actioncolumn/
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {update} {delete} {profile}',
+                'template' => '{view} {update} {delete} {profile} {verify}',
                 'buttons' => [
                     'profile' => function ($url, $model) {
                         return Html::a(
@@ -121,11 +121,21 @@ $this->registerJs('
                             $url,
                             ['title' => Module::t('user', 'profile')]
                         );
+                    },
+                    'verify' => function ($url, $model) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-check"></span>',
+                            $url,
+                            ['title' => Module::t('user', 'verify')]
+                        );
                     }
                 ],
                 'urlCreator' => function ($action, $model, $key, $index) {
                     if ($action === 'profile') {
                         $url = ['profile/update', 'id' => $key];
+                        return $url;
+                    } else if ($action === 'verify') {
+                        $url = ['verify/update', 'id' => $key];
                         return $url;
                     } else {    ///@see http://stackoverflow.com/questions/29642962/actioncolumns-button-with-custom-url
                         return [$action, 'id' => $model->id];

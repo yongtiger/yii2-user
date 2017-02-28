@@ -187,6 +187,8 @@ return [
 	'Are you sure you want to delete? This is a non-recoverable operation!' => '您确定要删除吗？此操作不可恢复！',
 	'profile' => '用户信息',
 	'Profile' => '用户信息',
+	'verify' => '用户验证',
+	'Verify' => '用户验证',
 
 	///\vendor\yongtiger\yii2-user\src\views\user\_form.php
 	'Create' => '创建',
