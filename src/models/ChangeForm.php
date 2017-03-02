@@ -84,12 +84,12 @@ class ChangeForm extends Model
 
         ///[Yii2 uesr:verify]
         if (isset(Yii::$app->user->identity->verify->password_verified_at)) {
-            $attributeLabels['password'] = Module::t('user', 'Password');
+            $attributeLabels['password'] = Module::t('message', 'Password');
         }
 
         ///[Yii2 uesr:verifycode]
         if (Yii::$app->getModule('user')->enableAccountChangeWithCaptcha) {
-            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');
+            $attributeLabels['verifyCode'] = Module::t('message', 'Verification Code');
         }
 
         return $attributeLabels;
@@ -108,7 +108,7 @@ class ChangeForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, Module::t('user', 'Incorrect password.'));
+                $this->addError($attribute, Module::t('message', 'Incorrect password.'));
             }
         }
     }
@@ -186,7 +186,7 @@ class ChangeForm extends Model
     protected function afterChange()
     {
         // ...custom code here...
-        Yii::$app->session->addFlash('success', Module::t('user', 'Successfully changed.'));
+        Yii::$app->session->addFlash('success', Module::t('message', 'Successfully changed.'));
 
         $this->trigger(static::EVENT_AFTER_CHANGE, new ModelEvent());
     }

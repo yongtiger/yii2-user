@@ -9,7 +9,7 @@ use yongtiger\user\Module;
 /* @var $searchModel yongtiger\user\models\ProfileSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('user', 'User Profile List');
+$this->title = Module::t('message', 'User Profile List');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

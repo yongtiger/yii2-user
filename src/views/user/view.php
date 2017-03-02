@@ -7,8 +7,8 @@ use yongtiger\user\Module;
 /* @var $this yii\web\View */
 /* @var $model yongtiger\user\models\User */
 
-$this->title = Module::t('user', 'View User') . ': ID ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => Module::t('user', 'User List'), 'url' => ['index']];
+$this->title = Module::t('message', 'View User') . ': ID ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
@@ -16,11 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Module::t('user', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Module::t('user', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a(Module::t('message', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Module::t('message', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Module::t('user', 'Are you sure you want to delete this item?'),
+                'confirm' => Module::t('message', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
         ]) ?>
@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status', 
                 'value' => function($model) {   ///[yii2-user v0.12.1 (DetailView value)]
                     $arrStatus = [User::STATUS_INACTIVE => 'inactive', User::STATUS_ACTIVE => 'active'];
-                    return Module::t('user', $arrStatus[$model->status]);
+                    return Module::t('message', $arrStatus[$model->status]);
                 },
             ],
             ['attribute' => 'created_at', 'format' => ['datetime', 'php:Y-m-d H:i:s']],

@@ -51,9 +51,9 @@ class ChangeUsernameForm extends ChangeForm
             //  \x  Ignore whitespace
             //[(\x{4E00}-\x{9FA5})a-zA-Z]+  The character starts with a Chinese character or letter and appears 1 to n times
             //[(\x{4E00}-\x{9FA5})\w]*      Chinese characters underlined alphabet, there 0-n times
-            ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-zA-Z]+[(\x{4E00}-\x{9FA5})\w]*$/u', 'message' => Module::t('user', 'The username only contains letters ...')],
+            ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-zA-Z]+[(\x{4E00}-\x{9FA5})\w]*$/u', 'message' => Module::t('message', 'The username only contains letters ...')],
 
-            ['username', 'unique', 'skipOnError' => true, 'targetClass' => User::className(), 'message' => Module::t('user', 'This username has already been taken.')],
+            ['username', 'unique', 'skipOnError' => true, 'targetClass' => User::className(), 'message' => Module::t('message', 'This username has already been taken.')],
         ]);
 
         return $rules;
@@ -66,7 +66,7 @@ class ChangeUsernameForm extends ChangeForm
     {
         $attributeLabels = parent::attributeLabels();
         
-        $attributeLabels['username'] = Module::t('user', 'Username');
+        $attributeLabels['username'] = Module::t('message', 'Username');
 
         return $attributeLabels;
     }

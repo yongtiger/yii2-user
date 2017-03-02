@@ -7,8 +7,8 @@ use yongtiger\user\Module;
 /* @var $this yii\web\View */
 /* @var $model yongtiger\user\models\Verify */
 
-$this->title = Module::t('user', 'View User Verify') . ': ID ' . $model->user_id;
-$this->params['breadcrumbs'][] = ['label' => Module::t('user', 'User Verify'), 'url' => ['index']];
+$this->title = Module::t('message', 'View User Verify') . ': ID ' . $model->user_id;
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User Verify'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="verify-view">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Module::t('user', 'Update'), ['update', 'id' => $model->user_id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Module::t('message', 'Update'), ['update', 'id' => $model->user_id], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([

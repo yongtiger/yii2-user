@@ -410,32 +410,31 @@ class Module extends \yii\base\Module
     public function init()
     {
         parent::init();
-        $this->registerTranslations();
 
         if (!($this->enableSignup && ($this->enableSignupWithEmail || $this->enableSignupWithUsername))) {
             ///[v0.9.5 (fix:backend disableSignupMessage)]
             if ($this->disableSignupMessage === null) {
-                $this->disableSignupMessage = Module::t('user', 'This site has been closed registration.');
+                $this->disableSignupMessage = Module::t('message', 'This site has been closed registration.');
             }
         }
 
         if (!($this->enableLogin && ($this->enableLoginWithUsername || $this->enableLoginWithEmail || $this->enableOauth && Yii::$app->get("authClientCollection", false)))) {
             ///[v0.9.6 (fix:backend disableLoginMessage)]
             if ($this->disableLoginMessage === null) {
-                $this->disableLoginMessage = Module::t('user', 'This site has been closed login.');
+                $this->disableLoginMessage = Module::t('message', 'This site has been closed login.');
             }
         }
 
         if ($this->enableSignup && !isset($this->signupWithEmailActivationSetFrom)) {
-            $this->signupWithEmailActivationSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
+            $this->signupWithEmailActivationSetFrom = [Yii::$app->params['serviceEmail'] => Yii::$app->name . ' robot'];
         }
 
         if ($this->enableRecoveryPassword && !isset($this->recoveryPasswordSetFrom)) {
-            $this->recoveryPasswordSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
+            $this->recoveryPasswordSetFrom = [Yii::$app->params['serviceEmail'] => Yii::$app->name . ' robot'];
         }
 
         if ($this->enableAccount && !isset($this->accountVerifyEmailSetFrom)) {
-            $this->accountVerifyEmailSetFrom = [Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'];
+            $this->accountVerifyEmailSetFrom = [Yii::$app->params['serviceEmail'] => Yii::$app->name . ' robot'];
         }
 
         if ($this->enableSignup && $this->enableSignupWithCaptcha || $this->enableLogin && $this->enableLoginWithCaptcha || $this->enableSendToken && $this->enableSendTokenWithCaptcha) {
@@ -450,7 +449,7 @@ class Module extends \yii\base\Module
 
             $this->captchaActiveFieldWidget = ArrayHelper::merge([
                 'class' => 'yii\captcha\Captcha',
-                'imageOptions' => ['alt' => Module::t('user', 'Verification Code'), 'title' => Module::t('user', 'Click to change another verification code.')],
+                'imageOptions' => ['alt' => Module::t('message', 'Verification Code'), 'title' => Module::t('message', 'Click to change another verification code.')],
                 'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
             ], $this->captchaActiveFieldWidget);
         }
@@ -471,10 +470,11 @@ class Module extends \yii\base\Module
         }
     }
 
+    ///[v0.16.1 (i18n:public static function registerTranslation)]
     /**
      * Registers the translation files.
      */
-    protected function registerTranslations()
+    public static function registerTranslations()
     {
         ///[i18n]
         ///if no setup the component i18n, use setup in this module.
@@ -484,7 +484,7 @@ class Module extends \yii\base\Module
                 'sourceLanguage' => 'en-US',
                 'basePath' => '@vendor/yongtiger/yii2-user/src/messages',    ///default base path is '@vendor/yongtiger/yii2-user/src/messages'
                 'fileMap' => [
-                    'extensions/yongtiger/yii2-user/user' => 'user.php',  ///category in Module::t() is user
+                    'extensions/yongtiger/yii2-user/message' => 'message.php',  ///category in Module::t() is message
                 ],
             ];
         }
@@ -503,6 +503,7 @@ class Module extends \yii\base\Module
      */
     public static function t($category, $message, $params = [], $language = null)
     {
+        static::registerTranslations(); ///[v0.16.1 (i18n:public static function registerTranslation)]
         return Yii::t('extensions/yongtiger/yii2-user/' . $category, $message, $params, $language);
     }
 }

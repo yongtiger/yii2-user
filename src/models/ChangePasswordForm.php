@@ -54,7 +54,7 @@ class ChangePasswordForm extends ChangeForm
             $rules = array_merge($rules, [
                 [['repassword'], 'required'],
                 [['repassword'], 'string', 'min' => 6],
-                ['repassword', 'compare', 'compareAttribute' => 'newpassword', 'message' => Module::t('user', 'The two passwords do not match.')],
+                ['repassword', 'compare', 'compareAttribute' => 'newpassword', 'message' => Module::t('message', 'The two passwords do not match.')],
             ]);
         }
 
@@ -68,9 +68,9 @@ class ChangePasswordForm extends ChangeForm
     {
         $attributeLabels = parent::attributeLabels();
 
-        $attributeLabels['newpassword'] = Module::t('user', 'New Password');
+        $attributeLabels['newpassword'] = Module::t('message', 'New Password');
         if (Yii::$app->getModule('user')->enableAccountChangePasswordWithRepassword) {
-            $attributeLabels['repassword'] = Module::t('user', 'Repeat Password');   ///[Yii2 uesr:repassword]
+            $attributeLabels['repassword'] = Module::t('message', 'Repeat Password');   ///[Yii2 uesr:repassword]
         }
 
         return $attributeLabels;

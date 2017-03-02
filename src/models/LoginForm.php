@@ -140,27 +140,27 @@ class LoginForm extends Model
     {
         ///[Yii2 uesr:login with username or email]
         if (Yii::$app->getModule('user')->enableLoginWithUsername && Yii::$app->getModule('user')->enableLoginWithEmail || !empty(Yii::$app->request->getBodyParam('LoginForm')['usernameOrEmail'])) {
-            $attributeLabels['usernameOrEmail'] = Module::t('user', 'Username or Email');
+            $attributeLabels['usernameOrEmail'] = Module::t('message', 'Username or Email');
         } else {
             if (Yii::$app->getModule('user')->enableLoginWithUsername) {
-                $attributeLabels['username'] = Module::t('user', 'Username');
+                $attributeLabels['username'] = Module::t('message', 'Username');
             }
 
             if (Yii::$app->getModule('user')->enableLoginWithEmail) {
-                $attributeLabels['email'] = Module::t('user', 'Email');
+                $attributeLabels['email'] = Module::t('message', 'Email');
             }
         }
 
         if (Yii::$app->getModule('user')->enableLoginWithUsername || Yii::$app->getModule('user')->enableLoginWithEmail) {
-            $attributeLabels['password'] = Module::t('user', 'Password');
+            $attributeLabels['password'] = Module::t('message', 'Password');
         }
 
         if (Yii::$app->user->enableAutoLogin) {
-            $attributeLabels['rememberMe'] = Module::t('user', 'Remember me');
+            $attributeLabels['rememberMe'] = Module::t('message', 'Remember me');
         }
 
         if (Yii::$app->getModule('user')->enableLoginWithCaptcha) {
-            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');  ///[Yii2 uesr:verifycode]
+            $attributeLabels['verifyCode'] = Module::t('message', 'Verification Code');  ///[Yii2 uesr:verifycode]
         }
 
         return $attributeLabels;
@@ -179,7 +179,7 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, Module::t('user', 'Incorrect username or password.'));
+                $this->addError($attribute, Module::t('message', 'Incorrect username or password.'));
             }
         }
     }
@@ -281,14 +281,14 @@ class LoginForm extends Model
 
             // ...custom code here...
             if (empty($this->getUser())) {
-                Yii::$app->session->addFlash('error', Module::t('user', 'Your account is invalid!'));
+                Yii::$app->session->addFlash('error', Module::t('message', 'Your account is invalid!'));
                 $event->isValid = false;
             } else if ($this->getUser()->status == User::STATUS_INACTIVE) {
                 ///[Yii2 uesr:activation via email:login]
                 Yii::$app->session->addFlash('warning',
-                    Module::t('user',
+                    Module::t('message',
                         'Your account is not activated! Click [{resend}] an activation Email.',
-                        ['resend'=>Module::t('user', Html::a(Module::t('user', 'Resend'), ['token/send-token', 'type' => 'activation']))]
+                        ['resend'=>Module::t('message', Html::a(Module::t('message', 'Resend'), ['token/send-token', 'type' => 'activation']))]
                     )
                 );
                 $event->isValid = false;

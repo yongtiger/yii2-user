@@ -214,7 +214,7 @@ class SecurityController extends Controller
                 }
 
             } else {
-                Yii::$app->session->addFlash('error', Module::t('user', 'Login failed! A user bound to this oAuth client was not found.'));
+                Yii::$app->session->addFlash('error', Module::t('message', 'Login failed! A user bound to this oAuth client was not found.'));
                 $this->action->successUrl = $this->action->cancelUrl;
                 return;
             }
@@ -239,13 +239,13 @@ class SecurityController extends Controller
         $oauth = Oauth::findOne(['user_id' => Yii::$app->user->identity->id, 'provider' => $client->provider]);
 
         if ($oauth) {
-            Yii::$app->session->addFlash('warning', Module::t('user', 'Already connected. No need to connect again.'));
+            Yii::$app->session->addFlash('warning', Module::t('message', 'Already connected. No need to connect again.'));
         } else {
             ///Insert a new record to the oauth ActiveRecord.
             try {
                 $this->insertOauth(Yii::$app->user->identity->id, $client->getUserInfos());
             } catch (Exception $e) {
-                Yii::$app->session->addFlash('error', Module::t('user', 'Failed connect!'));
+                Yii::$app->session->addFlash('error', Module::t('message', 'Failed connect!'));
             }
         }
     }
@@ -261,9 +261,9 @@ class SecurityController extends Controller
         $oauth = Oauth::findOne(['user_id' => Yii::$app->user->identity->id, 'provider' => $provider]);
 
         if ($oauth && $oauth->delete() !== 'false') {
-            Yii::$app->session->addFlash('success', Module::t('user', 'Successfully disconnect.'));
+            Yii::$app->session->addFlash('success', Module::t('message', 'Successfully disconnect.'));
         } else {
-            Yii::$app->session->addFlash('error', Module::t('user', 'Failed disconnect!'));
+            Yii::$app->session->addFlash('error', Module::t('message', 'Failed disconnect!'));
         }
 
         return $this->redirect(['account/index']);

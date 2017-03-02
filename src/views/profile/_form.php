@@ -64,7 +64,7 @@ use yongtiger\user\Module;
     <?= $form->field($model, 'revenue')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Module::t('user', 'Update'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton(Module::t('message', 'Update'), ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -26,7 +26,7 @@ use yongtiger\user\Module;
     <?= $form->field($model, 'email_verified_at')->textInput() ?><!--///?????time stamp in ActiveForm-->
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Module::t('user', 'Create') : Module::t('user', 'Update'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Module::t('message', 'Create') : Module::t('message', 'Update'), ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

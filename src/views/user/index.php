@@ -13,13 +13,13 @@ use yongtiger\user\UserAsset;
 /* @var $searchModel yongtiger\user\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('user', 'User List');
+$this->title = Module::t('message', 'User List');
 $this->params['breadcrumbs'][] = $this->title;
 
 ///[yii2-user:deleteIn]
 $this->registerJs('
 var delete_in_url = "' . Url::to(['delete-in']) . '";
-var delete_in_msg = "' . Module::t('user', 'Are you sure you want to delete? This is a non-recoverable operation!') . '";
+var delete_in_msg = "' . Module::t('message', 'Are you sure you want to delete? This is a non-recoverable operation!') . '";
 ', View::POS_HEAD);
 UserAsset::register($this);
 
@@ -30,8 +30,8 @@ UserAsset::register($this);
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Module::t('user', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Module::t('user', 'Batch Delete'), "javascript:void(0);", ['class' => 'btn btn-danger gridview']) ?><!--///[yii2-user:deleteIn]-->
+        <?= Html::a(Module::t('message', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Module::t('message', 'Batch Delete'), "javascript:void(0);", ['class' => 'btn btn-danger gridview']) ?><!--///[yii2-user:deleteIn]-->
     </p>
 
     <?= GridView::widget([
@@ -54,10 +54,10 @@ UserAsset::register($this);
 
             [
                 'attribute' => 'status',
-                'filter' => [User::STATUS_INACTIVE => Module::t('user', 'inactive'), User::STATUS_ACTIVE => Module::t('user', 'active')],
+                'filter' => [User::STATUS_INACTIVE => Module::t('message', 'inactive'), User::STATUS_ACTIVE => Module::t('message', 'active')],
                 'value' => function($model) {   ///[yii2-user v0.11.1 (GridView value)]
                     $arrStatus = [User::STATUS_INACTIVE => 'inactive', User::STATUS_ACTIVE => 'active'];
-                    return Module::t('user', $arrStatus[$model->status]);
+                    return Module::t('message', $arrStatus[$model->status]);
                 },
             ],
 
@@ -102,14 +102,14 @@ UserAsset::register($this);
                         return Html::a(
                             '<span class="glyphicon glyphicon-info-sign"></span>',
                             $url,
-                            ['title' => Module::t('user', 'profile')]
+                            ['title' => Module::t('message', 'profile')]
                         );
                     },
                     'verify' => function ($url, $model) {
                         return Html::a(
                             '<span class="glyphicon glyphicon-check"></span>',
                             $url,
-                            ['title' => Module::t('user', 'verify')]
+                            ['title' => Module::t('message', 'verify')]
                         );
                     }
                 ],

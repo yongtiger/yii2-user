@@ -66,8 +66,8 @@ class UserSearch extends User
     {
         $attributeLabels = parent::attributeLabels();
         
-        $attributeLabels['created_date_range'] = Module::t('user', 'Created Date Range');
-        $attributeLabels['updated_date_range'] = Module::t('user', 'Updated Date Range');
+        $attributeLabels['created_date_range'] = Module::t('message', 'Created Date Range');
+        $attributeLabels['updated_date_range'] = Module::t('message', 'Updated Date Range');
 
         return $attributeLabels;
     }

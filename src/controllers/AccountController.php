@@ -105,7 +105,7 @@ class AccountController extends Controller
     {
         ///Filter input. @see http://www.yiiframework.com/doc-2.0/guide-security-best-practices.html
         if (!in_array($item, ['username', 'email', 'password'])) {
-            Yii::$app->session->addFlash('error', Module::t('user', 'Invalid action!'));
+            Yii::$app->session->addFlash('error', Module::t('message', 'Invalid action!'));
             return $this->redirect(['account/index']);
         }
 

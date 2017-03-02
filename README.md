@@ -1,4 +1,4 @@
-# Yii2-user v0.16.0 (i18n anf a lot of fixes)
+# Yii2-user v0.16.1 (i18n:public static function registerTranslation)
 
 The most basic `user` module.
 
@@ -8,7 +8,7 @@ The most basic `user` module.
 [![License](https://poser.pugx.org/yongtiger/yii2-user/license)](https://packagist.org/packages/yongtiger/yii2-user)
 
 
-## Features
+## FEATURES
 * `User` module directly from Yii2 Advanced Template
 * internationalization with i18n
 * using `User` module both frontend & backend
@@ -27,7 +27,7 @@ The most basic `user` module.
 * token sender and handler
 * change forms (ChangeUsernameForm, ChangeEmailForm, ChangePasswordForm)
 
-## Dependences
+## DEPENDENCES
 
 * [Yii2 Advanced Template](https://github.com/yiisoft/yii2-app-advanced)
 
@@ -51,7 +51,7 @@ or add
 to the require section of your composer.json.
 
 
-## Configuration
+## CONFIGURATION
 
 ### \common\config\main.php
 
@@ -408,7 +408,7 @@ return [
 ```
 
 
-## Usage in frontend
+## USAGE IN FRONTEND
 
 - guest:
 
@@ -434,13 +434,13 @@ return [
 ```
 
 
-## Usage in backend
+## USAGE IN BACKEND
 
 ```
 
 ```
 
-## Notes
+## NOTES
 
 - CAPTCHA validation should not be used in AJAX validation mode. @see (http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html)
 
@@ -448,16 +448,16 @@ return [
 ## Documents
 
 
-## See also
+## SEE ALSO
 
 - [i18n:Long Text Translation](docs/i18n-long-text-translation.md)
 
 
-## Todo
+## TODO
 
 
 ## [Development roadmap](docs/development-roadmap.md)
 
 
-## License 
+## LICENSE 
 **Yii2-user** is released under the MIT license, see [LICENSE](https://opensource.org/licenses/MIT) file for details.

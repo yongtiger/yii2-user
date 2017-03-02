@@ -117,9 +117,9 @@ class ProfileController extends Controller
         $ret = $this->findModel($id)->delete();
         if($ret === false)
         {
-            Yii::$app->session->setFlash('error', Module::t('user', 'Failed to delete!') . ' (ID = '.$id.')');
+            Yii::$app->session->setFlash('error', Module::t('message', 'Failed to delete!') . ' (ID = '.$id.')');
         }else{
-            Yii::$app->session->setFlash('success', Module::t('user', 'Successfully deleted.') . ' (ID = '.$id.')');
+            Yii::$app->session->setFlash('success', Module::t('message', 'Successfully deleted.') . ' (ID = '.$id.')');
         }
 
         return $this->redirect(['index']);

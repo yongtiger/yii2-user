@@ -81,7 +81,7 @@ class TokenHandler extends Model
     public function validateKey($attribute, $params)
     {
         if (!static::isValidKey($this->$attribute)) {
-            $this->addError($attribute, Module::t('user', 'The token has been expired!'));
+            $this->addError($attribute, Module::t('message', 'The token has been expired!'));
             ///remove the expired token
             $this->getUser()->token = null;
             $this->getUser()->save(false);
@@ -143,29 +143,29 @@ class TokenHandler extends Model
                     $this->getUser()->generateAuthKey();
 
                     if ($this->getUser()->save(false)) {
-                        Yii::$app->session->addFlash('success', Module::t('user', 'Your account has been successfully activated ...'));
+                        Yii::$app->session->addFlash('success', Module::t('message', 'Your account has been successfully activated ...'));
                         return true;
                     }
 
-                    Yii::$app->session->addFlash('error', Module::t('user', 'Your account has not been activated! Please try again.'));
+                    Yii::$app->session->addFlash('error', Module::t('message', 'Your account has not been activated! Please try again.'));
                     return false;
 
                 case static::SCENARIO_RECOVERY:
                     if ($this->getUser()->save(false)) {
-                        Yii::$app->session->addFlash('success', Module::t('user', 'Please reset your password.'));
+                        Yii::$app->session->addFlash('success', Module::t('message', 'Please reset your password.'));
                         return true;
                     }
 
-                    Yii::$app->session->addFlash('error', Module::t('user', 'Failed to reset password! Please try again.'));
+                    Yii::$app->session->addFlash('error', Module::t('message', 'Failed to reset password! Please try again.'));
                     return false;
 
                 case static::SCENARIO_VERIFICATION:
                     if ($this->getUser()->save(false)) {
-                        Yii::$app->session->addFlash('success', Module::t('user', 'Your email has been successfully verified.'));
+                        Yii::$app->session->addFlash('success', Module::t('message', 'Your email has been successfully verified.'));
                         return true;
                     }
 
-                    Yii::$app->session->addFlash('error', Module::t('user', 'Your email has not been verified! Please try again.'));
+                    Yii::$app->session->addFlash('error', Module::t('message', 'Your email has not been verified! Please try again.'));
                     return false;
 
                 default:
@@ -173,7 +173,7 @@ class TokenHandler extends Model
             }
         }
 
-        Yii::$app->session->addFlash('error', Module::t('user', 'Failed to find a user!'));
+        Yii::$app->session->addFlash('error', Module::t('message', 'Failed to find a user!'));
         return false;
     }
 

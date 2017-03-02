@@ -25,8 +25,8 @@ use kartik\daterange\DateRangePicker;   ///??????
     <?php echo $form->field($model, 'email') ?>
 
     <?php echo $form->field($model, 'status')->dropDownList(
-            [User::STATUS_INACTIVE => Module::t('user', 'inactive'), User::STATUS_ACTIVE => Module::t('user', 'active')], 
-            ['prompt'=>Module::t('user', '(Please select ...)')]
+            [User::STATUS_INACTIVE => Module::t('message', 'inactive'), User::STATUS_ACTIVE => Module::t('message', 'active')], 
+            ['prompt'=>Module::t('message', '(Please select ...)')]
         );
     ?>
 
@@ -57,8 +57,8 @@ use kartik\daterange\DateRangePicker;   ///??????
     ]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Module::t('user', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Module::t('user', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(Module::t('message', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Module::t('message', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

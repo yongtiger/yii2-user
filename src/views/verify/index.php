@@ -9,7 +9,7 @@ use yongtiger\user\Module;
 /* @var $searchModel yongtiger\user\models\VerifySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('user', 'User Verify List');
+$this->title = Module::t('message', 'User Verify List');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

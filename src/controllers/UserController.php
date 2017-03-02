@@ -162,7 +162,7 @@ class UserController extends Controller
         }
 
         if ($load && $user = $model->save()) {
-            Yii::$app->session->setFlash('success', Module::t('user', 'Successfully created.'));
+            Yii::$app->session->setFlash('success', Module::t('message', 'Successfully created.'));
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -190,7 +190,7 @@ class UserController extends Controller
         }
 
         if ($load && $user = $model->save()) {
-            Yii::$app->session->setFlash('success', Module::t('user', 'Successfully updated.'));
+            Yii::$app->session->setFlash('success', Module::t('message', 'Successfully updated.'));
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -210,9 +210,9 @@ class UserController extends Controller
         $ret = $this->findModel($id)->delete();
         if($ret === false)
         {
-            Yii::$app->session->setFlash('error', Module::t('user', 'Failed to delete!') . ' (ID = '.$id.')');
+            Yii::$app->session->setFlash('error', Module::t('message', 'Failed to delete!') . ' (ID = '.$id.')');
         }else{
-            Yii::$app->session->setFlash('success', Module::t('user', 'Successfully deleted.') . ' (ID = '.$id.')');
+            Yii::$app->session->setFlash('success', Module::t('message', 'Successfully deleted.') . ' (ID = '.$id.')');
         }
 
         return $this->redirect(['index']);
@@ -249,7 +249,7 @@ class UserController extends Controller
         $ret = User::deleteAll(['id' => $arrSelected]);
 
         $str = $ret > 0 ? ' (IDs [' . implode(', ', $arrSelected) . '])' : '';
-        Yii::$app->session->setFlash('info', Module::t('user', 'Deleted {0} users.', $ret) . $str);
+        Yii::$app->session->setFlash('info', Module::t('message', 'Deleted {0} users.', $ret) . $str);
 
         return $this->redirect(['index']);
     }

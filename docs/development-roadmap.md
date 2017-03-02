@@ -1,6 +1,9 @@
 # Development roadmap
 
-## v0.16.0 (i18n anf a lot of fixes)
+## v0.16.1 (i18n:public static function registerTranslation)
+
+
+## v0.16.0 (i18n and a lot of fixes)
 
 
 ## v0.15.2 (a lot of fixes)

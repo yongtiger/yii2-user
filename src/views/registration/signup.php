@@ -10,13 +10,13 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yongtiger\user\Module;
 
-$this->title = Module::t('user', 'Signup');
+$this->title = Module::t('message', 'Signup');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="registration-signup">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p><?= Module::t('user', 'Please fill out the following fields:') ?></p>
+    <p><?= Module::t('message', 'Please fill out the following fields:') ?></p>
 
     <div class="row">
         <div class="col-lg-5">
@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?php if (\Yii::$app->getModule('user')->enableSignupWithEmail): ?>
                     <?php if (\Yii::$app->getModule('user')->enableSignupWithEmail && \Yii::$app->getModule('user')->enableSignupWithEmailActivation): ?>
-                        <?= $form->field($model, 'email')->textInput(['autofocus' => true])->hint(Module::t('user', 'An activation email will be sent.')) ?>
+                        <?= $form->field($model, 'email')->textInput(['autofocus' => true])->hint(Module::t('message', 'An activation email will be sent.')) ?>
                     <?php else: ?>
                         <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
                     <?php endif; ?>
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php endif; ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton(Module::t('user', 'Signup'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                    <?= Html::submitButton(Module::t('message', 'Signup'), ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>

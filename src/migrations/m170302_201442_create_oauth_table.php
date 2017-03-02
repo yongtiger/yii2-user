@@ -12,7 +12,7 @@
 
 use yii\db\Migration;
 
-class m170126_201444_init extends Migration
+class m170302_201442_create_oauth_table extends Migration
 {
     public function up()
     {

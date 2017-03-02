@@ -106,7 +106,7 @@ class SignupForm extends Model
             ['password', 'string', 'min' => 6],
 
             ///[Yii2 uesr:password]
-            ['password', 'match', 'pattern' => '/^[a-zA-Z0-9_\-\~\!\@\#\$\%\^\&\*\+\=\?\|\{\}\[\]\(\)]{6,20}$/', 'message' => Module::t('user', 'The password only contains letters ...')],
+            ['password', 'match', 'pattern' => '/^[a-zA-Z0-9_\-\~\!\@\#\$\%\^\&\*\+\=\?\|\{\}\[\]\(\)]{6,20}$/', 'message' => Module::t('message', 'The password only contains letters ...')],
 
         ];
 
@@ -130,9 +130,9 @@ class SignupForm extends Model
                 //  \x  Ignore whitespace
                 //[(\x{4E00}-\x{9FA5})a-zA-Z]+  The character starts with a Chinese character or letter and appears 1 to n times
                 //[(\x{4E00}-\x{9FA5})\w]*      Chinese characters underlined alphabet, there 0-n times
-                ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-z]+[(\x{4E00}-\x{9FA5})\w]*$/iu', 'message' => Module::t('user', 'The username only contains letters ...')],
+                ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-z]+[(\x{4E00}-\x{9FA5})\w]*$/iu', 'message' => Module::t('message', 'The username only contains letters ...')],
 
-                ['username', 'unique', 'skipOnError' => true, 'targetClass' => User::className(), 'message' => Module::t('user', 'This username has already been taken.')],
+                ['username', 'unique', 'skipOnError' => true, 'targetClass' => User::className(), 'message' => Module::t('message', 'This username has already been taken.')],
             ]);
         }
 
@@ -142,7 +142,7 @@ class SignupForm extends Model
                 ['email', 'required'],
                 ['email', 'string', 'max' => 255],
                 ['email', 'email'],
-                ['email', 'unique', 'skipOnError' => true, 'targetClass' => User::className(), 'message' => Module::t('user', 'This email address has already been taken.')],
+                ['email', 'unique', 'skipOnError' => true, 'targetClass' => User::className(), 'message' => Module::t('message', 'This email address has already been taken.')],
             ]);
         }
 
@@ -151,7 +151,7 @@ class SignupForm extends Model
             $rules = array_merge($rules, [
                 ['repassword', 'required'],
                 ['repassword', 'string', 'min' => 6],
-                ['repassword', 'compare', 'compareAttribute' => 'password', 'message' => Module::t('user', 'The two passwords do not match.')],
+                ['repassword', 'compare', 'compareAttribute' => 'password', 'message' => Module::t('message', 'The two passwords do not match.')],
             ]);
         }
 
@@ -173,24 +173,24 @@ class SignupForm extends Model
      */
     public function attributeLabels()
     {
-        $attributeLabels['password'] = Module::t('user', 'Password');
+        $attributeLabels['password'] = Module::t('message', 'Password');
 
         if (Yii::$app->getModule('user')->enableSignupWithUsername) {
-            $attributeLabels['username'] = Module::t('user', 'Username');
+            $attributeLabels['username'] = Module::t('message', 'Username');
         }
 
         if (Yii::$app->getModule('user')->enableSignupWithEmail) {
-            $attributeLabels['email'] = Module::t('user', 'Email');
+            $attributeLabels['email'] = Module::t('message', 'Email');
         }
 
         ///[Yii2 uesr:repassword]
         if (Yii::$app->getModule('user')->enableSignupWithRepassword) {
-            $attributeLabels['repassword'] = Module::t('user', 'Repeat Password');
+            $attributeLabels['repassword'] = Module::t('message', 'Repeat Password');
         }
 
         ///[Yii2 uesr:verifycode]
         if (Yii::$app->getModule('user')->enableSignupWithCaptcha) {
-            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');
+            $attributeLabels['verifyCode'] = Module::t('message', 'Verification Code');
         }
 
         return $attributeLabels;
@@ -316,7 +316,7 @@ class SignupForm extends Model
     protected function afterSignup()
     {
         // ...custom code here...
-        Yii::$app->session->addFlash('success', Module::t('user', 'Successfully registered.'));
+        Yii::$app->session->addFlash('success', Module::t('message', 'Successfully registered.'));
 
         ///[Yii2 uesr:activation via email:signup]send activation email
         (new SendTokenForm(['scenario' => SendTokenForm::SCENARIO_ACTIVATION, 'user' => $this->getUser()]))->sendEmail();

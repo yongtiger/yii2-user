@@ -6,8 +6,8 @@ use yongtiger\user\Module;
 /* @var $this yii\web\View */
 /* @var $model yongtiger\user\models\User */
 
-$this->title = Module::t('user', 'Create User');
-$this->params['breadcrumbs'][] = ['label' => Module::t('user', 'User List'), 'url' => ['index']];
+$this->title = Module::t('message', 'Create User');
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-create">

@@ -83,7 +83,7 @@ class SendTokenForm extends Model
                 'skipOnError' => true,
                 'targetClass' => User::className(),
                 'filter' => ['status' => $this->scenario == static::SCENARIO_ACTIVATION ? User::STATUS_INACTIVE : User::STATUS_ACTIVE],
-                'message' => Module::t('user', 'There is no user with such email.')
+                'message' => Module::t('message', 'There is no user with such email.')
             ],
         ];
 
@@ -104,11 +104,11 @@ class SendTokenForm extends Model
      */
     public function attributeLabels()
     {
-        $attributeLabels['email'] = Module::t('user', 'Email');
+        $attributeLabels['email'] = Module::t('message', 'Email');
 
         ///[Yii2 uesr:verifycode]
         if (Yii::$app->getModule('user')->enableSendTokenWithCaptcha) {
-            $attributeLabels['verifyCode'] = Module::t('user', 'Verification Code');
+            $attributeLabels['verifyCode'] = Module::t('message', 'Verification Code');
         }
 
         return $attributeLabels;
@@ -158,7 +158,7 @@ class SendTokenForm extends Model
         if ($this->getUser()) {
             ///Note: If duration is `0` (i.e. 1486065032_1486065032_hak0yANzhQAUVZoqWp-btm1dU2jN_ycx), `$validDuration > 0` return false.
             if ($this->getUser()->token && ($validDuration = TokenHandler::getValidDuration($this->getUser()->token)) > 0) {
-                Yii::$app->session->addFlash('error', Module::t('user', 'Please do not send email repeatedly! Try again in {valid-duration}.', ['valid-duration' => Yii::$app->formatter->asDuration($validDuration)]));
+                Yii::$app->session->addFlash('error', Module::t('message', 'Please do not send email repeatedly! Try again in {valid-duration}.', ['valid-duration' => Yii::$app->formatter->asDuration($validDuration)]));
                 return false;
             } else {
 
@@ -184,7 +184,7 @@ class SendTokenForm extends Model
             }
         }
 
-        Yii::$app->session->addFlash('error', Module::t('user', 'Failed to find a user!'));
+        Yii::$app->session->addFlash('error', Module::t('message', 'Failed to find a user!'));
         return false;
     }
 
@@ -206,10 +206,10 @@ class SendTokenForm extends Model
                     )
                     ->setFrom(Yii::$app->getModule('user')->signupWithEmailActivationSetFrom)
                     ->setTo($this->getUser()->email)
-                    ->setSubject(Module::t('user', 'Activation mail of the registration from ') . Yii::$app->name)
+                    ->setSubject(Module::t('message', 'Activation mail of the registration from ') . Yii::$app->name)
                     ->send()
                 ) {
-                    Yii::$app->session->addFlash('success', Module::t('user', 'Please check your email [{youremail}] to activate your account.', ['youremail' => $this->getUser()->email]));
+                    Yii::$app->session->addFlash('success', Module::t('message', 'Please check your email [{youremail}] to activate your account.', ['youremail' => $this->getUser()->email]));
                     return true;
                 }
                 return false;
@@ -224,10 +224,10 @@ class SendTokenForm extends Model
                     )
                     ->setFrom(Yii::$app->getModule('user')->recoveryPasswordSetFrom)
                     ->setTo($this->getUser()->email)
-                    ->setSubject(Module::t('user', 'Password reset for ') . Yii::$app->name)
+                    ->setSubject(Module::t('message', 'Password reset for ') . Yii::$app->name)
                     ->send()
                 ) {
-                    Yii::$app->session->addFlash('success', Module::t('user', 'Please check your email [{youremail}] for further instructions.', ['youremail' => $this->getUser()->email]));
+                    Yii::$app->session->addFlash('success', Module::t('message', 'Please check your email [{youremail}] for further instructions.', ['youremail' => $this->getUser()->email]));
                     return true;
                 }
                 return false;
@@ -242,10 +242,10 @@ class SendTokenForm extends Model
                     )
                     ->setFrom(Yii::$app->getModule('user')->accountVerifyEmailSetFrom)
                     ->setTo($this->getUser()->email)
-                    ->setSubject(Module::t('user', 'Verification mail from ') . Yii::$app->name)
+                    ->setSubject(Module::t('message', 'Verification mail from ') . Yii::$app->name)
                     ->send()
                 ) {
-                    Yii::$app->session->addFlash('success', Module::t('user', 'Please check your email [{youremail}] to verify your email.', ['youremail' => $this->getUser()->email]));
+                    Yii::$app->session->addFlash('success', Module::t('message', 'Please check your email [{youremail}] to verify your email.', ['youremail' => $this->getUser()->email]));
                     return true;
                 }
                 return false;

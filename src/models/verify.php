@@ -71,11 +71,11 @@ class Verify extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'user_id' => Module::t('user', 'User ID'),
-            'password_verified_at' => Module::t('user', 'Password Verified At'),
-            'email_verified_at' => Module::t('user', 'Email Verified At'),
-            'created_at' => Module::t('user', 'Created At'),
-            'updated_at' => Module::t('user', 'Updated At'),
+            'user_id' => Module::t('message', 'User ID'),
+            'password_verified_at' => Module::t('message', 'Password Verified At'),
+            'email_verified_at' => Module::t('message', 'Email Verified At'),
+            'created_at' => Module::t('message', 'Created At'),
+            'updated_at' => Module::t('message', 'Updated At'),
         ];
     }
 

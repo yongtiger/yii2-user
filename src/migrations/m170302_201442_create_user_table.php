@@ -12,7 +12,7 @@
 
 use yii\db\Migration;
 
-class m170128_201448_init extends Migration
+class m170302_201442_create_user_table extends Migration
 {
     public function up()
     {
@@ -22,20 +22,21 @@ class m170128_201448_init extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%verify}}', [
-            'user_id' => $this->primaryKey(),
-            'password_verified_at' => $this->integer(),
-            'email_verified_at' => $this->integer(),
+        $this->createTable('{{%user}}', [
+            'id' => $this->primaryKey(),
+            'username' => $this->string()->notNull()->unique(),
+            'auth_key' => $this->string(32)->notNull(),
+            'password_hash' => $this->string()->notNull(),
+            'token' => $this->string()->unique(),
+            'email' => $this->string()->notNull()->unique(),
+            'status' => $this->smallInteger()->notNull()->defaultValue(1),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
-            'KEY `user_id` (`user_id`) USING BTREE',
         ], $tableOptions);
-
-        $this->addForeignKey('fk_verify_user_id_user_id', '{{%verify}}', 'user_id', '{{%user}}', 'id', 'CASCADE');
     }
 
     public function down()
     {
-        $this->dropTable('{{%verify}}');
+        $this->dropTable('{{%user}}');
     }
 }

@@ -11,14 +11,14 @@ use yii\bootstrap\ActiveForm;
 use yongtiger\user\Module;
 use yongtiger\user\models\TokenHandler;
 
-$this->title = Module::t('user', 'Login');
+$this->title = Module::t('message', 'Login');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p><?= Module::t('user', 'Please fill out the following fields:') ?></p>
+    <p><?= Module::t('message', 'Please fill out the following fields:') ?></p>
 
     <div class="row">
         <div class="col-lg-12">
@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <!--///[v0.9.7 (backend:enableRecoveryPassword)]-->
                     <?php if (\Yii::$app->getModule('user')->enableRecoveryPassword): ?>
                         <div style="color:#999;margin:1em 0">
-                            <?= Module::t('user', 'If you forgot your password you can [{reset it}].', ['reset it' => Html::a(Module::t('user', 'reset it'), ['token/send-token', 'type' => TokenHandler::SCENARIO_RECOVERY])]) ?>
+                            <?= Module::t('message', 'If you forgot your password you can [{reset it}].', ['reset it' => Html::a(Module::t('message', 'reset it'), ['token/send-token', 'type' => TokenHandler::SCENARIO_RECOVERY])]) ?>
                         </div>
                     <?php endif; ?>
 
@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?php if (\Yii::$app->getModule('user')->enableLoginWithUsername || \Yii::$app->getModule('user')->enableLoginWithEmail): ?>
                     <div class="form-group">
-                        <?= Html::submitButton(Module::t('user', 'Login'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                        <?= Html::submitButton(Module::t('message', 'Login'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                     </div>
                 <?php endif; ?>
 

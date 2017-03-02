@@ -7,8 +7,8 @@ use yongtiger\user\models\TokenHandler;
 
 $link = Yii::$app->urlManager->createAbsoluteUrl(['user/token/handle-token', 'type' => TokenHandler::SCENARIO_VERIFICATION, 'token' => $user->token]);
 ?>
-<?= Module::t('user', 'Hello ') ?> <?= $user->username ?>,
+<?= Module::t('message', 'Hello ') ?> <?= $user->username ?>,
 
-<?= Module::t('user', 'Follow the link below to verify your email:') ?>
+<?= Module::t('message', 'Follow the link below to verify your email:') ?>
 
 <?= $link ?>

@@ -6,10 +6,10 @@ use yongtiger\user\Module;
 /* @var $this yii\web\View */
 /* @var $model yongtiger\user\models\Verify */
 
-$this->title = Module::t('user', 'Update User Verify') . ': ID ' . $model->user_id;
-$this->params['breadcrumbs'][] = ['label' => Module::t('user', 'User Verify List'), 'url' => ['index']];
+$this->title = Module::t('message', 'Update User Verify') . ': ID ' . $model->user_id;
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User Verify List'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => 'ID ' . $model->user_id, 'url' => ['view', 'id' => $model->user_id]];
-$this->params['breadcrumbs'][] = Module::t('user', 'Update');
+$this->params['breadcrumbs'][] = Module::t('message', 'Update');
 ?>
 <div class="verify-update">
 

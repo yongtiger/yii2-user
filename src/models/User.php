@@ -111,13 +111,13 @@ class User extends ActiveRecord implements IdentityInterface
             //  \x  Ignore whitespace
             //[(\x{4E00}-\x{9FA5})a-zA-Z]+  The character starts with a Chinese character or letter and appears 1 to n times
             //[(\x{4E00}-\x{9FA5})\w]*      Chinese characters underlined alphabet, there 0-n times
-            ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-z]+[(\x{4E00}-\x{9FA5})\w]*$/iu', 'message' => Module::t('user', 'The username only contains letters ...')],
+            ['username', 'match', 'pattern' => '/^[(\x{4E00}-\x{9FA5})a-z]+[(\x{4E00}-\x{9FA5})\w]*$/iu', 'message' => Module::t('message', 'The username only contains letters ...')],
             ['username', 'unique'],
 
             ///[yii2-uesr:password]
             ['password', 'required', 'on' => 'create'],   ///[yii2-user:password]password must be required to verify at `create`, and has not to be verified at `update`
             ['password', 'string', 'min' => 6],
-            ['password', 'match', 'pattern' => '/^[a-zA-Z0-9_\-\~\!\@\#\$\%\^\&\*\+\=\?\|\{\}\[\]\(\)]{6,20}$/', 'message' => Module::t('user', 'The password only contains letters ...')],  ///skipOnEmpty缺省为true，所以当没有输入密码时，忽略该项验证规则
+            ['password', 'match', 'pattern' => '/^[a-zA-Z0-9_\-\~\!\@\#\$\%\^\&\*\+\=\?\|\{\}\[\]\(\)]{6,20}$/', 'message' => Module::t('message', 'The password only contains letters ...')],  ///skipOnEmpty缺省为true，所以当没有输入密码时，忽略该项验证规则
 
             ['email', 'required'],
             ['email', 'trim'],
@@ -139,12 +139,12 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'username' => Module::t('user', 'Username'),
-            'password' => Module::t('user', 'Password'),
-            'email' => Module::t('user', 'Email'),
-            'status' => Module::t('user', 'Status'),
-            'created_at' => Module::t('user', 'Created At'),
-            'updated_at' => Module::t('user', 'Updated At'),
+            'username' => Module::t('message', 'Username'),
+            'password' => Module::t('message', 'Password'),
+            'email' => Module::t('message', 'Email'),
+            'status' => Module::t('message', 'Status'),
+            'created_at' => Module::t('message', 'Created At'),
+            'updated_at' => Module::t('message', 'Updated At'),
         ];
     }
 
@@ -265,7 +265,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException(Module::t('user', '"findIdentityByAccessToken" is not implemented.'));
+        throw new NotSupportedException(Module::t('message', '"findIdentityByAccessToken" is not implemented.'));
     }
 
     /**

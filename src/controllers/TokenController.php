@@ -78,7 +78,7 @@ class TokenController extends Controller
     {
         ///Filter input. @see http://www.yiiframework.com/doc-2.0/guide-security-best-practices.html
         if (!$this->filterSendToken($type)) {
-            Yii::$app->session->addFlash('error', Module::t('user', 'Invalid action!'));
+            Yii::$app->session->addFlash('error', Module::t('message', 'Invalid action!'));
             return Yii::$app->user->isGuest ? $this->goHome() : $this->redirect(['account/index']);
         }
 
@@ -136,7 +136,7 @@ class TokenController extends Controller
     {
         ///Filter input. @see http://www.yiiframework.com/doc-2.0/guide-security-best-practices.html
         if (!$this->filterHandleToken($type, $token)) {
-            Yii::$app->session->addFlash('error', Module::t('user', 'Invalid action!'));
+            Yii::$app->session->addFlash('error', Module::t('message', 'Invalid action!'));
             return Yii::$app->user->isGuest ? $this->goHome() : $this->redirect(['account/index']);
         }
 

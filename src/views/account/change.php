@@ -12,14 +12,14 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use yongtiger\user\Module;
 
-$this->title = Module::t('user', 'Change') . Module::t('user', ucfirst($item));
-$this->params['breadcrumbs'][] = ['label' => Module::t('user', 'Account'), 'url' => Url::to(['account/index'])];
+$this->title = Module::t('message', 'Change') . Module::t('message', ucfirst($item));
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'Account'), 'url' => Url::to(['account/index'])];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="account-change">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p><?= Module::t('user', 'Please fill out the following fields:') ?></p>
+    <p><?= Module::t('message', 'Please fill out the following fields:') ?></p>
 
     <div class="row">
         <div class="col-lg-5">
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ]); ?>
                 
                 <?php if (isset(\Yii::$app->user->identity->verify->password_verified_at) && \Yii::$app->getModule('user')->enableAccountChangeWithPassword): ?><!--///[Yii2 uesr:verify]-->
-                    <?= $form->field($model, 'password')->passwordInput(['autofocus' => true])->label(Module::t('user', 'You must provide your account password when changing')) ?>
+                    <?= $form->field($model, 'password')->passwordInput(['autofocus' => true])->label(Module::t('message', 'You must provide your account password when changing')) ?>
                 <?php endif; ?>
 
                 <?php if ($item === 'username'): ?>
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php endif; ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton(Module::t('user', 'Save'), ['class' => 'btn btn-primary', 'name' => 'change-button']) ?>
+                    <?= Html::submitButton(Module::t('message', 'Save'), ['class' => 'btn btn-primary', 'name' => 'change-button']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>

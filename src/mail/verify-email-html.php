@@ -9,9 +9,9 @@ use yongtiger\user\models\TokenHandler;
 $link = Yii::$app->urlManager->createAbsoluteUrl(['user/token/handle-token', 'type' => TokenHandler::SCENARIO_VERIFICATION, 'token' => $user->token]);
 ?>
 <div class="verify-email">
-    <p><?= Module::t('user', 'Hello ') ?> <?= Html::encode($user->username) ?>,</p>
+    <p><?= Module::t('message', 'Hello ') ?> <?= Html::encode($user->username) ?>,</p>
 
-    <p><?= Module::t('user', 'Follow the link below to verify your email:') ?></p>
+    <p><?= Module::t('message', 'Follow the link below to verify your email:') ?></p>
 
     <p><?= Html::a(Html::encode($link), $link) ?></p>
 </div>

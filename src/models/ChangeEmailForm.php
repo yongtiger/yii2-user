@@ -43,7 +43,7 @@ class ChangeEmailForm extends ChangeForm
             ['email', 'required'],
             ['email', 'string', 'max' => 255],
             ['email', 'email'],
-            ['email', 'unique', 'skipOnError' => true, 'targetClass' => User::className(), 'message' => Module::t('user', 'This email address has already been taken.')],
+            ['email', 'unique', 'skipOnError' => true, 'targetClass' => User::className(), 'message' => Module::t('message', 'This email address has already been taken.')],
         ]);
 
         return $rules;
@@ -56,7 +56,7 @@ class ChangeEmailForm extends ChangeForm
     {
         $attributeLabels = parent::attributeLabels();
         
-        $attributeLabels['email'] = Module::t('user', 'Email');
+        $attributeLabels['email'] = Module::t('message', 'Email');
 
         return $attributeLabels;
     }

@@ -64,10 +64,10 @@ class VerifySearch extends Verify
     {
         $attributeLabels = parent::attributeLabels();
         
-        $attributeLabels['password_verified_date_range'] = Module::t('user', 'Password Verified Date Range');
-        $attributeLabels['email_verified_date_range'] = Module::t('user', 'Email Verified Date Range');
-        $attributeLabels['created_date_range'] = Module::t('user', 'Created Date Range');
-        $attributeLabels['updated_date_range'] = Module::t('user', 'Updated Date Range');
+        $attributeLabels['password_verified_date_range'] = Module::t('message', 'Password Verified Date Range');
+        $attributeLabels['email_verified_date_range'] = Module::t('message', 'Email Verified Date Range');
+        $attributeLabels['created_date_range'] = Module::t('message', 'Created Date Range');
+        $attributeLabels['updated_date_range'] = Module::t('message', 'Updated Date Range');
 
         return $attributeLabels;
     }

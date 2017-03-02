@@ -14,20 +14,20 @@ use yongtiger\user\Module;
 
 switch ($type) {
     case 'activation':
-        $this->title = Module::t('user', 'Send activation email');
+        $this->title = Module::t('message', 'Send activation email');
         $this->params['breadcrumbs'][] = $this->title;
-        $desc = Module::t('user', 'Please fill out your registration email. A link to activation will be sent there.');
+        $desc = Module::t('message', 'Please fill out your registration email. A link to activation will be sent there.');
         break;
     case 'recovery':
-        $this->title = Module::t('user', 'Request password reset');
+        $this->title = Module::t('message', 'Request password reset');
         $this->params['breadcrumbs'][] = $this->title;
-        $desc = Module::t('user', 'Please fill out your registration email. A link to reset password will be sent there.');
+        $desc = Module::t('message', 'Please fill out your registration email. A link to reset password will be sent there.');
         break;
     case 'verification':
-        $this->title = Module::t('user', 'Verify email');
-        $this->params['breadcrumbs'][] = ['label' => Module::t('user', 'Account'), 'url' => Url::to(['account/index'])];
+        $this->title = Module::t('message', 'Verify email');
+        $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'Account'), 'url' => Url::to(['account/index'])];
         $this->params['breadcrumbs'][] = $this->title;
-        $desc = Module::t('user', 'Please fill out your registration email. A link to verify email will be sent there.');
+        $desc = Module::t('message', 'Please fill out your registration email. A link to verify email will be sent there.');
         break;
     default:
         return;
@@ -75,7 +75,7 @@ switch ($type) {
                 <?php endif; ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton(Module::t('user', 'Send'), ['class' => 'btn btn-primary']) ?>
+                    <?= Html::submitButton(Module::t('message', 'Send'), ['class' => 'btn btn-primary']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>
