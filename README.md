@@ -32,7 +32,7 @@ The most basic `user` module.
 * [Yii2 Advanced Template](https://github.com/yiisoft/yii2-app-advanced)
 
 
-## Installation   
+## INSTALLATION   
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
@@ -445,7 +445,7 @@ return [
 - CAPTCHA validation should not be used in AJAX validation mode. @see (http://www.yiiframework.com/doc-2.0/yii-captcha-captchavalidator.html)
 
 
-## Documents
+## DOCUMENTS
 
 
 ## SEE ALSO
