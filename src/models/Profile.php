@@ -27,9 +27,7 @@ use yongtiger\user\Module;
  * @property string $language
  * @property string $avatar
  * @property string $link
- * @property integer $birthyear
- * @property integer $birthmonth
- * @property integer $birthday
+ * @property string $birthday
  * @property string $country
  * @property string $province
  * @property string $city
@@ -78,9 +76,10 @@ class Profile extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'created_at', 'updated_at'], 'required'],
-            [['user_id', 'gender', 'birthyear', 'birthmonth', 'birthday', 'created_at', 'updated_at'], 'integer'],
+            [['user_id', 'gender', 'created_at', 'updated_at'], 'integer'],
             [['fullname', 'firstname', 'lastname', 'language', 'avatar', 'link', 'country', 'province', 'city', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            ['birthday', 'date'],   ///[v0.17.2 (profile birthday:DatePicker)]
         ];
     }
 
@@ -98,8 +97,6 @@ class Profile extends \yii\db\ActiveRecord
             'language' => Module::t('message', 'Language'),
             'avatar' => Module::t('message', 'Avatar'),
             'link' => Module::t('message', 'Link'),
-            'birthyear' => Module::t('message', 'Birthyear'),
-            'birthmonth' => Module::t('message', 'Birthmonth'),
             'birthday' => Module::t('message', 'Birthday'),
             'country' => Module::t('message', 'Country'),
             'province' => Module::t('message', 'Province'),

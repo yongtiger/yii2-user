@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yongtiger\user\Module;
 use kartik\widgets\ActiveForm;  ///??????
 use kartik\daterange\DateRangePicker;   ///??????
+use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model yongtiger\user\models\ProfileSearch */
@@ -33,11 +34,10 @@ use kartik\daterange\DateRangePicker;   ///??????
 
     <?= $form->field($model, 'link') ?>
 
-    <?= $form->field($model, 'birthyear') ?>
-
-    <?= $form->field($model, 'birthmonth') ?>
-
-    <?= $form->field($model, 'birthday') ?>
+    <!--///[v0.17.2 (profile birthday:DatePicker)]@see http://www.yiiframework.com/doc-2.0/yii-jui-datepicker.html-->
+    <?= $form->field($model, 'birthday')->widget(DatePicker::classname(), [
+        'dateFormat' => 'yyyy-MM-dd',
+    ]) ?>
 
     <?= $form->field($model, 'country') ?>
 

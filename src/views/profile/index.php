@@ -39,9 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'language',
             'avatar',
             'link',
-            'birthyear',
-            'birthmonth',
-            'birthday',
+            'birthday:date',    ///[v0.17.2 (birthday update:DatePicker)]
             'country',
             'province',
             'city',

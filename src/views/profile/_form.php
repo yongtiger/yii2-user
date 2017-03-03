@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yongtiger\user\Module;
+use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model yongtiger\user\models\Profile */
@@ -35,11 +36,10 @@ use yongtiger\user\Module;
 
     <?= $form->field($model, 'link')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'birthyear')->textInput() ?>
-
-    <?= $form->field($model, 'birthmonth')->textInput() ?>
-
-    <?= $form->field($model, 'birthday')->textInput() ?>
+    <!--///[v0.17.2 (profile birthday:DatePicker)]@see http://www.yiiframework.com/doc-2.0/yii-jui-datepicker.html-->
+    <?= $form->field($model, 'birthday')->widget(DatePicker::classname(), [
+        'dateFormat' => 'yyyy-MM-dd',
+    ]) ?>
 
     <?= $form->field($model, 'country')->textInput(['maxlength' => true]) ?>
 

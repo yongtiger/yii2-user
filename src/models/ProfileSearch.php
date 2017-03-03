@@ -32,9 +32,9 @@ class ProfileSearch extends Profile
     public function rules()
     {
         return [
-            [['user_id', 'gender', 'birthyear', 'birthmonth', 'birthday', 'created_at', 'updated_at'], 'integer'],
+            [['user_id', 'gender', 'created_at', 'updated_at'], 'integer'],
             [['fullname', 'firstname', 'lastname', 'language', 'avatar', 'link', 'country', 'province', 'city', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue', 'created_date_range', 'updated_date_range'], 'safe'],  ///[yii2-user:daterangepicker]
-
+            ['birthday', 'date'],   ///[v0.17.2 (profile birthday:DatePicker)]
             [['created_at', 'updated_at'], 'default', 'value' => null], ///[yii2-user:datepicker] @see http://www.yiiframework.com/doc-2.0/yii-jui-datepicker.html
             [['created_at', 'updated_at'], 'date', 'format' => 'yyyy-MM-dd']  ///[yii2-user:datepicker]
         ];
@@ -92,9 +92,7 @@ class ProfileSearch extends Profile
         $query->andFilterWhere([
             'user_id' => $this->user_id,
             'gender' => $this->gender,
-            'birthyear' => $this->birthyear,
-            'birthmonth' => $this->birthmonth,
-            'birthday' => $this->birthday,
+            'birthday' => $this->birthday,  ///[v0.17.2 (profile birthday:DatePicker)]
             'DATE(FROM_UNIXTIME(created_at))' => $this->created_at, ///[yii2-user:daterangepicker]
             'DATE(FROM_UNIXTIME(updated_at))' => $this->updated_at, ///[yii2-user:daterangepicker]
         ]);
