@@ -39,7 +39,7 @@ class VerifyController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['index', 'view'],
-                        'roles' => ['@'],
+                        'roles' => ['permission_access_app-backend'],   ///[v0.17.1 (AccessControl `permission_access_app-backend` of update and verify)]
                     ],
                 ],
             ],
@@ -82,7 +82,7 @@ class VerifyController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Verify::findOne($id)) !== null) {
+        if (($model = Verify::findOne($id)) !== null) { ///??????memory or query cache
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

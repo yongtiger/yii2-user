@@ -40,7 +40,7 @@ class ProfileController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['index', 'view'],
-                        'roles' => ['@'],
+                        'roles' => ['permission_access_app-backend'],   ///[v0.17.1 (AccessControl `permission_access_app-backend` of update and verify)]
                     ],
 
                     [   ///[v0.17.0 (AccessControl of update profile and remove update verify)]
@@ -131,7 +131,7 @@ class ProfileController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Profile::findOne($id)) !== null) {
+        if (($model = Profile::findOne($id)) !== null) {    ///??????memory or query cache
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
