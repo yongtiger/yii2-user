@@ -1,4 +1,4 @@
-# Yii2-user v0.16.1 (i18n:public static function registerTranslation)
+# Yii2-user v0.17.0 (AccessControl of update profile and remove update verify)
 
 The most basic `user` module.
 

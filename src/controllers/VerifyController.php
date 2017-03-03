@@ -37,16 +37,10 @@ class VerifyController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'update', 'delete'],
                         'allow' => true,
+                        'actions' => ['index', 'view'],
                         'roles' => ['@'],
                     ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
                 ],
             ],
         ];
@@ -77,52 +71,6 @@ class VerifyController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
-    }
-
-    /**
-     * Updates an existing Verify model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        $load = $model->load(Yii::$app->request->post());
-
-        ///[yii2-uesr:Ajax validation]
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($model);
-        }
-
-        if ($load && $user = $model->save()) {
-            return $this->redirect(['view', 'id' => $model->user_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Deletes an existing Verify model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $ret = $this->findModel($id)->delete();
-        if($ret === false)
-        {
-            Yii::$app->session->setFlash('error', Module::t('message', 'Failed to delete!') . ' (ID = '.$id.')');
-        }else{
-            Yii::$app->session->setFlash('success', Module::t('message', 'Successfully deleted.') . ' (ID = '.$id.')');
-        }
-
-        return $this->redirect(['index']);
     }
 
     /**

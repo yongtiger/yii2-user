@@ -21,6 +21,7 @@ use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yongtiger\user\models\Profile;
 use yongtiger\user\models\ProfileSearch;
+use yongtiger\user\models\User;
 
 /**
  * ProfileController implements the CRUD actions for Profile model.
@@ -37,16 +38,31 @@ class ProfileController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'update', 'delete'],
                         'allow' => true,
+                        'actions' => ['index', 'view'],
                         'roles' => ['@'],
                     ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+
+                    [   ///[v0.17.0 (AccessControl of update profile and remove update verify)]
+                        'actions' => ['update'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $me = Yii::$app->user->identity;
+                            $useId = Yii::$app->request->get('id');
+                            $user = $this->findModel($useId)->user;   ///gets the manipulated User object
+
+                            return
+                                $me->id == $user->id  ///if the manipulated user is `me`, update is allowed
+                                ||
+                                in_array(User::ROLE_ADMIN, $me->roles)  ///if `me` is `ROLE_ADMIN`, update is allowed
+                                ||
+                                in_array(User::ROLE_SUPER_MODERATOR, $me->roles) &&
+                                    (!in_array(User::ROLE_ADMIN, $user->roles) && !in_array(User::ROLE_SUPER_MODERATOR, $user->roles)) ///if `me` is `ROLE_SUPER_MODERATOR` and the manipulated user is not `ROLE_ADMIN` nor `ROLE_SUPER_MODERATOR`, update is allowed
+                                // || ... more rules as you customize
+                            ;
+                        }
+                    ],
                 ],
             ],
         ];
@@ -104,25 +120,6 @@ class ProfileController extends Controller
                 'model' => $model,
             ]);
         }
-    }
-
-    /**
-     * Deletes an existing Profile model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $ret = $this->findModel($id)->delete();
-        if($ret === false)
-        {
-            Yii::$app->session->setFlash('error', Module::t('message', 'Failed to delete!') . ' (ID = '.$id.')');
-        }else{
-            Yii::$app->session->setFlash('success', Module::t('message', 'Successfully deleted.') . ' (ID = '.$id.')');
-        }
-
-        return $this->redirect(['index']);
     }
 
     /**

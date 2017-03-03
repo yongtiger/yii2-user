@@ -15,9 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a(Module::t('message', 'Update'), ['update', 'id' => $model->user_id], ['class' => 'btn btn-success']) ?>
-    </p>
+    <!--///[v0.17.0 (AccessControl of update profile and remove update verify)]-->
 
     <?= DetailView::widget([
         'model' => $model,

@@ -118,7 +118,7 @@ UserAsset::register($this);
                         $url = ['profile/update', 'id' => $key];
                         return $url;
                     } else if ($action === 'verify') {
-                        $url = ['verify/update', 'id' => $key];
+                        $url = ['verify/view', 'id' => $key];   ///[v0.17.0 (AccessControl of update profile and remove update verify)]
                         return $url;
                     } else {    ///@see http://stackoverflow.com/questions/29642962/actioncolumns-button-with-custom-url
                         return [$action, 'id' => $model->id];

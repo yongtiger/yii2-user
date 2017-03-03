@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.17.0 (AccessControl of update profile and remove update verify)
+
+
 ## v0.16.1 (i18n:public static function registerTranslation)
 
 
