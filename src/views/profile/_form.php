@@ -40,13 +40,30 @@ use yii\jui\DatePicker;
     <?= $form->field($model, 'birthday')->widget(DatePicker::classname(), [
         'dateFormat' => 'yyyy-MM-dd',
         'options' => ['class' => 'form-control'],
+
     ]) ?>
 
     <?= $form->field($model, 'country')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'province')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'province')->widget(\yongtiger\region\Region::className(),[
+        'model'=>$model,
+        'url'=>$url,
+        'province'=>[
+            'attribute'=>'province',
+            'items'=>Region::getRegion(),
+            'options'=>['class'=>'form-control form-control-inline','prompt'=>'Select province ...']
+        ],
+        'city'=>[
+            'attribute'=>'city',
+            'items'=>Region::getRegion($model['province']),
+            'options'=>['class'=>'form-control form-control-inline','prompt'=>'Select city ...']
+        ],
+        'district'=>[
+            'attribute'=>'district',
+            'items'=>Region::getRegion($model['city']),
+            'options'=>['class'=>'form-control form-control-inline','prompt'=>'Select district ...']
+        ]
+    ]); ?>
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 

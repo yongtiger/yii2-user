@@ -1,4 +1,4 @@
-# Yii2-user v0.17.2 (profile birthday:DatePicker)
+# Yii2-user v0.17.3 (profile region widget)
 
 The most basic `user` module.
 
