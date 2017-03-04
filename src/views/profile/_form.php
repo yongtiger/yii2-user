@@ -2,8 +2,11 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yongtiger\user\Module;
 use yii\jui\DatePicker;
+use yii\helpers\Url;
+use yongtiger\user\Module;
+use yongtiger\region\widgets\RegionWidget;
+use yongtiger\region\models\Region;
 
 /* @var $this yii\web\View */
 /* @var $model yongtiger\user\models\Profile */
@@ -45,25 +48,12 @@ use yii\jui\DatePicker;
 
     <?= $form->field($model, 'country')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'province')->widget(\yongtiger\region\Region::className(),[
-        'model'=>$model,
-        'url'=>$url,
-        'province'=>[
-            'attribute'=>'province',
-            'items'=>Region::getRegion(),
-            'options'=>['class'=>'form-control form-control-inline','prompt'=>'Select province ...']
-        ],
-        'city'=>[
-            'attribute'=>'city',
-            'items'=>Region::getRegion($model['province']),
-            'options'=>['class'=>'form-control form-control-inline','prompt'=>'Select city ...']
-        ],
-        'district'=>[
-            'attribute'=>'district',
-            'items'=>Region::getRegion($model['city']),
-            'options'=>['class'=>'form-control form-control-inline','prompt'=>'Select district ...']
-        ]
-    ]); ?>
+    <!--///[v0.17.3 (profile region widget)]-->
+    <?= $form->field($model, 'region')->widget(RegionWidget::className(), [
+        'provinceAttribute' => 'province',
+        'cityAttribute' => 'city',
+        'districtAttribute' => 'district'
+    ]) ?>
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 

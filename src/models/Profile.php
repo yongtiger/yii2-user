@@ -31,6 +31,7 @@ use yongtiger\user\Module;
  * @property string $country
  * @property string $province
  * @property string $city
+ * @property string $district
  * @property string $address
  * @property string $telephone
  * @property string $mobile
@@ -72,12 +73,12 @@ class Profile extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules() ///?????
+    public function rules()
     {
         return [
             [['user_id', 'created_at', 'updated_at'], 'required'],
-            [['user_id', 'gender', 'created_at', 'updated_at'], 'integer'],
-            [['fullname', 'firstname', 'lastname', 'language', 'avatar', 'link', 'country', 'province', 'city', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'string', 'max' => 255],
+            [['user_id', 'province', 'city', 'district', 'gender', 'created_at', 'updated_at'], 'integer'],
+            [['fullname', 'firstname', 'lastname', 'language', 'avatar', 'link', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             ['birthday', 'date'],   ///[v0.17.2 (profile birthday:DatePicker)]
         ];
@@ -99,8 +100,10 @@ class Profile extends \yii\db\ActiveRecord
             'link' => Module::t('message', 'Link'),
             'birthday' => Module::t('message', 'Birthday'),
             'country' => Module::t('message', 'Country'),
+            'region' => Module::t('message', 'Region'), ///[v0.17.3 (profile region widget)]
             'province' => Module::t('message', 'Province'),
             'city' => Module::t('message', 'City'),
+            'district' => Module::t('message', 'District'), ///[v0.17.3 (profile region widget)]
             'address' => Module::t('message', 'Address'),
             'telephone' => Module::t('message', 'Telephone'),
             'mobile' => Module::t('message', 'Mobile'),

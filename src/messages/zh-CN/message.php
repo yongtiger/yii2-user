@@ -143,8 +143,10 @@ return [
 	'Birthmonth' => '出生月份',
 	'Birthday' => '出生日期',
 	'Country' => '国家',
+	'Region' => '所在地',
 	'Province' => '省份',
 	'City' => '城市',
+	'District' => '区县',
 	'Address' => '地址',
 	'Telephone' => '电话',
 	'Mobile' => '手机',
@@ -265,7 +267,7 @@ return [
 	///\vendor\yongtiger\yii2-user\src\views\profile\view.php
 	'View User Profile' => '查看用户资料',
 	'User Profile' => '用户资料',
-	
+
 	///\vendor\yongtiger\yii2-user\src\views\verify\index.php
 	'User Verify List' => '用户验证列表',
 

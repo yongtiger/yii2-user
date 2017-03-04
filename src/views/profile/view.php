@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yongtiger\user\Module;
+use yongtiger\region\widgets\RegionWidget;
+use yongtiger\region\models\Region;
 
 /* @var $this yii\web\View */
 /* @var $model yongtiger\user\models\Profile */
@@ -31,8 +33,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'link',
             'birthday:date',    ///[v0.17.2 (profile birthday:DatePicker)]
             'country',
-            'province',
-            'city',
+
+            ///[v0.17.3 (profile region widget)]
+            [
+                'label' => Module::t('message', 'Region'),
+                'value' => Region::createRegion($model->province, $model->city, $model->district),            
+            ],
+
             'address',
             'telephone',
             'mobile',
