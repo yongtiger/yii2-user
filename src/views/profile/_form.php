@@ -43,7 +43,6 @@ use yongtiger\region\models\Region;
     <?= $form->field($model, 'birthday')->widget(DatePicker::classname(), [
         'dateFormat' => 'yyyy-MM-dd',
         'options' => ['class' => 'form-control'],
-
     ]) ?>
 
     <?= $form->field($model, 'country')->textInput(['maxlength' => true]) ?>

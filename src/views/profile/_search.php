@@ -37,6 +37,7 @@ use yii\jui\DatePicker;
     <!--///[v0.17.2 (profile birthday:DatePicker)]@see http://www.yiiframework.com/doc-2.0/yii-jui-datepicker.html-->
     <?= $form->field($model, 'birthday')->widget(DatePicker::classname(), [
         'dateFormat' => 'yyyy-MM-dd',
+        'options' => ['class' => 'form-control'],   ///[v0.17.4 (fix# profile birthday:DatePicker)]
     ]) ?>
 
     <?= $form->field($model, 'country') ?>
