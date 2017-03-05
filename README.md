@@ -1,4 +1,4 @@
-# Yii2-user v0.17.4 (fix# profile birthday:DatePicker)
+# Yii2-user v0.17.5 (fix# site-login)
 
 The most basic `user` module.
 

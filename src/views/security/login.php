@@ -13,8 +13,10 @@ use yongtiger\user\models\TokenHandler;
 
 $this->title = Module::t('message', 'Login');
 $this->params['breadcrumbs'][] = $this->title;
-?>
 
+$this->registerCss(".site-login { width: 360px; margin: 7% auto; }");
+
+?>
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
 
