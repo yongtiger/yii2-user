@@ -1,4 +1,4 @@
-# Yii2-user v0.17.5 (fix# site-login)
+# Yii2-user v0.17.6 (TYPO# TokenController.php, views/send-token.php:send-token)
 
 The most basic `user` module.
 

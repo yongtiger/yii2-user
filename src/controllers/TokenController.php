@@ -101,7 +101,7 @@ class TokenController extends Controller
             return $this->redirect(['account/index']);
         }
 
-        return $this->render('sendToken', ['model' => $model, 'type' => $type]);
+        return $this->render('send-token', ['model' => $model, 'type' => $type]);
     }
 
     /**
