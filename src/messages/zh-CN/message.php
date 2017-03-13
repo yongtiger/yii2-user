@@ -48,11 +48,11 @@ return [
 	'Invalid action!' => '无效操作！',
 	
 	///\vendor\yongtiger\yii2-user\src\controllers\UserController.php
-	'Successfully created.' => '创建用户成功。',
-	'Successfully updated.' => '更新用户成功。',
-	'Successfully deleted.' => '删除用户成功。',
-	'Failed to delete!' => '删除用户失败！',
-	'user', 'Deleted {0} users.' => '共删除了 {0} 个用户。',
+	'Successfully created.' => '创建成功。',
+	'Successfully updated.' => '更新成功。',
+	'Successfully deleted.' => '删除成功。',
+	'Failed to delete!' => '删除失败！',
+	'Deleted {0} users.' => '共删除了 {0} 个用户。',
 	
 	/**
 	 * Models
