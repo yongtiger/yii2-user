@@ -89,8 +89,11 @@ return [
 	'Remember me' => '记住我',
 	'Incorrect username or password.' => '用户名或密码不正确。',
 	'Your account is invalid!' => '您的账户无效！',
-	'Your account is not activated! Click [{resend}] an activation Email.' => '您的账户没有激活！点击 [{resend}] 激活邮件。',
+	'Your account is not activated!' => '您的账户没有激活！',
+	'Click [{resend}] an activation Email.' => '点击 [{resend}] 激活邮件。',
 	'Resend' => '重新发送',
+	'Signup with email activation is not enabled!' => '系统激活邮件功能没有开启！',
+	'Please contact to the administrator.' => '请联系管理员。',
 
 	///\vendor\yongtiger\yii2-user\src\models\ChangeForm.php
 	//////[Yii2 uesr:account]

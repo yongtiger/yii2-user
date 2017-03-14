@@ -285,13 +285,18 @@ class LoginForm extends Model
                 Yii::$app->session->addFlash('error', Module::t('message', 'Your account is invalid!'));
                 $event->isValid = false;
             } else if ($this->getUser()->status == User::STATUS_INACTIVE) {
-                ///[Yii2 uesr:activation via email:login]
-                Yii::$app->session->addFlash('warning',
-                    Module::t('message',
-                        'Your account is not activated! Click [{resend}] an activation Email.',
+                ///[v0.18.2 (CHG# \models\LoginForm.php:beforeLogin():enableSignupWithEmailActivation)]
+                $msg = Module::t('message', 'Your account is not activated!');
+                if (Yii::$app->getModule('user')->enableSignupWithEmailActivation) {
+                    $msg .= '\n' . Module::t('message', 'Click [{resend}] an activation Email.',
                         ['resend'=>Module::t('message', Html::a(Module::t('message', 'Resend'), ['token/send-token', 'type' => 'activation']))]
-                    )
-                );
+                    );
+                } else {
+                    $msg .= '\n' . Module::t('message', 'Signup with email activation is not enabled!');
+                    $msg .= '\n' . Module::t('message', 'Please contact to the administrator.');
+                }
+                ///[Yii2 uesr:activation via email:login]
+                Yii::$app->session->addFlash('warning', $msg);
                 $event->isValid = false;
             }
 

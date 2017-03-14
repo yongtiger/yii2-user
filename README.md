@@ -1,4 +1,4 @@
-# Yii2-user v0.18.1 (CHG# \views\account\index.php:Account Security)
+# Yii2-user v0.18.2 (CHG# \models\LoginForm.php:beforeLogin():enableSignupWithEmailActivation)
 
 The most basic `user` module.
 
