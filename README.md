@@ -1,4 +1,4 @@
-# Yii2-user v0.18.0 (user status, count and a lot of typos)
+# Yii2-user v0.18.1 (CHG# \views\account\index.php:Account Security)
 
 The most basic `user` module.
 

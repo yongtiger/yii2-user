@@ -203,8 +203,8 @@ return [
 
 	///\vendor\yongtiger\yii2-user\src\views\account\index.php
 	//////[Yii2 uesr:account]
-	'Account' => '账户信息',
-	'Manage your personal account information.' => '管理您的个人账户信息。',
+	'Account Security' => '账户安全',
+	'Manage your personal account security information.' => '管理您的个人账安全户信息。',
 	'Username is not set' => '用户名没有设置',
 	'Set' => '设置',
 	'Change' => '更改',

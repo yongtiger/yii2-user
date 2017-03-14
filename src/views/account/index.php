@@ -10,7 +10,7 @@ use yongtiger\authclient\widgets\AuthChoice;
 use yongtiger\user\Module;
 use yongtiger\user\models\TokenHandler;
 
-$this->title = Module::t('message', 'Account');
+$this->title = Module::t('message', 'Account Security');
 $this->params['breadcrumbs'][] = $this->title;
 
 ///[Yii2 uesr:account oauth]
@@ -32,7 +32,7 @@ CSS
 <div class="registration-signup">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p><?= Module::t('message', 'Manage your personal account information.') ?></p>
+    <p><?= Module::t('message', 'Manage your personal account security information.') ?></p>
 
     <div class="row">
         <div class="col-lg-2">
