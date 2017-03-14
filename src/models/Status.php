@@ -1,4 +1,4 @@
-<?php ///[Yii2 uesr:verify]
+<?php ///[Yii2 uesr:status]
 
 /**
  * Yii2 User
@@ -13,28 +13,31 @@
 namespace yongtiger\user\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yongtiger\user\Module;
 
 /**
- * This is the model class for table "{{%user_verify}}".
+ * This is the model class for table "{{%user_status}}".
  *
  * @property integer $user_id
- * @property integer $password_verified_at
- * @property integer $email_verified_at
+ * @property string $registration_ip
+ * @property string $last_login_ip
+ * @property integer $last_login_at
+ * @property integer $banned_at
+ * @property string $banned_reason
  * @property integer $created_at
  * @property integer $updated_at
+ *
  * @property User $user
  */
-class Verify extends ActiveRecord
+class Status extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%user_verify}}';
+        return '{{%user_status}}';
     }
 
     /**
@@ -58,10 +61,10 @@ class Verify extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
-            [['user_id', 'password_verified_at', 'email_verified_at', 'created_at', 'updated_at'], 'integer'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],    ///@see http://www.yiiframework.com/doc-2.0/guide-tutorial-core-validators.html#exist
-            ['password_verified_at', 'default', 'value' => time()],
+            [['user_id', 'created_at', 'updated_at'], 'required'],
+            [['user_id', 'last_login_at', 'banned_at', 'created_at', 'updated_at'], 'integer'],
+            [['registration_ip', 'last_login_ip', 'banned_reason'], 'string', 'max' => 255],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -72,8 +75,11 @@ class Verify extends ActiveRecord
     {
         return [
             'user_id' => Module::t('message', 'User ID'),
-            'password_verified_at' => Module::t('message', 'Password Verified At'),
-            'email_verified_at' => Module::t('message', 'Email Verified At'),
+            'registration_ip' => Module::t('message', 'Registration IP'),
+            'last_login_ip' => Module::t('message', 'Last Login IP'),
+            'last_login_at' => Module::t('message', 'Last Login At'),
+            'banned_at' => Module::t('message', 'Banned At'),
+            'banned_reason' => Module::t('message', 'Banned Reason'),
             'created_at' => Module::t('message', 'Created At'),
             'updated_at' => Module::t('message', 'Updated At'),
         ];

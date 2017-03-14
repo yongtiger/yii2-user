@@ -12,7 +12,7 @@
 
 use yii\db\Migration;
 
-class m170302_201442_create_oauth_table extends Migration
+class m170302_201442_create_user_oauth_table extends Migration
 {
     public function up()
     {
@@ -22,7 +22,7 @@ class m170302_201442_create_oauth_table extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%oauth}}', [
+        $this->createTable('{{%user_oauth}}', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'provider' => $this->string()->notNull(),
@@ -41,11 +41,11 @@ class m170302_201442_create_oauth_table extends Migration
             'KEY `user_id_fk` (`user_id`) USING BTREE',
         ], $tableOptions);
 
-        $this->addForeignKey('user_id_fk', '{{%oauth}}', 'user_id', '{{%user}}', 'id', 'CASCADE');
+        $this->addForeignKey('user_id_fk', '{{%user_oauth}}', 'user_id', '{{%user}}', 'id', 'CASCADE');
     }
 
     public function down()
     {
-        $this->dropTable('{{%oauth}}');
+        $this->dropTable('{{%user_oauth}}');
     }
 }

@@ -15,6 +15,7 @@ use yongtiger\user\Module;
 $this->title = Module::t('message', 'Change') . Module::t('message', ucfirst($item));
 $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'Account'), 'url' => Url::to(['account/index'])];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="account-change">
     <h1><?= Html::encode($this->title) ?></h1>

@@ -1,17 +1,16 @@
-<?php
+<?php ///[Yii2 uesr:status]
 
 use yii\helpers\Html;
 use yongtiger\user\Module;
 use kartik\widgets\ActiveForm;  ///??????
 use kartik\daterange\DateRangePicker;   ///??????
-use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
-/* @var $model yongtiger\user\models\ProfileSearch */
+/* @var $model yongtiger\user\models\StatusSearch */
 /* @var $form yii\widgets\ActiveForm */
-
 ?>
-<div class="profile-search">
+
+<div class="status-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -20,47 +19,37 @@ use yii\jui\DatePicker;
 
     <?= $form->field($model, 'user_id') ?>
 
-    <?= $form->field($model, 'fullname') ?>
+    <?= $form->field($model, 'registration_ip') ?>
 
-    <?= $form->field($model, 'firstname') ?>
+    <?= $form->field($model, 'last_login_ip') ?>
 
-    <?= $form->field($model, 'lastname') ?>
-
-    <?= $form->field($model, 'gender') ?>
-
-    <?= $form->field($model, 'language') ?>
-
-    <?= $form->field($model, 'avatar') ?>
-
-    <?= $form->field($model, 'link') ?>
-
-    <!--///[v0.17.2 (profile birthday:DatePicker)]@see http://www.yiiframework.com/doc-2.0/yii-jui-datepicker.html-->
-    <?= $form->field($model, 'birthday')->widget(DatePicker::classname(), [
-        'dateFormat' => 'yyyy-MM-dd',
-        'options' => ['class' => 'form-control'],   ///[v0.17.4 (fix# profile birthday:DatePicker)]
+    <?= $form->field($model, 'last_login_date_range', [
+        'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],
+        'options' => ['class' => 'drp-container form-group']
+    ])->widget(DateRangePicker::classname(), [
+        'useWithAddon' => true,
+        'convertFormat' => true,
+        'pluginOptions' => [
+            'locale' => [
+                'format' => 'Y-m-d'
+            ]
+        ]
     ]) ?>
 
-    <?= $form->field($model, 'country') ?>
+    <?= $form->field($model, 'banned_date_range', [
+        'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],
+        'options' => ['class' => 'drp-container form-group']
+    ])->widget(DateRangePicker::classname(), [
+        'useWithAddon' => true,
+        'convertFormat' => true,
+        'pluginOptions' => [
+            'locale' => [
+                'format' => 'Y-m-d'
+            ]
+        ]
+    ]) ?>
 
-    <?= $form->field($model, 'province') ?>
-
-    <?= $form->field($model, 'city') ?>
-
-    <?= $form->field($model, 'address') ?>
-
-    <?= $form->field($model, 'telephone') ?>
-
-    <?= $form->field($model, 'mobile') ?>
-
-    <?= $form->field($model, 'graduate') ?>
-
-    <?= $form->field($model, 'education') ?>
-
-    <?= $form->field($model, 'company') ?>
-
-    <?= $form->field($model, 'position') ?>
-
-    <?= $form->field($model, 'revenue') ?>
+    <?= $form->field($model, 'banned_reason') ?>
 
     <?= $form->field($model, 'created_date_range', [
         'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],

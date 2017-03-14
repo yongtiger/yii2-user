@@ -327,6 +327,9 @@ class SignupForm extends Model
         // $this->getUser()->link('verify', new Verify(['password_verified_at' => $this->scenario === static::SCENARIO_OAUTH ? null : time()]));    ///[v0.13.1 (user link profile) fix# Integrity constraint violation: 1062 Duplicate entry for key 'PRIMARY']
         $this->getUser()->verify->password_verified_at = $this->scenario === static::SCENARIO_OAUTH ? null : time();
         $this->getUser()->verify->save();
+        
+        ///[Yii2 uesr:status]
+        $this->getUser()->link('status', new Status(['registration_ip' => Yii::$app->getRequest()->getUserIP()]));
 
         $this->trigger(self::EVENT_AFTER_SIGNUP, new ModelEvent());
     }

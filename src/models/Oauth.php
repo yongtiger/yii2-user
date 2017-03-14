@@ -17,7 +17,7 @@ use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "{{%oauth}}".
+ * This is the model class for table "{{%user_oauth}}".
  *
  * @property integer $id
  * @property integer $user_id
@@ -42,7 +42,7 @@ class Oauth extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%oauth}}';
+        return '{{%user_oauth}}';
     }
 
     /**

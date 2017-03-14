@@ -1,4 +1,4 @@
-<?php
+<?php ///[Yii2 uesr:status]
 
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -7,15 +7,15 @@ use yii\widgets\Pjax;
 use yongtiger\user\Module;
 
 /* @var $this yii\web\View */
-/* @var $searchModel yongtiger\user\models\VerifySearch */
+/* @var $searchModel yongtiger\user\models\StatusSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Module::t('message', 'User Verify List');
+$this->title = Module::t('message', 'User Status List');
 $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-<div class="verify-index">
+<div class="status-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -34,15 +34,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['width' => '60']    ///[yii2-user v0.11.3 (GridView columns headerOptions)]
             ],
 
+            'registration_ip',
+            'last_login_ip',
+
             ///[yii2-user:datepicker]
-            ['attribute' => 'password_verified_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
+            ['attribute' => 'last_login_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
                 'filter' => DatePicker::widget(
                     [
                         'model' => $searchModel, 
-                        'attribute' => 'password_verified_at', 
+                        'attribute' => 'last_login_at', 
                         'dateFormat' => 'yyyy-MM-dd', 
                         'options' => [
-                            'id' => 'datepicker_password_verified_at',    ///Note: if no `id`, `DatePicker` dosen't work!
+                            'id' => 'datepicker_last_login_at',    ///Note: if no `id`, `DatePicker` dosen't work!
                             'style' => 'text-align: center', 
                             'class' => 'form-control'   ///The style is consistent with the form
                         ]
@@ -50,20 +53,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 )
             ],
 
-            ['attribute' => 'email_verified_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
+            ['attribute' => 'banned_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
                 'filter' => DatePicker::widget(
                     [
                         'model' => $searchModel, 
-                        'attribute' => 'email_verified_at', 
+                        'attribute' => 'banned_at', 
                         'dateFormat' => 'yyyy-MM-dd', 
                         'options' => [
-                            'id' => 'datepicker_email_verified_at',    ///Note: if no `id`, `DatePicker` dosen't work!
+                            'id' => 'datepicker_banned_at',    ///Note: if no `id`, `DatePicker` dosen't work!
                             'style' => 'text-align: center', 
                             'class' => 'form-control'   ///The style is consistent with the form
                         ]
                     ]
                 )
             ],
+
+            'banned_reason',
 
             ['attribute' => 'created_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
                 'filter' => DatePicker::widget(
@@ -98,12 +103,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}',
+                'template' => '{view} {update}',
             ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>
-    
+
     <hr style="height:10px">
 
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>

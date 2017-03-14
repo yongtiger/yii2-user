@@ -10,8 +10,10 @@ use yongtiger\region\models\Region;
 /* @var $model yongtiger\user\models\Profile */
 
 $this->title = Module::t('message', 'View User Profile') . ': ID ' . $model->user_id;
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User Profile'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="profile-view">
 

@@ -11,8 +11,8 @@ use yongtiger\region\models\Region;
 /* @var $this yii\web\View */
 /* @var $model yongtiger\user\models\Profile */
 /* @var $form yii\widgets\ActiveForm */
-?>
 
+?>
 <div class="profile-form">
 
     <?php $form = ActiveForm::begin(['id' => 'profile-form',

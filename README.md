@@ -1,4 +1,4 @@
-# Yii2-user v0.17.7 (TYPO# i18n)
+# Yii2-user v0.18.0 (user status, count and a lot of typos)
 
 The most basic `user` module.
 

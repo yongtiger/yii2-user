@@ -16,6 +16,7 @@ use Yii;
 use yii\base\Model;
 use yii\base\ModelEvent;
 use yii\helpers\Html;
+use yii\db\IntegrityException;
 use yongtiger\user\Module;
 
 /**
@@ -320,7 +321,35 @@ class LoginForm extends Model
     protected function afterLogin()
     {
         // ...custom code here...
-        
+        ///[Yii2 uesr:status]
+        if (!$status = $this->getUser()->getStatus()->one()) {  ///avoid conflict with the `status` field in `user` table.
+            $status = new Status(['user_id' => $this->getUser()->id]);
+        } else {
+            $status->user_id = $this->getUser()->id;
+        }
+        ///massive assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
+        $status->attributes = [
+            'last_login_ip' => Yii::$app->getRequest()->getUserIP(),
+            'last_login_at' => time(),
+        ];
+        if (!$status->save(false)) {
+            throw new IntegrityException();
+        }
+
+        ///[Yii2 uesr:count]
+        if (!$count = $this->getUser()->getCount()->one()) {
+            $count = new Count(['user_id' => $this->getUser()->id]);
+        } else {
+            $count->user_id = $this->getUser()->id;
+        }
+        ///massive assignment @see http://www.yiiframework.com/doc-2.0/guide-structure-models.html#massive-assignment
+        $count->attributes = [
+            'login_count' => ++$count->login_count,
+        ];
+        if (!$count->save(false)) {
+            throw new IntegrityException();
+        }
+
         $this->trigger(static::EVENT_AFTER_LOGIN, new ModelEvent());
     }
 }

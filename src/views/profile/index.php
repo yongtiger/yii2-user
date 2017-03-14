@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\jui\DatePicker;
+use yii\widgets\Pjax;
 use yongtiger\user\Module;
 
 /* @var $this yii\web\View */
@@ -10,14 +11,15 @@ use yongtiger\user\Module;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Module::t('message', 'User Profile List');
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-
 <div class="profile-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -90,6 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+    <?php Pjax::end(); ?>
 
     <hr style="height:10px">
 

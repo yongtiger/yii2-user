@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\web\View;
 use yii\grid\GridView;
 use yii\jui\DatePicker;
+use yii\widgets\Pjax;
 use yongtiger\user\models\User;
 use yongtiger\user\Module;
 use yongtiger\user\UserAsset;
@@ -34,6 +35,7 @@ UserAsset::register($this);
         <?= Html::a(Module::t('message', 'Batch Delete'), "javascript:void(0);", ['class' => 'btn btn-danger gridview']) ?><!--///[yii2-user:deleteIn]-->
     </p>
 
+    <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -96,7 +98,7 @@ UserAsset::register($this);
             ///[yii2-user v0.14.0 (user index:ActionColumn)]@see http://www.yiiframework.com/forum/index.php/topic/49595-how-to-change-buttons-in-actioncolumn/
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {update} {delete} {profile} {verify}',
+                'template' => '{view} {update} {delete} {profile} {verify} {status} {count}',
                 'buttons' => [
                     'profile' => function ($url, $model) {
                         return Html::a(
@@ -111,6 +113,20 @@ UserAsset::register($this);
                             $url,
                             ['title' => Module::t('message', 'verify')]
                         );
+                    },
+                    'status' => function ($url, $model) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-asterisk"></span>',
+                            $url,
+                            ['title' => Module::t('message', 'status')]
+                        );
+                    },
+                    'count' => function ($url, $model) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-list-alt"></span>',
+                            $url,
+                            ['title' => Module::t('message', 'count')]
+                        );
                     }
                 ],
                 'urlCreator' => function ($action, $model, $key, $index) {
@@ -120,6 +136,12 @@ UserAsset::register($this);
                     } else if ($action === 'verify') {
                         $url = ['verify/view', 'id' => $key];   ///[v0.17.0 (AccessControl of update profile and remove update verify)]
                         return $url;
+                    } else if ($action === 'status') {
+                        $url = ['status/view', 'id' => $key];   ///[v0.17.0 (AccessControl of update profile and remove update verify)]
+                        return $url;
+                    } else if ($action === 'count') {
+                        $url = ['count/view', 'id' => $key];   ///[v0.17.0 (AccessControl of update profile and remove update verify)]
+                        return $url;
                     } else {    ///@see http://stackoverflow.com/questions/29642962/actioncolumns-button-with-custom-url
                         return [$action, 'id' => $model->id];
                     }
@@ -127,6 +149,7 @@ UserAsset::register($this);
             ],
         ],
     ]); ?>
+    <?php Pjax::end(); ?>
 
     <hr style="height:10px">
 

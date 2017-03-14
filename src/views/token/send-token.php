@@ -32,8 +32,8 @@ switch ($type) {
     default:
         return;
 }
-?>
 
+?>
 <div class="<?= $type ?>">
     <h1><?= Html::encode($this->title) ?></h1>
 

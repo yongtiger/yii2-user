@@ -1,17 +1,17 @@
-<?php
+<?php ///[Yii2 uesr:count]
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yongtiger\user\Module;
 
 /* @var $this yii\web\View */
-/* @var $model yongtiger\user\models\Verify */
+/* @var $model yongtiger\user\models\Count */
 /* @var $form yii\widgets\ActiveForm */
+
 ?>
+<div class="count-form">
 
-<div class="verify-form">
-
-    <?php $form = ActiveForm::begin(['id' => 'verify-form',
+    <?php $form = ActiveForm::begin(['id' => 'count-form',
 
         ///[yii2-uesr:Ajax validation]
         'enableClientValidation' => true,
@@ -21,9 +21,9 @@ use yongtiger\user\Module;
 
     ]); ?>
 
-    <?= $form->field($model, 'password_verified_at')->textInput(['autofocus' => true]) ?><!--///?????time stamp in ActiveForm-->
+    <?= $form->field($model, 'login_count')->textInput(['autofocus' => true]) ?>
 
-    <?= $form->field($model, 'email_verified_at')->textInput() ?><!--///?????time stamp in ActiveForm-->
+    <?= $form->field($model, 'banned_count')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Module::t('message', 'Create') : Module::t('message', 'Update'), ['class' => 'btn btn-primary']) ?>

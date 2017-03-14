@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.18.0 (user status, count and a lot of typos)
+
+
 ## v0.17.7 (TYPO# i18n)
 
 

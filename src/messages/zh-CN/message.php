@@ -160,6 +160,21 @@ return [
 	'Created Date Range' => '创建日期范围',
 	'Updated Date Range' => '更新日期范围',
 
+	///\vendor\yongtiger\yii2-user\src\models\Count.php
+	'Login Count' => '登陆次数',
+	'Banned Count' => '被屏蔽次数',
+
+	///\vendor\yongtiger\yii2-user\src\models\Status.php
+	'Registration IP' => '注册IP',
+	'Last Login IP' => '最后登陆IP',
+	'Last Login At' => '最后登陆时间',
+	'Banned At' => '被屏蔽时间',
+	'Banned Reason' => '被屏蔽原因',
+
+	///\vendor\yongtiger\yii2-user\src\models\StatusSearch.php
+	'Last Login Date Range' => '最后登陆日期范围',
+	'Banned Date Range' => '被屏蔽日期范围',
+
 
 	/**
 	 * Views
@@ -232,6 +247,10 @@ return [
 	'Profile' => '用户资料',
 	'verify' => '用户验证',
 	'Verify' => '用户验证',
+	'status' => '用户状态',
+	'Status' => '用户状态',
+	'count' => '用户统计',
+	'Count' => '用户统计',
 
 	///\vendor\yongtiger\yii2-user\src\views\user\_search.php
 	'Search' => '搜索',
@@ -276,6 +295,22 @@ return [
 
 	///\vendor\yongtiger\yii2-user\src\views\verify\view.php
 	'View User Verify' => '查看用户验证',
-	'User Verify' => '用户验证',
 
+	///\vendor\yongtiger\yii2-user\src\views\count\index.php
+	'User Count List' => '用户统计列表',
+
+	///\vendor\yongtiger\yii2-user\src\views\count\update.php
+	'Update User Count' => '更新用户统计',
+
+	///\vendor\yongtiger\yii2-user\src\views\count\view.php
+	'View User Count' => '查看用户统计',
+
+	///\vendor\yongtiger\yii2-user\src\views\status\index.php
+	'User Status List' => '用户状态列表',
+
+	///\vendor\yongtiger\yii2-user\src\views\status\update.php
+	'Update User Status' => '更新用户状态',
+
+	///\vendor\yongtiger\yii2-user\src\views\status\view.php
+	'View User Status' => '查看用户状态',
 ];

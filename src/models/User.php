@@ -349,6 +349,24 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
 
+    ///[yii2-uesr:status]
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStatus()
+    {
+        return $this->hasOne(Status::className(), ['user_id' => 'id']);
+    }
+
+    ///[yii2-uesr:count]
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCount()
+    {
+        return $this->hasOne(Count::className(), ['user_id' => 'id']);
+    }
+
     ///[yii2-uesr:oauth]
     /**
      * Finds user by Oauth provider and openid.
