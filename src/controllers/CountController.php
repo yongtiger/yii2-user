@@ -38,8 +38,35 @@ class CountController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'update'],
+                        'actions' => ['index'],
                         'roles' => ['permission_access_app-backend'],   ///[v0.17.1 (AccessControl `permission_access_app-backend` of update and verify)]
+                    ],
+
+                    [
+                        'allow' => true,
+                        'actions' => ['view'],
+                        'roles' => ['@'],
+                    ],
+
+                    [   ///[v0.17.0 (AccessControl of update profile and remove update verify)]
+                        'actions' => ['update'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $me = Yii::$app->user->identity;
+                            $useId = Yii::$app->request->get('id');
+                            $user = $this->findModel($useId)->user;   ///gets the manipulated User object
+
+                            return
+                                $me->id == $user->id  ///if the manipulated user is `me`, update is allowed
+                                ||
+                                in_array(User::ROLE_ADMIN, $me->roles)  ///if `me` is `ROLE_ADMIN`, update is allowed
+                                ||
+                                in_array(User::ROLE_SUPER_MODERATOR, $me->roles) &&
+                                    (!in_array(User::ROLE_ADMIN, $user->roles) && !in_array(User::ROLE_SUPER_MODERATOR, $user->roles)) ///if `me` is `ROLE_SUPER_MODERATOR` and the manipulated user is not `ROLE_ADMIN` nor `ROLE_SUPER_MODERATOR`, update is allowed
+                                // || ... more rules as you customize
+                            ;
+                        }
                     ],
                 ],
             ],

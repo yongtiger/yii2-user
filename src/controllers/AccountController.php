@@ -109,7 +109,7 @@ class AccountController extends Controller
             return $this->redirect(['account/index']);
         }
 
-        $changeItemFormName = 'yongtiger\user\models\Change' . ucfirst($item) . 'Form';
+        $changeItemFormName = 'yongtiger\\user\\models\\Change' . ucfirst($item) . 'Form';
         $model = new $changeItemFormName();
 
         $load = $model->load(Yii::$app->request->post());

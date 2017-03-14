@@ -37,11 +37,16 @@ class UserController extends Controller
             ///[yii2-user:role]
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'view', 'update', 'delete', 'create', 'delete-in'],  ///[yii2-user:deleteIn]
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view'],
+                        'actions' => ['index'],
+                        'roles' => ['permission_access_app-backend'],   ///[v0.17.1 (AccessControl `permission_access_app-backend` of update and verify)]
+                    ],
+
+                    [
+                        'allow' => true,
+                        'actions' => ['view'],
                         'roles' => ['@'],
                     ],
 
