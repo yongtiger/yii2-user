@@ -28,10 +28,10 @@ return [
 	'This site has been closed login.' => '本站已经关闭登陆。',
 	'My Account' => '我的账户',
 	'Account Security' => '账户安全',
-	'Account Preferences' => '偏好设置',
-	'User Status' => '用户账户状态',
-	'User Count' => '用户统计数据',
-	'User Profile' => '用户个人资料',
+	'User Preference' => '偏好设置',
+	'User Status' => '账户状态',
+	'User Count' => '统计数据',
+	'User Profile' => '个人资料',
 	//////[Yii2 uesr: verifycode]
 	'Verification Code' => '验证码',
 	'Click to change another verification code.' => '点击切换验证码',
@@ -184,6 +184,11 @@ return [
 	'Last Login Date Range' => '最后登陆日期范围',
 	'Banned Date Range' => '被屏蔽日期范围',
 
+	///\vendor\yongtiger\yii2-user\src\models\Preference.php
+	'Locale' => '语言环境',
+	'Time Offset' => '时区偏移',
+	'Datetime Format' => '日期时间格式',
+
 
 	/**
 	 * Views
@@ -321,4 +326,13 @@ return [
 
 	///\vendor\yongtiger\yii2-user\src\views\status\view.php
 	'View User Status' => '查看用户状态',
+
+	///\vendor\yongtiger\yii2-user\src\views\preference\index.php
+	'User Preference List'  => '用户偏好设置列表',
+
+	///\vendor\yongtiger\yii2-user\src\views\preference\update.php
+	'Update User Preference'  => '更新用户偏好设置',
+
+	///\vendor\yongtiger\yii2-user\src\views\preference\view.php
+	'View User Preference' => '查看用户偏好设置',
 ];

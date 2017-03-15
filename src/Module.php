@@ -482,9 +482,9 @@ class Module extends \yii\base\Module
         ///[v0.18.4 (frontend user menus)]
         $this->menus = ArrayHelper::merge([
             ['label' => Module::t('message', 'Account Security'), 'url' => ['/user/account']],
-            ['label' => Module::t('message', 'Account Preferences'), 'url' => ['/user/account/preference']],
             ['label' => Module::t('message', 'User Status'), 'url' => ['/user/status/view', 'id' => Yii::$app->user->id]],
             ['label' => Module::t('message', 'User Count'), 'url' => ['/user/count/view', 'id' => Yii::$app->user->id]],
+            ['label' => Module::t('message', 'User Preference'), 'url' => ['/user/preference/update', 'id' => \Yii::$app->user->id]],
             ['label' => Module::t('message', 'User Profile'), 'url' => ['/user/profile/update', 'id' => Yii::$app->user->id]],
         ], $this->menus);
 

@@ -1,4 +1,4 @@
-# Yii2-user v0.18.6 (ADD# \views\layouts\main.php:frontendLayout)
+# Yii2-user v0.19.0 (ADD# User Preference)
 
 The most basic `user` module.
 
