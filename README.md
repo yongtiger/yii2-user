@@ -1,4 +1,4 @@
-# Yii2-user v0.18.4 (ADD# DefaultController, frontend user menus)
+# Yii2-user v0.18.5 (isAdminEnd)
 
 The most basic `user` module.
 

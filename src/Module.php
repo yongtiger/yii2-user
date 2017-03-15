@@ -483,6 +483,10 @@ class Module extends \yii\base\Module
             ['label' => Module::t('message', 'User Profile'), 'url' => ['/user/profile/update', 'id' => Yii::$app->user->id]],
         ], $this->menus);
 
+        ///[v0.18.5 (isAdminEnd)]
+        $this->defaultRoute = Yii::$app->isAdminEnd ? 'user' :'default';
+        $this->getBasePath();
+        $this->getViewPath();
     }
 
     ///[v0.16.1 (i18n:public static function registerTranslation)]

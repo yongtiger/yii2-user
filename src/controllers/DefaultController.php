@@ -36,6 +36,9 @@ class DefaultController extends Controller
                         'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {  ///[v0.18.5 (isAdminEnd)]
+                            return !Yii::$app->isAdminEnd;
+                        }
                     ],
                 ],
             ],
@@ -51,7 +54,7 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $this->layout = '@yongtiger/user/views/layouts/main';   ///[v0.18.4 (frontend user menus)]
+        $this->layout = 'main';   ///[v0.18.4 (frontend user menus)]
         return $this->render('index');
     }
 }

@@ -8,7 +8,7 @@ use yongtiger\user\Module;
 /* @var $model yongtiger\user\models\Verify */
 
 $this->title = Module::t('message', 'View User Verify') . ': ID ' . $model->user_id;
-$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['user/index']];
 $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User Verify List'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 

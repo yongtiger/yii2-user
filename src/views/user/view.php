@@ -8,13 +8,23 @@ use yongtiger\user\Module;
 /* @var $model yongtiger\user\models\User */
 
 $this->title = Module::t('message', 'View User') . ': ID ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['index']];
+
+///[v0.18.5 (isAdminEnd)]
+if (Yii::$app->isAdminEnd) {
+    $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['user/index']];
+} else if (Yii::$app->user->id == $model->id) {
+    $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'My Account'), 'url' => ['default/index']];
+}
+
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="user-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <!--///[v0.18.5 (isAdminEnd)]-->
+    <?php if (Yii::$app->isAdminEnd): ?>
     <p>
         <?= Html::a(Module::t('message', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Module::t('message', 'Delete'), ['delete', 'id' => $model->id], [
@@ -25,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+    <? endif; ?>
 
     <?= DetailView::widget([
         'model' => $model,

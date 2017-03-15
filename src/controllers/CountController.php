@@ -21,6 +21,7 @@ use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yongtiger\user\models\Count;
 use yongtiger\user\models\CountSearch;
+use yongtiger\user\models\User;
 
 /**
  * CountController implements the CRUD actions for Count model.
@@ -40,6 +41,9 @@ class CountController extends Controller
                         'allow' => true,
                         'actions' => ['index'],
                         'roles' => ['permission_access_app-backend'],   ///[v0.17.1 (AccessControl `permission_access_app-backend` of update and verify)]
+                        'matchCallback' => function ($rule, $action) {  ///[v0.18.5 (isAdminEnd)]
+                            return Yii::$app->isAdminEnd;
+                        }
                     ],
 
                     [
@@ -51,8 +55,9 @@ class CountController extends Controller
                     [   ///[v0.17.0 (AccessControl of update profile and remove update verify)]
                         'actions' => ['update'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['permission_access_app-backend'],
                         'matchCallback' => function ($rule, $action) {
+                            if (!Yii::$app->isAdminEnd) return false;   ///[v0.18.5 (isAdminEnd)]
                             $me = Yii::$app->user->identity;
                             $useId = Yii::$app->request->get('id');
                             $user = $this->findModel($useId)->user;   ///gets the manipulated User object
@@ -98,7 +103,7 @@ class CountController extends Controller
 
         ///[v0.18.4 (frontend user menus)]
         if (Yii::$app->user->id == $id) {
-            $this->layout = '@yongtiger/user/views/layouts/main';
+            $this->layout = 'main';
         }
 
         return $this->render('view', [
@@ -122,11 +127,6 @@ class CountController extends Controller
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
-        }
-
-        ///[v0.18.4 (frontend user menus)]
-        if (Yii::$app->user->id == $id) {
-            $this->layout = '@yongtiger/user/views/layouts/main';
         }
 
         if ($load && $user = $model->save()) {

@@ -9,11 +9,11 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\helpers\Url;
 use yongtiger\user\Module;
 
 $this->title = Module::t('message', 'Change') . Module::t('message', ucfirst($item));
-$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'Account'), 'url' => Url::to(['account/index'])];
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'My Account'), 'url' => ['default/index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'Account Security'), 'url' => ['account/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

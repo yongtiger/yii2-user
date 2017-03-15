@@ -7,7 +7,7 @@ use yongtiger\user\Module;
 /* @var $model yongtiger\user\models\User */
 
 $this->title = Module::t('message', 'Create User');
-$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['user/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-create">

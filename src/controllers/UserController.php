@@ -42,6 +42,9 @@ class UserController extends Controller
                         'allow' => true,
                         'actions' => ['index'],
                         'roles' => ['permission_access_app-backend'],   ///[v0.17.1 (AccessControl `permission_access_app-backend` of update and verify)]
+                        'matchCallback' => function ($rule, $action) {  ///[v0.18.5 (isAdminEnd)]
+                            return Yii::$app->isAdminEnd;
+                        }
                     ],
 
                     [
@@ -53,8 +56,9 @@ class UserController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['update'],
-                        'roles' => ['@'],
+                        'roles' => ['permission_access_app-backend'],
                         'matchCallback' => function ($rule, $action) {
+                            if (!Yii::$app->isAdminEnd) return false;   ///[v0.18.5 (isAdminEnd)]
                             $me = Yii::$app->user->identity;
                             $useId = Yii::$app->request->get('id');
                             $user = $this->findModel($useId);   ///gets the manipulated User object
@@ -74,8 +78,9 @@ class UserController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['delete'],
-                        'roles' => ['@'],
+                        'roles' => ['permission_access_app-backend'],
                         'matchCallback' => function ($rule, $action) {
+                            if (!Yii::$app->isAdminEnd) return false;   ///[v0.18.5 (isAdminEnd)]
                             $me = Yii::$app->user->identity;
                             $useId = Yii::$app->request->get('id');
                             $user = $this->findModel($useId);   ///gets the manipulated User object
@@ -97,8 +102,9 @@ class UserController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['create', 'delete-in'], ///[yii2-user:deleteIn]
-                        'roles' => ['@'],
+                        'roles' => ['permission_access_app-backend'],
                         'matchCallback' => function ($rule, $action) {
+                            if (!Yii::$app->isAdminEnd) return false;   ///[v0.18.5 (isAdminEnd)]
                             $me = Yii::$app->user->identity;
                             ///Only allows `ROLE_ADMIN` or `ROLE_SUPER_MODERATOR` to batch delete users.
                             ///In the subsequent operation of the `actionDeleteIn()` continue to determine the batch delete the user list `$selected`

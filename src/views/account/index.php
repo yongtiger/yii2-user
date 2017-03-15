@@ -6,11 +6,12 @@
  */
 
 use yii\helpers\Html;
-use yongtiger\authclient\widgets\AuthChoice;
 use yongtiger\user\Module;
 use yongtiger\user\models\TokenHandler;
+use yongtiger\authclient\widgets\AuthChoice;
 
 $this->title = Module::t('message', 'Account Security');
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'My Account'), 'url' => ['default/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ///[Yii2 uesr:account oauth]

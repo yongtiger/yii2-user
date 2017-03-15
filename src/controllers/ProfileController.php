@@ -98,8 +98,8 @@ class ProfileController extends Controller
     {
 
         ///[v0.18.4 (frontend user menus)]
-        if (Yii::$app->user->id == $id) {
-            $this->layout = '@yongtiger/user/views/layouts/main';
+        if (!Yii::$app->isAdminEnd && Yii::$app->user->id == $id) {
+            $this->layout = 'main';
         }
 
         return $this->render('view', [
@@ -127,7 +127,7 @@ class ProfileController extends Controller
 
         ///[v0.18.4 (frontend user menus)]
         if (Yii::$app->user->id == $id) {
-            $this->layout = '@yongtiger/user/views/layouts/main';
+            $this->layout = 'main';
         }
 
         if ($load && $user = $model->save()) {

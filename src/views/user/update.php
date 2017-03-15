@@ -7,7 +7,7 @@ use yongtiger\user\Module;
 /* @var $model yongtiger\user\models\User */
 
 $this->title = Module::t('message', 'Update User') . ': ID ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['user/index']];
 $this->params['breadcrumbs'][] = ['label' => 'ID ' . $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Module::t('message', 'Update');
 ?>

@@ -11,7 +11,7 @@ use yongtiger\user\Module;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Module::t('message', 'User Status List');
-$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['user/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
