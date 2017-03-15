@@ -1,4 +1,4 @@
-# Yii2-user v0.18.5 (isAdminEnd)
+# Yii2-user v0.18.6 (ADD# \views\layouts\main.php:frontendLayout)
 
 The most basic `user` module.
 

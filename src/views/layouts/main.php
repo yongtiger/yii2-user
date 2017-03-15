@@ -14,7 +14,7 @@ foreach ($menus as $i => $menu) {
 }
 
 ?>
-<?php $this->beginContent('@frontend/views/layouts/main.php') ?>
+<?php $this->beginContent(\Yii::$app->getModule('user')->frontendLayout) ?>
 <div class="row">
     <div class="col-sm-3">
         <div id="manager-menu" class="list-group">

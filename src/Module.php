@@ -41,9 +41,14 @@ class Module extends \yii\base\Module
     public $controllerNamespace = 'yongtiger\\user\\controllers';
 
     /**
-     * @var aray The frontend user menus
+     * @var array The frontend user menus
      */
     public $menus = [];  ///init later
+
+    /**
+     * @var string The frontend layout
+     */
+    public $frontendLayout = '@frontend/views/layouts/main.php';
 
     ///Signup
 
