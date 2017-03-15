@@ -26,6 +26,12 @@ return [
 	///\vendor\yongtiger\yii2-user\src\Module.php
 	'This site has been closed registration.' => '本站已经关闭注册。',
 	'This site has been closed login.' => '本站已经关闭登陆。',
+	'My Account' => '我的账户',
+	'Account Security' => '账户安全',
+	'Account Preferences' => '偏好设置',
+	'User Status' => '用户账户状态',
+	'User Count' => '用户统计数据',
+	'User Profile' => '用户个人资料',
 	//////[Yii2 uesr: verifycode]
 	'Verification Code' => '验证码',
 	'Click to change another verification code.' => '点击切换验证码',
@@ -281,14 +287,13 @@ return [
 	'Delete' => '删除',
 
 	///\vendor\yongtiger\yii2-user\src\views\profile\index.php
-	'User Profile List' => '用户资料列表',
+	'User Profile List' => '用户个人资料列表',
 
 	///\vendor\yongtiger\yii2-user\src\views\profile\update.php
-	'Update User Profile' => '更新用户资料',
+	'Update User Profile' => '更新用户个人资料',
 
 	///\vendor\yongtiger\yii2-user\src\views\profile\view.php
-	'View User Profile' => '查看用户资料',
-	'User Profile' => '用户资料',
+	'View User Profile' => '查看用户个人资料',
 
 	///\vendor\yongtiger\yii2-user\src\views\verify\index.php
 	'User Verify List' => '用户验证列表',

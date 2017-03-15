@@ -83,6 +83,8 @@ class AccountController extends Controller
      */
     public function actionIndex()
     {
+        $this->layout = '@yongtiger/user/views/layouts/main';   ///[v0.18.4 (frontend user menus)]
+
         ///[Yii2 uesr:account oauth]
         if (Yii::$app->getModule('user')->enableOauth && Yii::$app->get("authClientCollection", false)) {
             $oauths = [];
@@ -125,6 +127,8 @@ class AccountController extends Controller
             return $this->redirect(['account/index']);
         }
 
+        $this->layout = '@yongtiger/user/views/layouts/main';   ///[v0.18.4 (frontend user menus)]
+        
         return $this->render('change', ['item' => $item, 'model' => $model]);
     }
 }

@@ -33,12 +33,17 @@ class Module extends \yii\base\Module
      *
      * @see http://www.yiiframework.com/doc-2.0/yii-base-module.html#$defaultRoute-detail
      */
-    public $defaultRoute = 'account';
+    public $defaultRoute = 'default';
 
     /**
      * @var string The controller namespace to use
      */
-    public $controllerNamespace = 'yongtiger\user\controllers';
+    public $controllerNamespace = 'yongtiger\\user\\controllers';
+
+    /**
+     * @var aray The frontend user menus
+     */
+    public $menus = [];  ///init later
 
     ///Signup
 
@@ -439,7 +444,7 @@ class Module extends \yii\base\Module
 
         if ($this->enableSignup && $this->enableSignupWithCaptcha || $this->enableLogin && $this->enableLoginWithCaptcha || $this->enableSendToken && $this->enableSendTokenWithCaptcha) {
             $this->captcha = ArrayHelper::merge([
-                'class' => 'yii\captcha\CaptchaAction',
+                'class' => 'yii\\captcha\\CaptchaAction',
                 'height' => 36,         ///The height of the generated CAPTCHA image. Defaults to 50. need to be adjusted according to the specific verification code bit
                 'width' => 96,          ///The width of the generated CAPTCHA image. Defaults to 120.
                 'maxLength' =>6,        ///The maximum length for randomly generated word. Defaults to 7.
@@ -448,7 +453,7 @@ class Module extends \yii\base\Module
             ], $this->captcha);
 
             $this->captchaActiveFieldWidget = ArrayHelper::merge([
-                'class' => 'yii\captcha\Captcha',
+                'class' => 'yii\\captcha\\Captcha',
                 'imageOptions' => ['alt' => Module::t('message', 'Verification Code'), 'title' => Module::t('message', 'Click to change another verification code.')],
                 'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
             ], $this->captchaActiveFieldWidget);
@@ -460,7 +465,7 @@ class Module extends \yii\base\Module
             ], $this->authChoiceWidgetConfig);
 
             $this->auth = ArrayHelper::merge([
-                'class' => 'yii\authclient\AuthAction',
+                'class' => 'yii\\authclient\\AuthAction',
                 'successUrl' => ['user/account/index'],
                 'cancelUrl' => ['user/account/index'],
             ], $this->auth);
@@ -468,6 +473,16 @@ class Module extends \yii\base\Module
             $this->auth['cancelUrl'] = Yii::$app->urlManager->createUrl($this->auth['cancelUrl']);
 
         }
+
+        ///[v0.18.4 (frontend user menus)]
+        $this->menus = ArrayHelper::merge([
+            ['label' => Module::t('message', 'Account Security'), 'url' => ['/user/account']],
+            ['label' => Module::t('message', 'Account Preferences'), 'url' => ['/user/account/preference']],
+            ['label' => Module::t('message', 'User Status'), 'url' => ['/user/status/view', 'id' => Yii::$app->user->id]],
+            ['label' => Module::t('message', 'User Count'), 'url' => ['/user/count/view', 'id' => Yii::$app->user->id]],
+            ['label' => Module::t('message', 'User Profile'), 'url' => ['/user/profile/update', 'id' => Yii::$app->user->id]],
+        ], $this->menus);
+
     }
 
     ///[v0.16.1 (i18n:public static function registerTranslation)]
@@ -480,7 +495,7 @@ class Module extends \yii\base\Module
         ///if no setup the component i18n, use setup in this module.
         if (!isset(Yii::$app->i18n->translations['extensions/yongtiger/yii2-user/*']) && !isset(Yii::$app->i18n->translations['extensions/yongtiger/yii2-user'])) {
             Yii::$app->i18n->translations['extensions/yongtiger/yii2-user/*'] = [
-                'class' => 'yii\i18n\PhpMessageSource',
+                'class' => 'yii\\i18n\\PhpMessageSource',
                 'sourceLanguage' => 'en-US',
                 'basePath' => '@vendor/yongtiger/yii2-user/src/messages',    ///default base path is '@vendor/yongtiger/yii2-user/src/messages'
                 'fileMap' => [

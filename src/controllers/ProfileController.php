@@ -96,6 +96,12 @@ class ProfileController extends Controller
      */
     public function actionView($id)
     {
+
+        ///[v0.18.4 (frontend user menus)]
+        if (Yii::$app->user->id == $id) {
+            $this->layout = '@yongtiger/user/views/layouts/main';
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -117,6 +123,11 @@ class ProfileController extends Controller
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
+        }
+
+        ///[v0.18.4 (frontend user menus)]
+        if (Yii::$app->user->id == $id) {
+            $this->layout = '@yongtiger/user/views/layouts/main';
         }
 
         if ($load && $user = $model->save()) {

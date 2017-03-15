@@ -10,7 +10,7 @@ $this->title = Module::t('message', 'Update User Profile') . ': ID ' . $model->u
 $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User Profile List'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => 'ID ' . $model->user_id, 'url' => ['view', 'id' => $model->user_id]];
-$this->params['breadcrumbs'][] = Module::t('message', 'Update');
+$this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="profile-update">

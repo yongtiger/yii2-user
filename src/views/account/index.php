@@ -29,7 +29,7 @@ CSS
 }
 
 ?>
-<div class="registration-signup">
+<div class="account-index">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p><?= Module::t('message', 'Manage your personal account security information.') ?></p>

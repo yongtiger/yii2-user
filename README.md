@@ -1,4 +1,4 @@
-# Yii2-user v0.18.3 (CHG# controllers:behaviors():rules)
+# Yii2-user v0.18.4 (ADD# DefaultController, frontend user menus)
 
 The most basic `user` module.
 
