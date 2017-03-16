@@ -186,7 +186,7 @@ return [
 
 	///\vendor\yongtiger\yii2-user\src\models\Preference.php
 	'Locale' => '语言环境',
-	'Time Offset' => '时区偏移',
+	'Time Zone' => '时区',
 	'Datetime Format' => '日期时间格式',
 
 

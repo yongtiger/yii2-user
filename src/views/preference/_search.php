@@ -21,7 +21,7 @@ use kartik\daterange\DateRangePicker;   ///??????
 
     <?= $form->field($model, 'locale') ?>
 
-    <?= $form->field($model, 'time_offset') ?>
+    <?= $form->field($model, 'time_zone') ?>
 
     <?= $form->field($model, 'datetime_format') ?>
 

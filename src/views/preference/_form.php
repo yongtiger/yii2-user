@@ -30,7 +30,7 @@ $timezones = TimeZone::timezone_list(TimeZone::SORT_BY_OFFSET); ///[v0.19.1 (ADD
         'autofocus' => true,
     ]) ?>
 
-    <?= $form->field($model, 'time_offset')->dropDownList($timezones, [
+    <?= $form->field($model, 'time_zone')->dropDownList($timezones, [
         // 'class' => 'selectpicker',
         'prompt' => Module::t('message', '(Select time offset ...)'),
     ]) ?>

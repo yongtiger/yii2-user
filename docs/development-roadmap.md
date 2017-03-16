@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.19.3 (CHG# change time_offset to time_zone)
+
+
 ## v0.19.2 (TimeZone::timezone_list(TimeZone::SORT_BY_OFFSET))
 
 

@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             'locale',
-            'time_offset',
+            'time_zone',
             'datetime_format',
 
             ['attribute' => 'created_at', 'format' => ['datetime', 'php:Y-m-d H:i:s'],
@@ -67,7 +67,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]
                 )
             ],
-            ///[http://www.brainbook.cc]
 
             [
                 'class' => 'yii\grid\ActionColumn',
