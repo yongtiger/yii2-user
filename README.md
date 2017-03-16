@@ -1,4 +1,4 @@
-# Yii2-user v0.19.0 (ADD# User Preference)
+# Yii2-user v0.19.1 (ADD# yongtiger\timezone\TimeZone::timezone_list())
 
 The most basic `user` module.
 

@@ -115,6 +115,7 @@ class PreferenceController extends Controller
      */
     public function actionUpdate($id)
     {
+        $timezones = \DateTimeZone::listAbbreviations();
         $model = $this->findModel($id);
 
         $load = $model->load(Yii::$app->request->post());
