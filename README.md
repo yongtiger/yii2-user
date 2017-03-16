@@ -1,4 +1,4 @@
-# Yii2-user v0.19.1 (ADD# yongtiger\timezone\TimeZone::timezone_list())
+# Yii2-user v0.19.2 (TimeZone::timezone_list(TimeZone::SORT_BY_OFFSET))
 
 The most basic `user` module.
 

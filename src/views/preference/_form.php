@@ -9,7 +9,7 @@ use yongtiger\timezone\TimeZone;
 /* @var $model yongtiger\user\models\Preference */
 /* @var $form yii\widgets\ActiveForm */
 
-$timezones = TimeZone::timezone_list();
+$timezones = TimeZone::timezone_list(TimeZone::SORT_BY_OFFSET); ///[v0.19.1 (ADD# yongtiger\timezone\TimeZone::timezone_list())]
 
 ?>
 <div class="preference-form">

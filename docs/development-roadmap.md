@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.19.2 (TimeZone::timezone_list(TimeZone::SORT_BY_OFFSET))
+
+
 ## v0.19.1 (ADD# yongtiger\timezone\TimeZone::timezone_list())
 
 
