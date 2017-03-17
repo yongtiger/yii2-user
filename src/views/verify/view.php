@@ -24,8 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'password_verified_at:datetime',
             'email_verified_at:datetime',
-            ['attribute' => 'created_at', 'format' => ['datetime', 'php:Y-m-d H:i:s']],
-            ['attribute' => 'updated_at', 'format' => ['datetime', 'php:Y-m-d H:i:s']],
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

@@ -33,7 +33,7 @@ class PreferenceSearch extends Preference
     {
         return [
             [['user_id', 'created_at', 'updated_at'], 'integer'],
-            [['locale', 'time_zone', 'datetime_format', 'created_date_range', 'updated_date_range'], 'safe'],  ///[yii2-user:daterangepicker]
+            [['locale', 'time_zone', 'datetime_format', 'date_format', 'time_format', 'created_date_range', 'updated_date_range'], 'safe'],  ///[yii2-user:daterangepicker]
 
             [['created_at', 'updated_at'], 'default', 'value' => null], ///[yii2-user:datepicker] @see http://www.yiiframework.com/doc-2.0/yii-jui-datepicker.html
             [['created_at', 'updated_at'], 'date', 'format' => 'yyyy-MM-dd']  ///[yii2-user:datepicker]
@@ -93,6 +93,8 @@ class PreferenceSearch extends Preference
             'locale' => $this->locale,
             'time_zone' => $this->time_zone,
             'datetime_format' => $this->datetime_format,
+            'date_format' => $this->date_format,
+            'time_format' => $this->time_format,
             'DATE(FROM_UNIXTIME(created_at))' => $this->created_at, ///[yii2-user:daterangepicker]
             'DATE(FROM_UNIXTIME(updated_at))' => $this->updated_at, ///[yii2-user:daterangepicker]
         ]);

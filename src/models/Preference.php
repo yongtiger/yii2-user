@@ -23,6 +23,8 @@ use yongtiger\user\Module;
  * @property string $locale
  * @property integer $time_zone
  * @property string $datetime_format
+ * @property string $date_format
+ * @property string $time_format
  * @property integer $created_at
  * @property integer $updated_at
  *
@@ -61,7 +63,7 @@ class Preference extends \yii\db\ActiveRecord
         return [
             [['user_id', 'created_at', 'updated_at'], 'required'],
             [['user_id', 'created_at', 'updated_at'], 'integer'],
-            [['locale', 'time_zone', 'datetime_format'], 'string', 'max' => 255],
+            [['locale', 'time_zone', 'datetime_format', 'date_format', 'time_format'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -76,6 +78,8 @@ class Preference extends \yii\db\ActiveRecord
             'locale' => Module::t('message', 'Locale'),
             'time_zone' => Module::t('message', 'Time Zone'),
             'datetime_format' => Module::t('message', 'Datetime Format'),
+            'date_format' => Module::t('message', 'Date Format'),
+            'time_format' => Module::t('message', 'Time Format'),
             'created_at' => Module::t('message', 'Created At'),
             'updated_at' => Module::t('message', 'Updated At'),
         ];

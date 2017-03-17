@@ -25,6 +25,10 @@ use kartik\daterange\DateRangePicker;   ///??????
 
     <?= $form->field($model, 'datetime_format') ?>
 
+    <?= $form->field($model, 'date_format') ?>
+
+    <?= $form->field($model, 'time_format') ?>
+
     <?= $form->field($model, 'created_date_range', [
         'addon' => ['prepend' => ['content' => '<i class="glyphicon glyphicon-calendar"></i>']],
         'options' => ['class' => 'drp-container form-group']

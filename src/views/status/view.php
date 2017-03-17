@@ -39,8 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'last_login_at:datetime',
             'banned_at:datetime',
             'banned_reason',
-            ['attribute' => 'created_at', 'format' => ['datetime', 'php:Y-m-d H:i:s']],
-            ['attribute' => 'updated_at', 'format' => ['datetime', 'php:Y-m-d H:i:s']],
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

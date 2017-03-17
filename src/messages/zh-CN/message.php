@@ -188,7 +188,13 @@ return [
 	'Locale' => '语言环境',
 	'Time Zone' => '时区',
 	'Datetime Format' => '日期时间格式',
-
+	'Date Format' => '日期格式',
+	'Time Format' => '时间格式',
+	'(Select locale ...)' => '(请选择语言环境)',
+	'(Select time zone ...)' => '(请选择时区)',
+	'(Select datetime format ...)' => '(请选择日期时间格式)',
+	'(Select date format ...)' => '(请选择日期格式)',
+	'(Select time format ...)' => '(请选择时间格式)',
 
 	/**
 	 * Views

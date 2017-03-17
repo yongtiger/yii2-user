@@ -1,4 +1,4 @@
-# Yii2-user v0.19.3 (CHG# change time_offset to time_zone)
+# Yii2-user v0.19.4 (ADD# date_format, time_format)
 
 The most basic `user` module.
 

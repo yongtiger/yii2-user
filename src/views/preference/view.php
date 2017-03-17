@@ -37,8 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'locale',
             'time_zone',
             'datetime_format',
-            ['attribute' => 'created_at', 'format' => ['datetime', 'php:Y-m-d H:i:s']],
-            ['attribute' => 'updated_at', 'format' => ['datetime', 'php:Y-m-d H:i:s']],
+            'date_format',
+            'time_format',
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 
