@@ -39,9 +39,9 @@ $timezones = TimeZone::timezone_list(TimeZone::SORT_BY_OFFSET); ///[v0.19.1 (ADD
     ]) ?>
 
     <?= $form->field($model, 'datetime_format')->dropDownList([
-        'yyyy-MM-dd HH:mm:ss'=> '2016-03-31 15:30:03',
-        'MM/dd/yyyy HH:mm:ss'=> '03/31/2016 15:30:03',
-        'dd/MM/yyyy HH:mm:ss'=> '31/03/2016 15:30:03',
+        'yyyy-MM-dd HH:mm:ss'=> Yii::$app->formatter->asDatetime(time(), 'yyyy-MM-dd HH:mm:ss'),
+        'MM/dd/yyyy HH:mm:ss'=> Yii::$app->formatter->asDatetime(time(), 'MM/dd/yyyy HH:mm:ss'),
+        'dd/MM/yyyy HH:mm:ss'=> Yii::$app->formatter->asDatetime(time(), 'dd/MM/yyyy HH:mm:ss'),
         'full' => Yii::$app->formatter->asDatetime(time(), 'full'),///'Thursday, March 31, 2016 at 3:30:03 PM Pacific Daylight Time (According to local)',  ///?????i18n:According to local
         'long' => Yii::$app->formatter->asDatetime(time(), 'long'),///'March 31, 2016 at 3:30:03 PM PDT (According to local)',
         'medium' => Yii::$app->formatter->asDatetime(time(), 'medium'),///'Mar 31, 2016, 3:30:03 PM (According to local)',
@@ -52,9 +52,9 @@ $timezones = TimeZone::timezone_list(TimeZone::SORT_BY_OFFSET); ///[v0.19.1 (ADD
     ]) ?>
 
     <?= $form->field($model, 'date_format')->dropDownList([
-        'yyyy-MM-dd'=> '2016-03-31',
-        'MM/dd/yyyy'=> '03/31/2016',
-        'dd/MM/yyyy'=> '31/03/2016',
+        'yyyy-MM-dd'=> Yii::$app->formatter->asDate(time(), 'yyyy-MM-dd'),
+        'MM/dd/yyyy'=> Yii::$app->formatter->asDate(time(), 'MM/dd/yyyy'),
+        'dd/MM/yyyy'=> Yii::$app->formatter->asDate(time(), 'dd/MM/yyyy'),
         'full' => Yii::$app->formatter->asDate(time(), 'full'),///'Thursday, March 31, 2016 (According to local)',
         'long' => Yii::$app->formatter->asDate(time(), 'long'),///'March 31, 2016 (According to local)',
         'medium' => Yii::$app->formatter->asDate(time(), 'medium'),///'Mar 31, 2016 (According to local)',
@@ -65,7 +65,7 @@ $timezones = TimeZone::timezone_list(TimeZone::SORT_BY_OFFSET); ///[v0.19.1 (ADD
     ]) ?>
 
     <?= $form->field($model, 'time_format')->dropDownList([
-        'HH:mm:ss'=> 'HH:mm:ss',
+        'HH:mm:ss'=> Yii::$app->formatter->asTime(time(), 'HH:mm:ss'),
         'full' => Yii::$app->formatter->asTime(time(), 'full'),///'3:30:03 PM Pacific Daylight Time (According to local)',
         'long' => Yii::$app->formatter->asTime(time(), 'long'),///'3:30:03 PM PDT (According to local)',
         'medium' => Yii::$app->formatter->asTime(time(), 'medium'),///'3:30:03 PM (According to local)',
