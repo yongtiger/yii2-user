@@ -1,4 +1,4 @@
-# Yii2-user v0.19.4 (ADD# date_format, time_format)
+# Yii2-user v0.19.5 (CHG# profile)
 
 The most basic `user` module.
 

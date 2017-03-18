@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <!--///[v0.18.5 (isAdminEnd)]///?????-->
+    <!--///[v0.18.5 (isAdminEnd)]///?????access rules-->
     <?php if (Yii::$app->user->id == $model->user_id): ?>
     <p>
         <?= Html::a(Module::t('message', 'Update'), ['update', 'id' => $model->user_id], ['class' => 'btn btn-success']) ?>
@@ -39,12 +39,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'fullname',
             'firstname',
             'lastname',
-            'gender',
-            'language',
-            'avatar',
-            'link',
+            [
+                'attribute' => 'gender',
+                'value' => function ($model) {
+                    if ($model->gender === 0) {
+                        return Module::t('message', 'Female');
+                    } else if ($model->gender === 1) {
+                        return Module::t('message', 'Male');
+                    }
+                    return null;
+                },
+            ],
+            'link:url',
             'birthday:date',    ///[v0.17.2 (profile birthday:DatePicker)]
-            'country',
+            // 'country',   ///?????need upgrade region
 
             ///[v0.17.3 (profile region widget)]
             [

@@ -14,6 +14,7 @@ namespace yongtiger\user\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\FormatConverter;
 use yongtiger\user\Module;
 
 /**
@@ -24,8 +25,6 @@ use yongtiger\user\Module;
  * @property string $firstname
  * @property string $lastname
  * @property integer $gender
- * @property string $language
- * @property string $avatar
  * @property string $link
  * @property string $birthday
  * @property string $country
@@ -77,17 +76,24 @@ class Profile extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'created_at', 'updated_at'], 'required'],
+            [['firstname', 'lastname', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'trim'],
             [['user_id', 'province', 'city', 'district', 'gender', 'created_at', 'updated_at'], 'integer'],
-            [['fullname', 'firstname', 'lastname', 'language', 'avatar', 'link', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'string', 'max' => 255],
+            [['fullname', 'firstname', 'lastname', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+
+            ['fullname', 'filter', 'filter' => function ($value) {
+                return $this->lastname . ' ' .  $this->firstname;
+            }],
+
             ['birthday', 'date'],   ///[v0.17.2 (profile birthday:DatePicker)]
+
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()   ///?????
+    public function attributeLabels()
     {
         return [
             'user_id' => Module::t('message', 'User ID'),
@@ -95,7 +101,6 @@ class Profile extends \yii\db\ActiveRecord
             'firstname' => Module::t('message', 'Firstname'),
             'lastname' => Module::t('message', 'Lastname'),
             'gender' => Module::t('message', 'Gender'),
-            'language' => Module::t('message', 'Language'),
             'avatar' => Module::t('message', 'Avatar'),
             'link' => Module::t('message', 'Link'),
             'birthday' => Module::t('message', 'Birthday'),

@@ -1,4 +1,4 @@
-<?php ///[i18n:Long Text Translation]
+﻿<?php ///[i18n:Long Text Translation]
 ///such as: 'Sorry, we are unable to reset password ...' => 'Sorry, we are unable to reset password for the provided email address.',
 
 /**
@@ -59,7 +59,8 @@ return [
 	'Successfully deleted.' => '删除成功。',
 	'Failed to delete!' => '删除失败！',
 	'Deleted {0} users.' => '共删除了 {0} 个用户。',
-	
+
+
 	/**
 	 * Models
 	 */
@@ -196,6 +197,7 @@ return [
 	'(Select date format ...)' => '(请选择日期格式)',
 	'(Select time format ...)' => '(请选择时间格式)',
 
+
 	/**
 	 * Views
 	 */
@@ -291,6 +293,8 @@ return [
 	'role_user' => '普通用户',
 	'inactive'  => '未激活',
 	'active' => '已激活',
+	'Male' => '男',
+	'Female' => '女',
 
 	///\vendor\yongtiger\yii2-user\src\views\user\view.php
 	'View User' => '查看用户',
@@ -305,6 +309,26 @@ return [
 
 	///\vendor\yongtiger\yii2-user\src\views\profile\view.php
 	'View User Profile' => '查看用户个人资料',
+
+	///\vendor\yongtiger\yii2-user\src\views\profile\_form.php
+	'Primary School' => '小学',
+	'Junior High School' => '初中',
+	'High School' => '高中',
+	'Secondary School' => '职高',
+	'Bachelor' => '本科',
+	'Master' => '硕士',
+	'Doctor' => '博士',
+	'P.H.D.' => '博士后',
+	'Staff' => '普通职员',
+	'Engineer' => '工程师',
+	'Secretary' => '秘书',
+	'Manager' => '经理',
+	'CEO' => 'CEO',
+	'0-10k' => '0-10万',
+	'10k-20k' => '10-20万',
+	'20k-50k' => '20-50万',
+	'50k-100k' => '50-100万',
+	'100k+' => '100万以上',
 
 	///\vendor\yongtiger\yii2-user\src\views\verify\index.php
 	'User Verify List' => '用户验证列表',
