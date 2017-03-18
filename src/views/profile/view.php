@@ -36,9 +36,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+
             'fullname',
             'firstname',
             'lastname',
+
             [
                 'attribute' => 'gender',
                 'value' => function ($model) {
@@ -50,8 +52,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     return null;
                 },
             ],
+
             'link:url',
+
             'birthday:date',    ///[v0.17.2 (profile birthday:DatePicker)]
+
             // 'country',   ///?????need upgrade region
 
             ///[v0.17.3 (profile region widget)]
@@ -64,10 +69,29 @@ $this->params['breadcrumbs'][] = $this->title;
             'telephone',
             'mobile',
             'graduate',
-            'education',
+
+            [
+                'attribute' => 'education',
+                'value' => function ($model) {
+                    return Module::t('message', $model->education);
+                },
+            ],
+
             'company',
-            'position',
-            'revenue',
+            [
+                'attribute' => 'position',
+                'value' => function ($model) {
+                    return Module::t('message', $model->position);
+                },
+            ],
+
+            [
+                'attribute' => 'revenue',
+                'value' => function ($model) {
+                    return Module::t('message', $model->revenue);
+                },
+            ],
+            
             'created_at:datetime',
             'updated_at:datetime',
         ],
