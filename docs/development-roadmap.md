@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.19.7 (FIX# !empty(Yii::$app->isAdminEnd))
+
+
 ## v0.19.6 (FIX# profile:locale date)
 
 

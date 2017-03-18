@@ -98,7 +98,7 @@ class ProfileController extends Controller
     {
 
         ///[v0.18.4 (frontend user menus)]
-        if (!Yii::$app->isAdminEnd && Yii::$app->user->id == $id) {
+        if (empty(Yii::$app->isAdminEnd) && Yii::$app->user->id == $id) {
             $this->layout = 'main';
         }
 

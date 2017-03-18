@@ -37,7 +37,7 @@ class DefaultController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {  ///[v0.18.5 (isAdminEnd)]
-                            return !Yii::$app->isAdminEnd;
+                            return empty(Yii::$app->isAdminEnd);
                         }
                     ],
                 ],

@@ -489,7 +489,7 @@ class Module extends \yii\base\Module
         ], $this->menus);
 
         ///[v0.18.5 (isAdminEnd)]
-        $this->defaultRoute = Yii::$app->isAdminEnd ? 'user' :'default';
+        $this->defaultRoute = !empty(Yii::$app->isAdminEnd) ? 'user' :'default';
         $this->getBasePath();
         $this->getViewPath();
     }

@@ -42,7 +42,7 @@ class StatusController extends Controller
                         'actions' => ['index'],
                         'roles' => ['permission_access_app-backend'],   ///[v0.17.1 (AccessControl `permission_access_app-backend` of update and verify)]
                         'matchCallback' => function ($rule, $action) {  ///[v0.18.5 (isAdminEnd)]
-                            return Yii::$app->isAdminEnd;
+                            return !empty(Yii::$app->isAdminEnd);
                         }
                     ],
 
@@ -57,7 +57,7 @@ class StatusController extends Controller
                         'allow' => true,
                         'roles' => ['permission_access_app-backend'],
                         'matchCallback' => function ($rule, $action) {
-                            if (!Yii::$app->isAdminEnd) return false;   ///[v0.18.5 (isAdminEnd)]
+                            if (empty(Yii::$app->isAdminEnd)) return false;   ///[v0.18.5 (isAdminEnd)]
                             $me = Yii::$app->user->identity;
                             $useId = Yii::$app->request->get('id');
                             $user = $this->findModel($useId)->user;   ///gets the manipulated User object

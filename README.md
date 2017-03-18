@@ -1,4 +1,4 @@
-# Yii2-user v0.19.6 (FIX# profile:locale date)
+# Yii2-user v0.19.7 (FIX# !empty(Yii::$app->isAdminEnd))
 
 The most basic `user` module.
 

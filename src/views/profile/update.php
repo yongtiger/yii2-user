@@ -9,7 +9,7 @@ use yongtiger\user\Module;
 $this->title = Module::t('message', 'Update User Profile') . ': ID ' . $model->user_id;
 
 ///[v0.18.5 (isAdminEnd)]
-if (Yii::$app->isAdminEnd) {
+if (!empty(Yii::$app->isAdminEnd)) {
     $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User List'), 'url' => ['user/index']];
     $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'User Profile List'), 'url' => ['index']];
 } else if (Yii::$app->user->id == $model->user_id) {
