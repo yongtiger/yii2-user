@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.19.6 (FIX# profile:locale date)
+
+
 ## v0.19.5 (CHG# profile)
 
 

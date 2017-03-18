@@ -85,7 +85,21 @@ class Profile extends \yii\db\ActiveRecord
                 return $this->lastname . ' ' .  $this->firstname;
             }],
 
-            ['birthday', 'date'],   ///[v0.17.2 (profile birthday:DatePicker)]
+            ///[v0.19.6 (FIX# profile:locale date)]
+            ///can't deal with locale date e.g. `1970年5月17日星期日`
+            // ['birthday', 'date'],   ///[v0.17.2 (profile birthday:DatePicker)]
+            ['birthday', 'filter', 'filter' => function ($value) {
+                ///can't deal with locale date e.g. `1970年5月17日星期日`
+                // return Yii::$app->formatter->asDate($value, $format);
+                // return date_create_from_format($format, $value);
+                // setlocale(LC_TIME, 'zho');
+                // return strftime("%Y-%m-%d", $value);
+                // return strptime($value, $format);    ///Note: This function is not implemented on Windows platforms. @see http://php.net/manual/en/function.strptime.php
+                ///so we use below:
+                $format = FormatConverter::convertDateIcuToPhp(Yii::$app->formatter->dateFormat);
+                $dateParse = date_parse_from_format($format, $value);
+                return $dateParse['year'] . '-' . $dateParse['month'] . '-' . $dateParse['day'];
+            }],
 
         ];
     }

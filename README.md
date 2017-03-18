@@ -1,4 +1,4 @@
-# Yii2-user v0.19.5 (CHG# profile)
+# Yii2-user v0.19.6 (FIX# profile:locale date)
 
 The most basic `user` module.
 
