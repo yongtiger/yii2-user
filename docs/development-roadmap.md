@@ -1,6 +1,6 @@
 # Development roadmap
 
-## v0.19.8 (views/preference/_form.php:i18n:'zh-CN')
+## v0.20.0 (FIX# i18n:long text translation)
 
 
 ## v0.19.7 (FIX# !empty(Yii::$app->isAdminEnd))

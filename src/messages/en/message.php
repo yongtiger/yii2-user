@@ -29,4 +29,6 @@ return [
 	///\vendor\yongtiger\yii2-user\src\models\TokenHandler.php
 	'Your account has been successfully activated ...' => 'Your account has been successfully activated. You can now log in using the username and password you chose during the registration.',	///[Yii2 uesr:activation via email:activation]
 
+	///\vendor\yongtiger\yii2-user\src\views\preference\_form.php
+	'zh-CN' => '中文(简体)',
 ];

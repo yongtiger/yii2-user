@@ -1,4 +1,4 @@
-# Yii2-user v0.19.8 (views/preference/_form.php:i18n:'zh-CN')
+# Yii2-user v0.20.0 (FIX# i18n:long text translation)
 
 The most basic `user` module.
 
