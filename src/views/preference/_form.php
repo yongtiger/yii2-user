@@ -26,7 +26,7 @@ $timezones = TimeZone::timezone_list(TimeZone::SORT_BY_OFFSET); ///[v0.19.1 (ADD
 
     <?= $form->field($model, 'locale')->dropDownList([
         'en-US'=> 'English',
-        'zh-CN'=> '中文(简体)',
+        'zh-CN'=> Module::t('message', 'zh-CN'),
     ], [
         // 'class' => 'selectpicker',
         'prompt' => Module::t('message', '(Select locale ...)'),

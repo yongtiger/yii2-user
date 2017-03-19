@@ -1,4 +1,4 @@
-# Yii2-user v0.19.7 (FIX# !empty(Yii::$app->isAdminEnd))
+# Yii2-user v0.19.8 (views/preference/_form.php:i18n:'zh-CN')
 
 The most basic `user` module.
 

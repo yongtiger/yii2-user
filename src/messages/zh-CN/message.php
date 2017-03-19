@@ -1,4 +1,4 @@
-﻿<?php ///[i18n:Long Text Translation]
+<?php ///[i18n:Long Text Translation]
 ///such as: 'Sorry, we are unable to reset password ...' => 'Sorry, we are unable to reset password for the provided email address.',
 
 /**
@@ -365,4 +365,7 @@ return [
 
 	///\vendor\yongtiger\yii2-user\src\views\preference\view.php
 	'View User Preference' => '查看用户偏好设置',
+
+	///\vendor\yongtiger\yii2-user\src\views\preference\_form.php
+	'zh-CN' => '中文(简体)',
 ];
