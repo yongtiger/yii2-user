@@ -1,4 +1,4 @@
-# Yii2-user v0.20.0 (FIX# i18n:long text translation)
+# Yii2-user v0.21.0 (ADD# update avatar)
 
 The most basic `user` module.
 

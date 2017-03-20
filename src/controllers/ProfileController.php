@@ -45,7 +45,7 @@ class ProfileController extends Controller
 
                     [
                         'allow' => true,
-                        'actions' => ['view'],
+                        'actions' => ['view', 'avatar', 'crop-avatar'], ///[v0.21.0 (ADD# update avatar)]
                         'roles' => ['@'],
                     ],
 
@@ -72,6 +72,79 @@ class ProfileController extends Controller
                 ],
             ],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return [
+        ///[v0.21.0 (ADD# update avatar)]
+            'crop-avatar'=>[
+                'class' => 'yongtiger\cropperavatar\actions\CropAvatarAction',
+                'config'=>[
+                    // Default width of the destination image
+                    'dstImageWidth' => 200,
+
+                    // Default height of the destination image
+                    'dstImageHeight' => 200,
+
+                    // Default width of the middle image, empty means no generating
+                    'middleImageWidth'=> 100,
+
+                    // Default height of the middle image, empty means no generating
+                    'middleImageHeight'=> 100,
+
+                    // Default width of the small image, empty means no generating
+                    'smallImageWidth' => 50,
+
+                    // Default height of the small image, empty means no generating 
+                    'smallImageHeight' => 50,
+
+                    // Avatar upload path
+                    'dstImageFilepath' => Yii::$app->user->isGuest ? '@webroot/uploads/avatar/0' : '@webroot/uploads/avatar/' . Yii::$app->user->identity->id,
+
+                    // Avatar uri
+                    'dstImageUri' => Yii::$app->user->isGuest ? '@web/uploads/avatar/0' : '@web/uploads/avatar/' . Yii::$app->user->identity->id,
+
+                    // Avatar upload file name
+                    'dstImageFilename' => date('YmdHis'),
+
+                    // The file name suffix of the original image, empty means no generating
+                    'original' => 'original',
+                ],
+            ],
+        ];
+    }
+
+    ///[v0.21.0 (ADD# update avatar)]
+    /**
+     * Updates avatar in an existing Profile model.
+     * @return mixed
+     */
+    public function actionAvatar()
+    {
+        $model = $this->findModel(Yii::$app->user->id);
+        $model->scenario = Profile::SCENARIO_AVATAR;
+        $load = $model->load(Yii::$app->request->post());
+
+        ///[yii2-uesr:Ajax validation]
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+
+        ///[v0.18.4 (frontend user menus)]
+        $this->layout = 'main';
+
+        if ($load && $user = $model->save()) {
+            return $this->redirect(['/user/default/index']);
+        } else {
+            return $this->render('/avatar/update', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**

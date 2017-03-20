@@ -115,7 +115,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['username', 'unique'],
 
             ///[yii2-uesr:password]
-            ['password', 'required', 'on' => 'create'],   ///[yii2-user:password]password must be required to verify at `create`, and has not to be verified at `update`
+            ['password', 'required', 'on' => static::SCENARIO_CREATE],   ///[yii2-user:password]password must be required to verify at `create`, and has not to be verified at `update`
             ['password', 'string', 'min' => 6],
             ['password', 'match', 'pattern' => '/^[a-zA-Z0-9_\-\~\!\@\#\$\%\^\&\*\+\=\?\|\{\}\[\]\(\)]{6,20}$/', 'message' => Module::t('message', 'The password only contains letters ...')],  ///skipOnEmpty缺省为true，所以当没有输入密码时，忽略该项验证规则
 

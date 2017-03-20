@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.21.0 (ADD# update avatar)
+
+
 ## v0.20.0 (FIX# i18n:long text translation)
 
 

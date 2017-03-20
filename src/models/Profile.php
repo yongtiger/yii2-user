@@ -46,6 +46,10 @@ use yongtiger\user\Module;
  */
 class Profile extends \yii\db\ActiveRecord
 {
+    ///[v0.21.0 (ADD# update avatar)]
+    const SCENARIO_DEFAULT = 'default';
+    const SCENARIO_AVATAR = 'avatar';
+
     /**
      * @inheritdoc
      */
@@ -67,6 +71,16 @@ class Profile extends \yii\db\ActiveRecord
                 // 'value' => new \yii\db\Expression('NOW()'), ///if you're using datetime instead of UNIX timestamp
             ],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[static::SCENARIO_AVATAR] = ['user_id', 'avatar', 'updated_at'];  ///[v0.21.0 (ADD# update avatar)]
+        return $scenarios;
     }
 
     /**
@@ -101,6 +115,9 @@ class Profile extends \yii\db\ActiveRecord
                 return $dateParse['year'] . '-' . $dateParse['month'] . '-' . $dateParse['day'];
             }],
 
+            ///[v0.21.0 (ADD# update avatar)]
+            ['avatar', 'safe', 'on' => static::SCENARIO_AVATAR],
+
         ];
     }
 
@@ -118,7 +135,7 @@ class Profile extends \yii\db\ActiveRecord
             'avatar' => Module::t('message', 'Avatar'),
             'link' => Module::t('message', 'Link'),
             'birthday' => Module::t('message', 'Birthday'),
-            'country' => Module::t('message', 'Country'),
+            'country' => Module::t('message', 'Co++9untry'),
             'region' => Module::t('message', 'Region'), ///[v0.17.3 (profile region widget)]
             'province' => Module::t('message', 'Province'),
             'city' => Module::t('message', 'City'),
