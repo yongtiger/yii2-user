@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use yongtiger\user\Module;
 use yongtiger\region\widgets\RegionWidget;
 use yongtiger\region\models\Region;
+use yongtiger\cropperavatar\AvatarWidget;
 
 /* @var $this yii\web\View */
 /* @var $model yongtiger\user\models\Profile */
@@ -41,6 +42,18 @@ JS
     <?= $form->field($model, 'lastname')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'gender')->radioList([1 => Module::t('message', 'Male'), 0 => Module::t('message', 'Female')]) ?>
+
+    <!--///[v0.21.1 (ADD# views\profile\_form.php:update avatar)]-->
+    <?= $form->field($model, 'avatar')->widget(AvatarWidget::classname(), [
+        'dstImageUri' => Yii::$app->user->isGuest ? '@web/uploads/avatar/0' : '@web/uploads/avatar/' . Yii::$app->user->identity->id,
+        // 'noImageUrl' => 'http://oxfordchamber.org/images/board/NoPhotoAvailableMale.jpg',
+        // 'isRounded' => true,
+        // 'isModal' => false,
+        // 'enableRotateButtons' => false,
+        // 'enablePreviewLargelImage' => false,
+        // 'enablePreviewMiddlelImage' => false,
+        // 'enablePreviewSmalllImage' => false,
+    ])->label(false) ?>
 
     <?= $form->field($model, 'link')->textInput(['maxlength' => true]) ?>
 

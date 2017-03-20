@@ -92,7 +92,7 @@ class Profile extends \yii\db\ActiveRecord
             [['user_id', 'created_at', 'updated_at'], 'required'],
             [['firstname', 'lastname', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'trim'],
             [['user_id', 'province', 'city', 'district', 'gender', 'created_at', 'updated_at'], 'integer'],
-            [['fullname', 'firstname', 'lastname', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'string', 'max' => 255],
+            [['fullname', 'firstname', 'lastname', 'avatar', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
 
             ['fullname', 'filter', 'filter' => function ($value) {
@@ -114,9 +114,6 @@ class Profile extends \yii\db\ActiveRecord
                 $dateParse = date_parse_from_format($format, $value);
                 return $dateParse['year'] . '-' . $dateParse['month'] . '-' . $dateParse['day'];
             }],
-
-            ///[v0.21.0 (ADD# update avatar)]
-            ['avatar', 'safe', 'on' => static::SCENARIO_AVATAR],
 
         ];
     }

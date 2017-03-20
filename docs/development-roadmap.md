@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.21.1 (ADD# views\profile\_form.php:update avatar)
+
+
 ## v0.21.0 (ADD# update avatar)
 
 

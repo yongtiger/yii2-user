@@ -368,4 +368,8 @@ return [
 
 	///\vendor\yongtiger\yii2-user\src\views\preference\_form.php
 	'zh-CN' => '中文(简体)',
+
+	///\vendor\yongtiger\yii2-user\src\views\avatar\update.php
+	'Update User Avatar' => '更新用户头像',
+
 ];

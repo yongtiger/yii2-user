@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     	// 'enablePreviewLargelImage' => false,
     	// 'enablePreviewMiddlelImage' => false,
     	// 'enablePreviewSmalllImage' => false,
-    ]) ?>
+    ])->label(false) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Module::t('message', 'Update'), ['class' => 'btn btn-primary']) ?>

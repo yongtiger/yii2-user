@@ -1,4 +1,4 @@
-# Yii2-user v0.21.0 (ADD# update avatar)
+# Yii2-user v0.21.1 (ADD# views\profile\_form.php:update avatar)
 
 The most basic `user` module.
 
