@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
         // 'noImageUrl' => 'http://oxfordchamber.org/images/board/NoPhotoAvailableMale.jpg',
         // 'isRounded' => true,
     	'isModal' => false,
+        'isHiddenImage' => true,
     	// 'enableRotateButtons' => false,
     	// 'enablePreviewLargelImage' => false,
     	// 'enablePreviewMiddlelImage' => false,

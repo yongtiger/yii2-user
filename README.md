@@ -1,4 +1,4 @@
-# Yii2-user v0.21.4 (ADD# AvatarWidget::widget:views\avatar\update.php:'value' => Yii::$app->user->identity->profile->avatar)
+# Yii2-user v0.21.5 (ADD# isHiddenImage)
 
 The most basic `user` module.
 

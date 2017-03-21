@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.21.5 (ADD# isHiddenImage)
+
+
 ## v0.21.4 (ADD# AvatarWidget::widget:views\avatar\update.php:'value' => Yii::$app->user->identity->profile->avatar)
 
 
