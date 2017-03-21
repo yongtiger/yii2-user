@@ -48,7 +48,7 @@ JS
         'dstImageUri' => Yii::$app->user->isGuest ? '@web/uploads/avatar/0' : '@web/uploads/avatar/' . Yii::$app->user->identity->id,
         // 'noImageUrl' => 'http://oxfordchamber.org/images/board/NoPhotoAvailableMale.jpg',
         // 'isRounded' => true,
-        // 'isModal' => false,
+        'isModal' => false,
         // 'enableRotateButtons' => false,
         // 'enablePreviewLargelImage' => false,
         // 'enablePreviewMiddlelImage' => false,

@@ -113,38 +113,46 @@ class ProfileController extends Controller
 
                     // The file name suffix of the original image, empty means no generating
                     'original' => 'original',
+
                 ],
+
+                ///[v0.21.2 (CHG# AvatarWidget::widget)]
+                'successCallback' => [$this, 'saveAvatar'],
             ],
         ];
     }
 
-    ///[v0.21.0 (ADD# update avatar)]
+    ///[v0.21.2 (CHG# AvatarWidget::widget)]
+    /**
+     * CropAvatarAction successCallback.
+     *
+     * @param array $result
+     * @param string $isInputWidget If set, means that `isInputWidget`, usually not to save the avatar operation
+     */
+    public function saveAvatar($result, $isInputWidget)  ///[isInputWidget]tell action's successCallback not to save the avatar operation.
+    {
+        if (empty($isInputWidget)) {
+            // save avatar $result into user table ...
+            $model = $this->findModel(Yii::$app->user->id);
+            $model->scenario = Profile::SCENARIO_AVATAR;
+            $model->avatar = $result['params']['dstImageFilename'] . $result['params']['extension'];
+            $model->save();
+        }
+        return;
+    }
+
+    ///[v0.21.2 (CHG# AvatarWidget::widget)]
     /**
      * Updates avatar in an existing Profile model.
      * @return mixed
      */
     public function actionAvatar()
     {
-        $model = $this->findModel(Yii::$app->user->id);
-        $model->scenario = Profile::SCENARIO_AVATAR;
-        $load = $model->load(Yii::$app->request->post());
-
-        ///[yii2-uesr:Ajax validation]
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($model);
-        }
 
         ///[v0.18.4 (frontend user menus)]
         $this->layout = 'main';
 
-        if ($load && $user = $model->save()) {
-            return $this->redirect(['/user/default/index']);
-        } else {
-            return $this->render('/avatar/update', [
-                'model' => $model,
-            ]);
-        }
+        return $this->render('/avatar/update');
     }
 
     /**

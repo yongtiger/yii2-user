@@ -1,4 +1,4 @@
-# Yii2-user v0.21.1 (ADD# views\profile\_form.php:update avatar)
+# Yii2-user v0.21.3 (CHG# AvatarWidget::widget:$result['params']['dstImageFilename'])
 
 The most basic `user` module.
 

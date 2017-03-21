@@ -1,5 +1,11 @@
 # Development roadmap
 
+## v0.21.3 (CHG# AvatarWidget::widget:$result['params']['dstImageFilename'])
+
+
+## v0.21.2 (CHG# AvatarWidget::widget)
+
+
 ## v0.21.1 (ADD# views\profile\_form.php:update avatar)
 
 

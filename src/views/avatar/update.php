@@ -17,10 +17,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php $form = ActiveForm::begin(['id' => 'avatar-form']); ?>
-
-    <?= $form->field($model, 'avatar')->widget(AvatarWidget::classname(), [
+    <?= AvatarWidget::widget([
         'dstImageUri' => Yii::$app->user->isGuest ? '@web/uploads/avatar/0' : '@web/uploads/avatar/' . Yii::$app->user->identity->id,
+        'src' => /////////////
         // 'noImageUrl' => 'http://oxfordchamber.org/images/board/NoPhotoAvailableMale.jpg',
         // 'isRounded' => true,
     	'isModal' => false,
@@ -28,12 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
     	// 'enablePreviewLargelImage' => false,
     	// 'enablePreviewMiddlelImage' => false,
     	// 'enablePreviewSmalllImage' => false,
-    ])->label(false) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Module::t('message', 'Update'), ['class' => 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+    ]) ?>
 
 </div>
