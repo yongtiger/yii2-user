@@ -1,4 +1,4 @@
-# Yii2-user v0.21.3 (CHG# AvatarWidget::widget:$result['params']['dstImageFilename'])
+# Yii2-user v0.21.4 (ADD# AvatarWidget::widget:views\avatar\update.php:'value' => Yii::$app->user->identity->profile->avatar)
 
 The most basic `user` module.
 
@@ -9,6 +9,7 @@ The most basic `user` module.
 
 
 ## FEATURES
+
 * `User` module directly from Yii2 Advanced Template
 * internationalization with i18n
 * using `User` module both frontend & backend
@@ -26,6 +27,7 @@ The most basic `user` module.
 * user account oauth
 * token sender and handler
 * change forms (ChangeUsernameForm, ChangeEmailForm, ChangePasswordForm)
+
 
 ## DEPENDENCES
 

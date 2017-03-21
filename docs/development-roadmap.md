@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.21.4 (ADD# AvatarWidget::widget:views\avatar\update.php:'value' => Yii::$app->user->identity->profile->avatar)
+
+
 ## v0.21.3 (CHG# AvatarWidget::widget:$result['params']['dstImageFilename'])
 
 
