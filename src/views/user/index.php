@@ -104,7 +104,13 @@ UserAsset::register($this);
                         return Html::a(
                             '<span class="glyphicon glyphicon-info-sign"></span>',
                             $url,
-                            ['title' => Module::t('message', 'profile')]
+                            [
+                                'title' => Module::t('message', 'profile'),
+
+                                ///Note: Might be a problem for the links of an ActionColumn. To prevent this, add the HTML attribute data-pjax="0" to the links when you edit the ActionColumn::$buttons property.
+                                ///@see http://www.yiiframework.com/doc-2.0/guide-output-data-widgets.html#using-gridview-with-pjax
+                                'data-pjax' => '0',
+                            ]
                         );
                     },
                     'verify' => function ($url, $model) {

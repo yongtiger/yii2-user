@@ -1,4 +1,4 @@
-# Yii2-user v0.21.5 (ADD# isHiddenImage)
+# Yii2-user v0.22.0 (FIX# 'data-pjax' => '0')
 
 The most basic `user` module.
 

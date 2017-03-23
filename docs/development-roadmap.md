@@ -1,5 +1,12 @@
 # Development roadmap
 
+## v0.22.0 (FIX# 'data-pjax' => '0')
+
+Changed file list:
+
+- `\views\user\index.php`
+
+
 ## v0.21.5 (ADD# isHiddenImage)
 
 
