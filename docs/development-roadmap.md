@@ -1,5 +1,8 @@
 # Development roadmap
 
+## v0.22.2 (????bug# show avatar issue at backend!)
+
+
 ## v0.22.1 (ADD# enableCrop)
 
 Changed file list:

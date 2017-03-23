@@ -236,14 +236,14 @@ class SecurityController extends Controller
      */
     public function connect(\yongtiger\authclient\clients\IAuth $client)
     {
-        $oauth = Oauth::findOne(['user_id' => Yii::$app->user->identity->id, 'provider' => $client->provider]);
+        $oauth = Oauth::findOne(['user_id' => Yii::$app->user->id, 'provider' => $client->provider]);
 
         if ($oauth) {
             Yii::$app->session->addFlash('warning', Module::t('message', 'Already connected. No need to connect again.'));
         } else {
             ///Insert a new record to the oauth ActiveRecord.
             try {
-                $this->insertOauth(Yii::$app->user->identity->id, $client->getUserInfos());
+                $this->insertOauth(Yii::$app->user->id, $client->getUserInfos());
             } catch (Exception $e) {
                 Yii::$app->session->addFlash('error', Module::t('message', 'Failed connect!'));
             }
@@ -258,7 +258,7 @@ class SecurityController extends Controller
      */
     public function actionDisconnect($provider)
     {
-        $oauth = Oauth::findOne(['user_id' => Yii::$app->user->identity->id, 'provider' => $provider]);
+        $oauth = Oauth::findOne(['user_id' => Yii::$app->user->id, 'provider' => $provider]);
 
         if ($oauth && $oauth->delete() !== 'false') {
             Yii::$app->session->addFlash('success', Module::t('message', 'Successfully disconnect.'));

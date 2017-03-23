@@ -112,10 +112,10 @@ class ProfileController extends Controller
                     'smallImageHeight' => 50,
 
                     // Avatar upload path
-                    'dstImageFilepath' => Yii::$app->user->isGuest ? '@webroot/uploads/avatar/0' : '@webroot/uploads/avatar/' . Yii::$app->user->identity->id,//////////??????????????
+                    'dstImageFilepath' => '@webroot/uploads/avatar/' . Yii::$app->user->id,
 
                     // Avatar uri
-                    'dstImageUri' => Yii::$app->user->isGuest ? '@web/uploads/avatar/0' : '@web/uploads/avatar/' . Yii::$app->user->identity->id,//////////??????????????
+                    'dstImageUri' => '@web/uploads/avatar/' . Yii::$app->user->id,
 
                     // Avatar upload file name
                     'dstImageFilename' => date('YmdHis'),

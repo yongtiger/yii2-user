@@ -46,7 +46,7 @@ JS
     <!--///[v0.21.1 (ADD# views\profile\_form.php:update avatar)]-->
     <?= $form->field($model, 'avatar')->widget(AvatarWidget::classname(), [
         'enableCrop' => Yii::$app->user->id == $model->user_id, ///[v0.22.1 (ADD# enableCrop)]
-        'dstImageUri' => '@avatar-upload/' . $model->user_id,
+        'dstImageUri' => '@web/uploads/avatar/' . $model->user_id,////????bug# show avatar issue at backend!
         // 'noImageUrl' => 'http://oxfordchamber.org/images/board/NoPhotoAvailableMale.jpg',
         // 'isRounded' => true,
         'isModal' => false,

@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= AvatarWidget::widget([
-        'dstImageUri' => '@avatar-upload/' . Yii::$app->user->identity->id,
+        'dstImageUri' => '@web/uploads/avatar/' . Yii::$app->user->id,
         'value' => Yii::$app->user->identity->profile->avatar,
         // 'noImageUrl' => 'http://oxfordchamber.org/images/board/NoPhotoAvailableMale.jpg',
         // 'isRounded' => true,

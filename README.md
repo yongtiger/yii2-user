@@ -1,4 +1,4 @@
-# Yii2-user v0.22.1 (ADD# enableCrop)
+# Yii2-user v0.22.2 (????bug# show avatar issue at backend!)
 
 The most basic `user` module.
 
