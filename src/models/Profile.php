@@ -103,6 +103,7 @@ class Profile extends \yii\db\ActiveRecord
             ///can't deal with locale date e.g. `1970年5月17日星期日`
             // ['birthday', 'date'],   ///[v0.17.2 (profile birthday:DatePicker)]
             ['birthday', 'filter', 'filter' => function ($value) {
+                if (empty($value)) return null;
                 ///can't deal with locale date e.g. `1970年5月17日星期日`
                 // return Yii::$app->formatter->asDate($value, $format);
                 // return date_create_from_format($format, $value);

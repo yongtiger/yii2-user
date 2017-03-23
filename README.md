@@ -1,4 +1,4 @@
-# Yii2-user v0.22.0 (FIX# 'data-pjax' => '0')
+# Yii2-user v0.22.1 (ADD# enableCrop)
 
 The most basic `user` module.
 

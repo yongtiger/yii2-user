@@ -45,8 +45,17 @@ class ProfileController extends Controller
 
                     [
                         'allow' => true,
-                        'actions' => ['view', 'avatar', 'crop-avatar'], ///[v0.21.0 (ADD# update avatar)]
+                        'actions' => ['view'],
                         'roles' => ['@'],
+                    ],
+
+                    [
+                        'allow' => true,
+                        'actions' => ['avatar', 'crop-avatar'], ///[v0.21.0 (ADD# update avatar)]
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {  ///[v0.18.5 (isAdminEnd)]
+                            return empty(Yii::$app->isAdminEnd);
+                        }
                     ],
 
                     [   ///[v0.17.0 (AccessControl of update profile and remove update verify)]
@@ -103,10 +112,10 @@ class ProfileController extends Controller
                     'smallImageHeight' => 50,
 
                     // Avatar upload path
-                    'dstImageFilepath' => Yii::$app->user->isGuest ? '@webroot/uploads/avatar/0' : '@webroot/uploads/avatar/' . Yii::$app->user->identity->id,
+                    'dstImageFilepath' => Yii::$app->user->isGuest ? '@webroot/uploads/avatar/0' : '@webroot/uploads/avatar/' . Yii::$app->user->identity->id,//////////??????????????
 
                     // Avatar uri
-                    'dstImageUri' => Yii::$app->user->isGuest ? '@web/uploads/avatar/0' : '@web/uploads/avatar/' . Yii::$app->user->identity->id,
+                    'dstImageUri' => Yii::$app->user->isGuest ? '@web/uploads/avatar/0' : '@web/uploads/avatar/' . Yii::$app->user->identity->id,//////////??????????????
 
                     // Avatar upload file name
                     'dstImageFilename' => date('YmdHis'),

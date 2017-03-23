@@ -45,7 +45,8 @@ JS
 
     <!--///[v0.21.1 (ADD# views\profile\_form.php:update avatar)]-->
     <?= $form->field($model, 'avatar')->widget(AvatarWidget::classname(), [
-        'dstImageUri' => Yii::$app->user->isGuest ? '@web/uploads/avatar/0' : '@web/uploads/avatar/' . Yii::$app->user->identity->id,
+        'enableCrop' => Yii::$app->user->id == $model->user_id, ///[v0.22.1 (ADD# enableCrop)]
+        'dstImageUri' => '@avatar-upload/' . $model->user_id,
         // 'noImageUrl' => 'http://oxfordchamber.org/images/board/NoPhotoAvailableMale.jpg',
         // 'isRounded' => true,
         'isModal' => false,

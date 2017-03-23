@@ -1,5 +1,12 @@
 # Development roadmap
 
+## v0.22.1 (ADD# enableCrop)
+
+Changed file list:
+
+- `\views\profile\_form.php`
+
+
 ## v0.22.0 (FIX# 'data-pjax' => '0')
 
 Changed file list:
