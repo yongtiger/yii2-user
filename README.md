@@ -1,4 +1,4 @@
-# Yii2-user v0.22.2 (????bug# show avatar issue at backend!)
+# Yii2-user v0.23.0 (TYPO# endif)
 
 The most basic `user` module.
 

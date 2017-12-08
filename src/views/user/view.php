@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-    <? endif; ?>
+    <?php endif; ?>
 
     <?= DetailView::widget([
         'model' => $model,

@@ -1,5 +1,16 @@
 # Development roadmap
 
+## v0.23.0 (TYPO# endif)
+
+Changed file list:
+
+- `\views\count\view.php`
+- `\views\preference\view.php`
+- `\views\profile\view.php`
+- `\views\status\view.php`
+- `\views\user\view.php`
+
+
 ## v0.22.2 (????bug# show avatar issue at backend!)
 
 

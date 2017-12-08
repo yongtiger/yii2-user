@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Module::t('message', 'Update'), ['update', 'id' => $model->user_id], ['class' => 'btn btn-success']) ?>
     </p>
-    <? endif; ?>
+    <?php endif; ?>
 
     <?= DetailView::widget([
         'model' => $model,

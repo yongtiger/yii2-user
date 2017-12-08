@@ -25,11 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <!--///[v0.18.5 (isAdminEnd)]-->
-    <?php if (!empty(Yii::$app->isAdminEnd)): ?>
+    <? if (!empty(Yii::$app->isAdminEnd)) : ?>
     <p>
         <?= Html::a(Module::t('message', 'Update'), ['update', 'id' => $model->user_id], ['class' => 'btn btn-success']) ?>
     </p>
-    <? endif; ?>
+    <?php endif; ?>
 
     <?= DetailView::widget([
         'model' => $model,
