@@ -1,4 +1,4 @@
-# Yii2-user v0.23.0 (TYPO# endif)
+# Yii2-user v0.23.1 (TYPO# send-token.php)
 
 The most basic `user` module.
 

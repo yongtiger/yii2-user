@@ -25,7 +25,7 @@ switch ($type) {
         break;
     case 'verification':
         $this->title = Module::t('message', 'Verify email');
-        $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'Account'), 'url' => Url::to(['account/index'])];
+        $this->params['breadcrumbs'][] = ['label' => Module::t('message', 'My Account'), 'url' => Url::to(['account/index'])];
         $this->params['breadcrumbs'][] = $this->title;
         $desc = Module::t('message', 'Please fill out your registration email. A link to verify email will be sent there.');
         break;

@@ -1,5 +1,12 @@
 # Development roadmap
 
+## v0.23.1 (TYPO# send-token.php)
+
+Changed file list:
+
+- `\views\token\sendToken.php`
+
+
 ## v0.23.0 (TYPO# endif)
 
 Changed file list:
