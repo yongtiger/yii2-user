@@ -1,5 +1,11 @@
 # Development roadmap
 
+## v0.24.1 (ADD# SCENARIO_UPDATE)
+
+- `\controllers\ProfileController.php`
+- `\models\Profile.php`
+
+
 ## v0.24.0 (ADD# actionCreate())
 
 Changed file list:

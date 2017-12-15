@@ -213,7 +213,7 @@ class ProfileController extends Controller
     public function actionCreate()
     {
         $model = new Profile();
-
+        
         $load = $model->load(Yii::$app->request->post());
 
         ///[yii2-uesr:Ajax validation]
@@ -242,7 +242,7 @@ class ProfileController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->scenario = Profile::SCENARIO_UPDATE;    ///[v0.24.1 (ADD# SCENARIO_UPDATE)]
         $load = $model->load(Yii::$app->request->post());
 
         ///[yii2-uesr:Ajax validation]

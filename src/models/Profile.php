@@ -47,9 +47,10 @@ use yongtiger\user\Module;
  */
 class Profile extends \yii\db\ActiveRecord
 {
-    ///[v0.21.0 (ADD# update avatar)]
-    const SCENARIO_DEFAULT = 'default';
-    const SCENARIO_AVATAR = 'avatar';
+    
+    const SCENARIO_DEFAULT = 'default'; ///only for create!!!
+    const SCENARIO_UPDATE = 'update';   ///[v0.24.1 (ADD# SCENARIO_UPDATE)]
+    const SCENARIO_AVATAR = 'avatar';   ///[v0.21.0 (ADD# update avatar)]
 
     /**
      * @inheritdoc
@@ -85,6 +86,7 @@ class Profile extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
+        $scenarios[static::SCENARIO_UPDATE] = array_merge($scenarios[static::SCENARIO_DEFAULT], ['user_id', 'created_at', 'updated_at']);   ///[v0.24.1 (ADD# SCENARIO_UPDATE)]   
         $scenarios[static::SCENARIO_AVATAR] = ['user_id', 'avatar', 'updated_at'];  ///[v0.21.0 (ADD# update avatar)]
         return $scenarios;
     }
@@ -95,11 +97,13 @@ class Profile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            // [['user_id', 'created_at', 'updated_at'], 'required'],//////////////?????
-            [['firstname', 'lastname', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'trim'],
+            ///[v0.24.1 (ADD# SCENARIO_UPDATE)]
+            [['user_id', 'created_at', 'updated_at'], 'required', 'on' => [static::SCENARIO_UPDATE]],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id'], 'on' => [static::SCENARIO_UPDATE]],
+
+            [['firstname', 'lastname', 'link', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'trim'],
             [['user_id', 'province', 'city', 'district', 'gender', 'created_at', 'updated_at'], 'integer'],
             [['fullname', 'firstname', 'lastname', 'avatar', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'string', 'max' => 255],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
 
             ['fullname', 'filter', 'filter' => function ($value) {
                 return $this->lastname . ' ' .  $this->firstname;

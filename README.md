@@ -1,4 +1,4 @@
-# Yii2-user v0.24.0 (ADD# actionCreate())
+# Yii2-user v0.24.1 (ADD# SCENARIO_UPDATE)
 
 The most basic `user` module.
 
