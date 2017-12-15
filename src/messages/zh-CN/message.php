@@ -364,6 +364,9 @@ return [
 	'User Preference List'  => '用户偏好设置列表',
 
 	///\vendor\yongtiger\yii2-user\src\views\preference\update.php
+	'Create User Preference'  => '创建用户偏好设置',
+
+	///\vendor\yongtiger\yii2-user\src\views\preference\update.php
 	'Update User Preference'  => '更新用户偏好设置',
 
 	///\vendor\yongtiger\yii2-user\src\views\preference\view.php

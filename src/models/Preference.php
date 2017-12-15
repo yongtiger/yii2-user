@@ -14,6 +14,7 @@ namespace yongtiger\user\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
 use yongtiger\user\Module;
 
 /**
@@ -32,6 +33,8 @@ use yongtiger\user\Module;
  */
 class Preference extends \yii\db\ActiveRecord
 {
+    const SCENARIO_DEFAULT = 'default'; ///only for create!!!
+    const SCENARIO_UPDATE = 'update';   ///[v0.24.3 (ADD# Preference actionCreate(), SCENARIO_UPDATE)]
     /**
      * @inheritdoc
      */
@@ -52,7 +55,22 @@ class Preference extends \yii\db\ActiveRecord
                 'updatedAtAttribute' => 'updated_at',
                 // 'value' => new \yii\db\Expression('NOW()'), ///if you're using datetime instead of UNIX timestamp
             ],
+            'blameable' => [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => 'user_id',
+                'updatedByAttribute' => false,
+            ],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[static::SCENARIO_UPDATE] = array_merge($scenarios[static::SCENARIO_DEFAULT], ['user_id', 'created_at', 'updated_at']);   ///[v0.24.3 (ADD# Preference actionCreate(), SCENARIO_UPDATE)]   
+        return $scenarios;
     }
 
     /**
@@ -61,10 +79,12 @@ class Preference extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'created_at', 'updated_at'], 'required'],
-            [['user_id', 'created_at', 'updated_at'], 'integer'],
+            ///[v0.24.3 (ADD# Preference actionCreate(), SCENARIO_UPDATE)]
+            [['user_id', 'created_at', 'updated_at'], 'required', 'on' => [static::SCENARIO_UPDATE]],
+            [['user_id', 'created_at', 'updated_at'], 'integer', 'on' => [static::SCENARIO_UPDATE]],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id'], 'on' => [static::SCENARIO_UPDATE]],
+            
             [['locale', 'time_zone', 'datetime_format', 'date_format', 'time_format'], 'string', 'max' => 255],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 

@@ -205,7 +205,7 @@ class ProfileController extends Controller
     /**
      * Creates a new Profile model.
      *
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * If creation is successful, the browser will be redirected to the 'update' page.
      *
      * @see http://www.yiiframework.com/doc-2.0/guide-input-multiple-models.html
      * @return mixed
@@ -235,7 +235,7 @@ class ProfileController extends Controller
 
     /**
      * Updates an existing Profile model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * If update is successful, the browser will be redirected to the 'update' page.
      * @param integer $id
      * @return mixed
      */
@@ -263,7 +263,6 @@ class ProfileController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
-
     }
 
     /**

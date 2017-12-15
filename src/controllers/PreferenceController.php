@@ -22,6 +22,7 @@ use yii\widgets\ActiveForm;
 use yongtiger\user\models\Preference;
 use yongtiger\user\models\PreferenceSearch;
 use yongtiger\user\models\User;
+use yongtiger\user\Module;
 
 /**
  * PreferenceController implements the CRUD actions for Preference model.
@@ -45,19 +46,22 @@ class PreferenceController extends Controller
 
                     [
                         'allow' => true,
-                        'actions' => ['view'],
+                        'actions' => ['view', 'create'],
                         'roles' => ['@'],
                     ],
 
-                    [   ///[v0.17.0 (AccessControl of update profile and remove update verify)]
+                    [///[v0.24.3 (ADD# Preference actionCreate(), SCENARIO_UPDATE)]
                         'actions' => ['update'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             $me = Yii::$app->user->identity;
                             $useId = Yii::$app->request->get('id');
-                            $user = $this->findModel($useId)->user;   ///gets the manipulated User object
-
+                            if (empty($model = Preference::findOne($useId))) {    ///gets the manipulated User object
+                                Yii::$app->getResponse()->redirect(['user/preference/create'])->send();
+                                die;
+                            }
+                            $user = $model->user;
                             return
                                 $me->id == $user->id  ///if the manipulated user is `me`, update is allowed
                                 ||
@@ -107,17 +111,19 @@ class PreferenceController extends Controller
         ]);
     }
 
+    ///[v0.24.3 (ADD# Preference actionCreate(), SCENARIO_UPDATE)]
     /**
-     * Updates an existing Preference model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * Creates a new Preference model.
+     *
+     * If creation is successful, the browser will be redirected to the 'update' page.
+     *
+     * @see http://www.yiiframework.com/doc-2.0/guide-input-multiple-models.html
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionCreate()
     {
-        $timezones = \DateTimeZone::listAbbreviations();
-        $model = $this->findModel($id);
-
+        $model = new Preference();
+        
         $load = $model->load(Yii::$app->request->post());
 
         ///[yii2-uesr:Ajax validation]
@@ -126,18 +132,48 @@ class PreferenceController extends Controller
             return ActiveForm::validate($model);
         }
 
+        if ($load && $model->save()) {
+            Yii::$app->session->setFlash('success', Module::t('message', 'Successfully created.'));
+            $this->redirect(['update', 'id' => $model->user_id]);
+        } else {
+            $this->layout = 'main';
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Updates an existing Preference model.
+     * If update is successful, the browser will be redirected to the 'update' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $timezones = \DateTimeZone::listAbbreviations();
+        $model = $this->findModel($id);
+        $model->scenario = Preference::SCENARIO_UPDATE;    ///[v0.24.3 (ADD# Preference actionCreate(), SCENARIO_UPDATE)]
+        $load = $model->load(Yii::$app->request->post());
+
+        ///[yii2-uesr:Ajax validation]
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+
+        if ($load && $model->save()) {
+            Yii::$app->session->setFlash('success', Module::t('message', 'Successfully updated.'));
+        }
+
         ///[v0.18.4 (frontend user menus)]
         if (Yii::$app->user->id == $id) {
             $this->layout = 'main';
         }
 
-        if ($load && $user = $model->save()) {
-            return $this->redirect(['view', 'id' => $model->user_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**

@@ -47,7 +47,6 @@ use yongtiger\user\Module;
  */
 class Profile extends \yii\db\ActiveRecord
 {
-    
     const SCENARIO_DEFAULT = 'default'; ///only for create!!!
     const SCENARIO_UPDATE = 'update';   ///[v0.24.1 (ADD# SCENARIO_UPDATE)]
     const SCENARIO_AVATAR = 'avatar';   ///[v0.21.0 (ADD# update avatar)]
@@ -99,10 +98,11 @@ class Profile extends \yii\db\ActiveRecord
         return [
             ///[v0.24.1 (ADD# SCENARIO_UPDATE)]
             [['user_id', 'created_at', 'updated_at'], 'required', 'on' => [static::SCENARIO_UPDATE]],
+            [['user_id', 'created_at', 'updated_at'], 'integer', 'on' => [static::SCENARIO_UPDATE]],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id'], 'on' => [static::SCENARIO_UPDATE]],
 
             [['firstname', 'lastname', 'link', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'trim'],
-            [['user_id', 'province', 'city', 'district', 'gender', 'created_at', 'updated_at'], 'integer'],
+            [['province', 'city', 'district', 'gender', 'created_at', 'updated_at'], 'integer'],
             [['fullname', 'firstname', 'lastname', 'avatar', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'string', 'max' => 255],
 
             ['fullname', 'filter', 'filter' => function ($value) {
