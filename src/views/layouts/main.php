@@ -14,6 +14,7 @@ foreach ($menus as $i => $menu) {
 }
 
 ?>
+
 <?php $this->beginContent(\Yii::$app->getModule('user')->frontendLayout) ?>
 <div class="row">
     <div class="col-sm-3">
@@ -31,6 +32,7 @@ foreach ($menus as $i => $menu) {
         </div>
     </div>
     <div class="col-sm-9">
+        <?= call_user_func([isset($this->params['alertClassName']) ? $this->params['alertClassName'] : 'common\\widgets\\Alert', 'widget']); ?>
         <?= $content ?>
     </div>
 </div>

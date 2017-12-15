@@ -304,6 +304,9 @@ return [
 	///\vendor\yongtiger\yii2-user\src\views\profile\index.php
 	'User Profile List' => '用户个人资料列表',
 
+	///\vendor\yongtiger\yii2-user\src\views\profile\create.php
+	'Create User Profile' => '创建用户个人资料',
+
 	///\vendor\yongtiger\yii2-user\src\views\profile\update.php
 	'Update User Profile' => '更新用户个人资料',
 

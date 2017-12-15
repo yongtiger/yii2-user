@@ -1,4 +1,4 @@
-# Yii2-user v0.23.1 (TYPO# send-token.php)
+# Yii2-user v0.24.0 (ADD# actionCreate())
 
 The most basic `user` module.
 

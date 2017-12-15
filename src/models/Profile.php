@@ -14,6 +14,7 @@ namespace yongtiger\user\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
 use yii\helpers\FormatConverter;
 use yongtiger\user\Module;
 
@@ -70,6 +71,11 @@ class Profile extends \yii\db\ActiveRecord
                 'updatedAtAttribute' => 'updated_at',
                 // 'value' => new \yii\db\Expression('NOW()'), ///if you're using datetime instead of UNIX timestamp
             ],
+            'blameable' => [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => 'user_id',
+                'updatedByAttribute' => false,
+            ],
         ];
     }
 
@@ -89,7 +95,7 @@ class Profile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'created_at', 'updated_at'], 'required'],
+            // [['user_id', 'created_at', 'updated_at'], 'required'],//////////////?????
             [['firstname', 'lastname', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'trim'],
             [['user_id', 'province', 'city', 'district', 'gender', 'created_at', 'updated_at'], 'integer'],
             [['fullname', 'firstname', 'lastname', 'avatar', 'country', 'address', 'telephone', 'mobile', 'graduate', 'education', 'company', 'position', 'revenue'], 'string', 'max' => 255],

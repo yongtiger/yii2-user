@@ -22,6 +22,7 @@ use yii\widgets\ActiveForm;
 use yongtiger\user\models\Profile;
 use yongtiger\user\models\ProfileSearch;
 use yongtiger\user\models\User;
+use yongtiger\user\Module;
 
 /**
  * ProfileController implements the CRUD actions for Profile model.
@@ -45,7 +46,7 @@ class ProfileController extends Controller
 
                     [
                         'allow' => true,
-                        'actions' => ['view'],
+                        'actions' => ['view', 'create'],
                         'roles' => ['@'],
                     ],
 
@@ -65,8 +66,11 @@ class ProfileController extends Controller
                         'matchCallback' => function ($rule, $action) {
                             $me = Yii::$app->user->identity;
                             $useId = Yii::$app->request->get('id');
-                            $user = $this->findModel($useId)->user;   ///gets the manipulated User object
-
+                            if (empty($model = Profile::findOne($useId))) {    ///gets the manipulated User object
+                                Yii::$app->getResponse()->redirect(['user/profile/create'])->send();    ///[v0.24.0 (ADD# actionCreate())]
+                                die;
+                            }
+                            $user = $model->user;
                             return
                                 $me->id == $user->id  ///if the manipulated user is `me`, update is allowed
                                 ||
@@ -197,6 +201,38 @@ class ProfileController extends Controller
         ]);
     }
 
+    ///[v0.24.0 (ADD# actionCreate())]
+    /**
+     * Creates a new Profile model.
+     *
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     *
+     * @see http://www.yiiframework.com/doc-2.0/guide-input-multiple-models.html
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new Profile();
+
+        $load = $model->load(Yii::$app->request->post());
+
+        ///[yii2-uesr:Ajax validation]
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+
+        if ($load && $model->save()) {
+            Yii::$app->session->setFlash('success', Module::t('message', 'Successfully created.'));
+            $this->redirect(['update', 'id' => $model->user_id]);
+        } else {
+            $this->layout = 'main';
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
     /**
      * Updates an existing Profile model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -215,18 +251,19 @@ class ProfileController extends Controller
             return ActiveForm::validate($model);
         }
 
+        if ($load && $model->save()) {
+            Yii::$app->session->setFlash('success', Module::t('message', 'Successfully updated.'));
+        }
+
         ///[v0.18.4 (frontend user menus)]
         if (Yii::$app->user->id == $id) {
             $this->layout = 'main';
         }
 
-        if ($load && $user = $model->save()) {
-            return $this->redirect(['view', 'id' => $model->user_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+
     }
 
     /**
