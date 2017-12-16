@@ -396,7 +396,7 @@ class Module extends \yii\base\Module
      * ]
      * ```
      */
-    public $authChoiceWidgetConfig =[];   ///init later
+    public $authChoiceWidgetConfig = [];   ///init later
 
     /**
      * @var array
@@ -413,6 +413,42 @@ class Module extends \yii\base\Module
      * ```
      */
     public $auth = [];  ///init later
+
+    ///[v0.24.4 (ADD# cropAvatar)]
+    /**
+     * @var array
+     *
+     * ```
+     * [
+     *     'class' => 'yongtiger\cropperavatar\actions\CropAvatarAction',
+     *     'config'=> [
+     *         // Default width of the destination image
+     *         'dstImageWidth' => 200,
+     *         // Default height of the destination image
+     *         'dstImageHeight' => 200,
+     *         // Default width of the middle image, empty means no generating
+     *         'middleImageWidth'=> 100,
+     *         // Default height of the middle image, empty means no generating
+     *         'middleImageHeight'=> 100,
+     *         // Default width of the small image, empty means no generating
+     *         'smallImageWidth' => 50,
+     *         // Default height of the small image, empty means no generating 
+     *         'smallImageHeight' => 50,
+     *         // Avatar upload path
+     *         'dstImageFilepath' => '@webroot/upload/avatar',
+     *         // Avatar uri
+     *         'dstImageUri' => '@web/upload/avatar',
+     *         // Avatar upload file name  (no file suffix!)
+     *         'dstImageFilename' => Yii::$app->user->id,  ///alternative `date('YmdHis')` ///Cannot use `Yii::$app` here!
+     *         // The file name suffix of the original image, empty means no generating
+     *         'original' => 'original',
+     *     ],
+     *     ///Cannot configure 'successCallback' here because of `$this`!!!
+     *     // 'successCallback' => new \yii\helpers\ReplaceArrayValue(['anyFunc', 'saveAvatar']),///can be any callable function that called by `call_user_func()`
+     * ],
+     * ```
+     */
+    public $cropAvatar = [];
 
     /**
      * @inheritdoc
@@ -484,7 +520,7 @@ class Module extends \yii\base\Module
             ['label' => Module::t('message', 'Account Security'), 'url' => ['/user/account']],
             ['label' => Module::t('message', 'User Status'), 'url' => ['/user/status/view', 'id' => Yii::$app->user->id]],
             ['label' => Module::t('message', 'User Count'), 'url' => ['/user/count/view', 'id' => Yii::$app->user->id]],
-            ['label' => Module::t('message', 'User Preference'), 'url' => ['/user/preference/update', 'id' => \Yii::$app->user->id]],
+            ['label' => Module::t('message', 'User Preference'), 'url' => ['/user/preference/update', 'id' => Yii::$app->user->id]],
             ['label' => Module::t('message', 'User Profile'), 'url' => ['/user/profile/update', 'id' => Yii::$app->user->id]],
         ], $this->menus);
 

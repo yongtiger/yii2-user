@@ -19,6 +19,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 use yongtiger\user\models\Profile;
 use yongtiger\user\models\ProfileSearch;
 use yongtiger\user\models\User;
@@ -93,45 +94,10 @@ class ProfileController extends Controller
     public function actions()
     {
         return [
-        ///[v0.21.0 (ADD# update avatar)]
-            'crop-avatar'=>[
-                'class' => 'yongtiger\cropperavatar\actions\CropAvatarAction',
-                'config'=>[
-                    // Default width of the destination image
-                    'dstImageWidth' => 200,
-
-                    // Default height of the destination image
-                    'dstImageHeight' => 200,
-
-                    // Default width of the middle image, empty means no generating
-                    'middleImageWidth'=> 100,
-
-                    // Default height of the middle image, empty means no generating
-                    'middleImageHeight'=> 100,
-
-                    // Default width of the small image, empty means no generating
-                    'smallImageWidth' => 50,
-
-                    // Default height of the small image, empty means no generating 
-                    'smallImageHeight' => 50,
-
-                    // Avatar upload path
-                    'dstImageFilepath' => '@webroot/uploads/avatar/' . Yii::$app->user->id,
-
-                    // Avatar uri
-                    'dstImageUri' => '@web/uploads/avatar/' . Yii::$app->user->id,
-
-                    // Avatar upload file name
-                    'dstImageFilename' => date('YmdHis'),
-
-                    // The file name suffix of the original image, empty means no generating
-                    'original' => 'original',
-
-                ],
-
-                ///[v0.21.2 (CHG# AvatarWidget::widget)]
+            ///[v0.21.0 (ADD# update avatar)]///[v0.24.4 (ADD# cropAvatar)]
+            'crop-avatar' => ArrayHelper::merge([
                 'successCallback' => [$this, 'saveAvatar'],
-            ],
+            ], Yii::$app->getModule('user')->cropAvatar),
         ];
     }
 

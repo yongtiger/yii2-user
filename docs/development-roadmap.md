@@ -1,5 +1,13 @@
 # Development roadmap
 
+## v0.24.4 (ADD# cropAvatar)
+
+Changed file list:
+
+- `\Module.php`
+- `\controllers\ProfileController.php`
+
+
 ## v0.24.3 (ADD# Preference actionCreate(), SCENARIO_UPDATE)
 
 Changed file list:

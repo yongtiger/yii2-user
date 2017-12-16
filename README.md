@@ -1,4 +1,4 @@
-# Yii2-user v0.24.3 (ADD# Preference actionCreate(), SCENARIO_UPDATE)
+# Yii2-user v0.24.4 (ADD# cropAvatar)
 
 The most basic `user` module.
 
