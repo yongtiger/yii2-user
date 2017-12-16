@@ -73,7 +73,7 @@ class AccountController extends Controller
 
         ///[Yii2 uesr:verifycode]
         if (Yii::$app->getModule('user')->enableAccountChangeWithCaptcha) {
-            $actions = array_merge($actions ,['captcha' => Yii::$app->getModule('user')->captcha]);
+            $actions = array_merge($actions, ['captcha' => Yii::$app->getModule('user')->captcha]);
         }
 
         return $actions;

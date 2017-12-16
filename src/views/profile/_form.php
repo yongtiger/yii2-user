@@ -44,17 +44,8 @@ JS
     <?= $form->field($model, 'gender')->radioList([1 => Module::t('message', 'Male'), 0 => Module::t('message', 'Female')]) ?>
 
     <!--///[v0.21.1 (ADD# views\profile\_form.php:update avatar)]-->
-    <?= $form->field($model, 'avatar')->widget(AvatarWidget::classname(), [
-        'enableCrop' => true,   ///alternative `Yii::$app->user->id == $model->user_id` ///[v0.22.1 (ADD# enableCrop)]
-        'dstImageUri' => '@web/upload/avatar',  ////????bug# show avatar issue at backend!
-        // 'noImageUrl' => 'http://oxfordchamber.org/images/board/NoPhotoAvailableMale.jpg',
-        // 'isRounded' => true,
-        'isModal' => false,
-        // 'enableRotateButtons' => false,
-        // 'enablePreviewLargelImage' => false,
-        // 'enablePreviewMiddlelImage' => false,
-        // 'enablePreviewSmalllImage' => false,
-    ])->label(false) ?>
+    <!--///[v0.24.5 (ADD# avatarWidgetConfig)]-->
+    <?= $form->field($model, 'avatar')->widget(AvatarWidget::classname(), Yii::$app->getModule('user')->avatarWidgetConfig)->label(false) ?>
 
     <?= $form->field($model, 'link')->textInput(['maxlength' => true]) ?>
 

@@ -450,6 +450,26 @@ class Module extends \yii\base\Module
      */
     public $cropAvatar = [];
 
+    ///[v0.24.5 (ADD# avatarWidgetConfig)]
+    /**
+     * @var array
+     *
+     * ```
+     * [
+     * 'enableCrop' => true,   ///alternative `Yii::$app->user->id == $model->user_id` ///[v0.22.1 (ADD# enableCrop)]
+     * 'dstImageUri' => '@web/upload/avatar',  ////????bug# show avatar issue at backend!
+     * // 'noImageUrl' => 'http://oxfordchamber.org/images/board/NoPhotoAvailableMale.jpg',
+     * // 'isRounded' => true,
+     * 'isModal' => false,
+     * // 'enableRotateButtons' => false,
+     * // 'enablePreviewLargelImage' => false,
+     * // 'enablePreviewMiddlelImage' => false,
+     * // 'enablePreviewSmalllImage' => false,
+     * ],
+     * ```
+     */
+    public $avatarWidgetConfig = [];
+
     /**
      * @inheritdoc
      */

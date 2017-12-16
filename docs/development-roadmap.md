@@ -1,5 +1,13 @@
 # Development roadmap
 
+## v0.24.5 (ADD# avatarWidgetConfig)
+
+Changed file list:
+
+- `\Module.php`
+- `\views\profile\_form.php`
+
+
 ## v0.24.4 (ADD# cropAvatar)
 
 Changed file list:

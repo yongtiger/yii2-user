@@ -1,4 +1,4 @@
-# Yii2-user v0.24.4 (ADD# cropAvatar)
+# Yii2-user v0.24.5 (ADD# avatarWidgetConfig)
 
 The most basic `user` module.
 
